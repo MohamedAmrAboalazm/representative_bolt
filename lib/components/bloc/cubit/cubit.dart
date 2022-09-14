@@ -210,17 +210,17 @@ class MandobCubit extends Cubit<MandobStates> {
   void getshipmentRepresentative(context) async  {
 
     emit(LoadingshipmentStateState());
-     var token =await SharedCashHelper.getValue(key: "token");
+    var token =await SharedCashHelper.getValue(key: "token");
     DioHelper.getData(
-            url: "api/mobile/shipmentRepresentative",
-            authorization: "Bearer $token")
+        url: "api/mobile/shipmentRepresentative",
+        authorization: "Bearer $token")
         .then((value) {
-          print('B555555getshipmentRepresentative55555555: ${value.data}');
-       shipmentModel = ShipmentModel.fromJson(value.data);
+      print('B555555getshipmentRepresentative55555555: ${value.data}');
+      shipmentModel = ShipmentModel.fromJson(value.data);
       emit(SuccessshipmentStateState());
     }).catchError((e) {
-      print('Error Here: ${e.toString()}');
-      if(e.response.data["status"] ==  "Token is Expired")
+      print('Error Here>>>>>: ${e.response!.data["status"]}');
+      if(e.response.data["status"] ==  "Token is Expired"||e.response!.data["errors"]["status"] == "not active")
       {
 
         navigateAndFinsh(context, LoginScreen());

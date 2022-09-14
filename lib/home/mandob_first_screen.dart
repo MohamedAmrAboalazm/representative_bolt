@@ -21,7 +21,18 @@ import '../models/shipmentModel.dart';
 
 var SearchController = TextEditingController();
 int? idFilter;
-class MandobFirstScreen extends StatelessWidget {
+class MandobFirstScreen extends StatefulWidget {
+  @override
+  State<MandobFirstScreen> createState() => _MandobFirstScreenState();
+}
+
+class _MandobFirstScreenState extends State<MandobFirstScreen> {
+
+  @override
+  void initState() {
+    MandobCubit.get(context).getshipmentRepresentative(context);
+    MandobCubit.get(context).getTotalShipment();
+  }
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
