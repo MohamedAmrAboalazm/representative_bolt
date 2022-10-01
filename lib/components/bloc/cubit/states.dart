@@ -90,6 +90,10 @@ class ErrorshipmentStateAddNotes extends MandobStates {}
 
 class RadioButtonState extends MandobStates {}
 
+class SuccessGetStoriesState extends MandobStates {}
+
+class ErorrGetStoriesState extends MandobStates {}
+
 //+++++++++++++++++++++++++++++Maps++++++++++++++++++++++
 
 class SucessGetCurrentLocation extends MandobStates {}

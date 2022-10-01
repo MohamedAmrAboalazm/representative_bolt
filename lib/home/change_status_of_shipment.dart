@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,11 +47,17 @@ class ChangeStatusOfShipment extends StatelessWidget {
                  CustomHeadOfDropDown( textOfHead:"أختر حالة الشحنة",isShipmentState:true),
                 if(cubit.isOpenDropDownShipmentState)
                   ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                      itemBuilder:(context, index) => CustomListOfDropDown(textList:"${cubit.shipmentStatusModel!.shipmentStatuRepresentative![index].name}",indexRadio: index,isShipmentStates: true),
-                    itemCount: cubit.DropBoxNames.length,
-                  ),
+                   physics: NeverScrollableScrollPhysics(),
+                   shrinkWrap: true,
+                   itemBuilder:(context, index) => CustomListOfDropDown(textList:"${cubit.shipmentStatusModel!.shipmentStatuRepresentative![index].name}",indexRadio: index,isShipmentStates: true),
+                   itemCount: cubit.shipmentStatusModel!.shipmentStatuRepresentative!.length-1,
+                 ),
+                 if(cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1].name== "Reject")
+                   CustomDropDownButton(hint: 'أختر الفئة الفرعية',itemList:  cubit.StoriesList,textValidation:  'أختر الفئة',
+                       onChanged: (value) {
+                        cubit.idOfStroe=value.id;
+                        log("AAA?>${cubit.idOfStroe}");
+                       }),
                  if(cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1].name== "مرتجع كامل و لم يسدد قيمة الشحن")
                   Column(
                     children: [
@@ -64,19 +72,6 @@ class ChangeStatusOfShipment extends StatelessWidget {
                         ),
                     ],
                   ),
-
-                   // Column(
-                   //   children: [
-                   //     CustomListOfDropDown(textList:"تم استلام البيك اب",indexRadio: 0,isShipmentStates: true),
-                   //     CustomListOfDropDown(textList:"في الطريق الي المخزن",indexRadio: 1,isShipmentStates: true),
-                   //     CustomListOfDropDown(textList:"تسليم ناجح",indexRadio: 2,isShipmentStates: true),
-                   //     CustomListOfDropDown(textList:"مرتجع جزئي  مسدد قيمة الشحن",indexRadio: 3,isShipmentStates: true),
-                   //     CustomListOfDropDown(textList:" مرتجع جزئي و لم يسديد قيمة الشحن",indexRadio: 4,isShipmentStates: true),
-                   //     CustomListOfDropDown(textList: "مرتجع كامل مسدد قيمة الشحن",indexRadio: 5,isShipmentStates: true),
-                   //     CustomListOfDropDown(textList: "مرتجع كامل و لم يسدد قيمة الشحن",indexRadio: 6,isShipmentStates: true),
-                   //     CustomListOfDropDown(textList: "فشل التسليم",indexRadio: 7,isShipmentStates: true),
-                   //   ],
-                   // ),
                  if(cubit.radioKeysShipmentStates[3]==cubit.CurrentIndexRadioShipmentStates||cubit.radioKeysShipmentStates[4]==cubit.CurrentIndexRadioShipmentStates)
                    Column(
                      children: [
@@ -92,21 +87,12 @@ class ChangeStatusOfShipment extends StatelessWidget {
                          SizedBox(height: 20,),
                          CustomHeadOfDropDown(textOfHead:"اختر السبب",isShipmentState:false),
                          if(cubit.isOpenDropDownSelectReason)
-                           // Column(
-                           //   children: [
-                           //     CustomListOfDropDown(textList:"منتج غير ملائم",indexRadio: 0,isShipmentStates: false),
-                           //     CustomListOfDropDown(textList:"تسليم ناجح",indexRadio: 1,isShipmentStates: false),
-                           //     CustomListOfDropDown(textList:"تسليم ناجح",indexRadio: 2,isShipmentStates: false),
-                           //     CustomListOfDropDown(textList:"فشل التسليم",indexRadio: 3,isShipmentStates: false),
-                           //     CustomListOfDropDown(textList:"فشل التسليم",indexRadio: 4,isShipmentStates: false),
-                           //
-                           //   ],
-                           // ),
                          SizedBox(height: 20,),
                        ]),
 
                  CustomTextFormField(controller:notesController,hintText: "ملاحظاتك", maxLines: 4,marginBottom: 20,marginTop: 20),
                  Center(child: defaultButton(context,colorButton: purple,text: "تأكيد", onPressed: (){
+
                    var nameOfItemDropDown= cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1];
                         if(cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1].name== "مرتجع كامل و لم يسدد قيمة الشحن"&&cubit.CurrentIndexRadioSelectReason==null)
                           {
@@ -115,7 +101,9 @@ class ChangeStatusOfShipment extends StatelessWidget {
                           }else if(cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1].name== "مرتجع كامل و لم يسدد قيمة الشحن"&&cubit.CurrentIndexRadioSelectReason!=null)
                             {
 
-                              cubit.notesRepresentative(id: cubit.shipmentModel!.shipmentRepresentative![itemIndex!].id,notes:  notesController.text,return_price:0,
+                              cubit.notesRepresentative(id:cubit.shipmentModel!.shipmentRepresentative![itemIndex!].id,
+                                notes:  notesController.text,
+                                return_price:0,
                                 shipment_status_id:  cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1].id,
                                 reason_id: cubit.reasonsModel!.reason![int.parse(cubit.CurrentIndexRadioSelectReason??"1")-1].id,);
                             }

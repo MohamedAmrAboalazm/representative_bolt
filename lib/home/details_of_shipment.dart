@@ -73,20 +73,20 @@ class DetailsOfShipment extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment:MainAxisAlignment.center,
                               children: [
-                                if(model.shipmentstatu!.id!>=2)
+                                if(model.shipmentstatu!.id!>=1||model.shipmentstatu!.id!<10)
                                   Text("${DateFormat("dd/MM/yyyy").format(DateTime.parse("${model.shipmentstatu!.createdAt}"))}",style: TextStyle(fontSize:10,color:purple)),
                                 const SizedBox(height: 5,),
                                 Container(
                                   width:35,
                                   height:35,
                                   decoration:  BoxDecoration(
-                                    color:model.shipmentstatu!.id!>=2 ? purple:Colors.grey,
+                                    color:model.shipmentstatu!.id!>=1||model.shipmentstatu!.id!<10? purple:Colors.grey,
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(Icons.check,size: 22,color: Colors.white),
                                 ),
                                 SizedBox(height: 5,),
-                                if(model.shipmentstatu!.id!>=2)
+                                if(model.shipmentstatu!.id!>=1||model.shipmentstatu!.id!<10)
                                   Text("أستلام الشحنه",style: TextStyle(fontSize:10,color:purple)),
                               ],
                             ),
@@ -95,20 +95,20 @@ class DetailsOfShipment extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment:MainAxisAlignment.center,
                               children: [
-                                if(model.shipmentstatu!.id!>=3)
+                                if(model.shipmentstatu!.id!>=2||model.shipmentstatu!.id!<10)
                                   Text("${DateFormat("dd/MM/yyyy").format(DateTime.parse("${model.shipmentstatu!.createdAt}"))}",style: TextStyle(fontSize:10,color:purple)),
                                 const SizedBox(height: 5,),
                                 Container(
                                   width:35,
                                   height:35,
                                   decoration:  BoxDecoration(
-                                    color:model.shipmentstatu!.id!>=3 ? purple:Colors.grey,
+                                    color:model.shipmentstatu!.id!>=2||model.shipmentstatu!.id!<10 ? purple:Colors.grey,
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(Icons.check,size: 22,color: Colors.white),
                                 ),
                                 SizedBox(height: 5,),
-                                if(model.shipmentstatu!.id!>=3)
+                                if(model.shipmentstatu!.id!>=2||model.shipmentstatu!.id!<10)
                                   Text("في الطريق الي المغزن",style: TextStyle(fontSize:10,color:purple)),
                               ],
                             ),
@@ -117,20 +117,20 @@ class DetailsOfShipment extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment:MainAxisAlignment.center,
                               children: [
-                                if(model.shipmentstatu!.id!>=7)
+                                if(model.shipmentstatu!.id!>=6||model.shipmentstatu!.id!<10)
                                   Text("${DateFormat("dd/MM/yyyy").format(DateTime.parse("${model.shipmentstatu!.createdAt}"))}",style: TextStyle(fontSize:10,color:purple)),
                                 SizedBox(height: 5,),
                                 Container(
                                   width:35,
                                   height:35,
                                   decoration: BoxDecoration(
-                                    color:model.shipmentstatu!.id!>=7 ? purple:Colors.grey,
+                                    color:model.shipmentstatu!.id!>=6||model.shipmentstatu!.id!<10 ? purple:Colors.grey,
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(Icons.check,size: 22,color: Colors.white),
                                 ),
                                 SizedBox(height: 5,),
-                                if(model.shipmentstatu!.id!>=7)
+                                if(model.shipmentstatu!.id!>=6||model.shipmentstatu!.id!<10)
                                   Text("${model.shipmentstatu!.name}",style: TextStyle(fontSize:10,color:purple)),
                               ],
                             ),
@@ -302,7 +302,9 @@ class DetailsOfShipment extends StatelessWidget {
                       ],
                     ),
                   if(!(int.parse(model.shipmentStatusId!.toString())>=7))
-                    defaultButtonWithIcon(context,hightButton: .1,colorButtom: yellow,borderRadius:30,colorImage:black,colorText:black,widthButton: .8,onPressed: (){navigateTo(context, ChangeStatusOfShipment(itemIndex));}
+                    defaultButtonWithIcon(context,hightButton: .1,colorButtom: yellow,borderRadius:30,colorImage:black,colorText:black,widthButton: .8,onPressed: (){
+                      navigateTo(context, ChangeStatusOfShipment(itemIndex));
+                      }
                         ,text: "تعديل حالة الشحنة", image: "assets/icons/noun-packing-1914671.svg",leftMargin: 0,rightMargin: 0,topMargin: 0,bottomMargin:15,hightIcon:.05,widthIcon: .05),
 
                 ],

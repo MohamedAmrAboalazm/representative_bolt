@@ -32,6 +32,14 @@ class DioHelper {
       "access_token": accessToken ?? "",
       "Authorization": authorization ?? "",
     };
+    dio?.interceptors.add(LogInterceptor(
+      responseBody: true,
+      error: true,
+      requestHeader: false,
+      responseHeader: false,
+      requestBody: true,
+      request: true,
+    ));
     return dio!.post(url, data: data);
   }
 

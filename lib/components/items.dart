@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,8 +9,10 @@ import 'package:representative_bolt/chats/chat_messages_screen.dart';
 import 'package:representative_bolt/components/bloc/cubit/states.dart';
 import 'package:representative_bolt/components/sharedpref/shared_preference.dart';
 import 'package:representative_bolt/constants/constatns.dart';
+import 'package:representative_bolt/constants/themes.dart';
 import 'package:representative_bolt/login/loginScreen.dart';
 import 'package:representative_bolt/notifications/notifications_screen.dart';
+import 'package:sizer/sizer.dart';
 import '../colors.dart';
 import 'bloc/cubit/cubit.dart';
 
@@ -754,6 +757,7 @@ class CustomTextFormField extends StatelessWidget {
     );
   }
 }
+
 class CheckBoxOfDialog extends StatelessWidget {
   final String text;
   final bool isChecked;
@@ -777,49 +781,6 @@ class CheckBoxOfDialog extends StatelessWidget {
         ]);
   }
 }
-
-
-
-
-
-//Widget defaultButtonWithIcon(
-//    context,
-//    {  required String text,
-//      required String image,
-//      required Function() onPressed,
-//      required double widthButton,
-//      required double borderRadius,
-//      required Color colorText,
-//      required Color colorImage,
-//      required Color colorButtom,
-//    }) {
-//  return Container(
-//    margin: EdgeInsets.only(bottom: 15),
-//    width: MediaQuery.of(context).size.width *widthButton,
-//    decoration: BoxDecoration(
-//      color: colorButtom,
-//      borderRadius: BorderRadius.circular(borderRadius),
-//    ),
-//    child: MaterialButton(
-//      onPressed: onPressed,
-//      child: Row(
-//        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//        children: [
-//          Text("$text", style: TextStyle(color: colorText, fontSize: 20)),
-//          Padding(
-//            padding: const EdgeInsets.only(top: 10),
-//            child: SvgPicture.asset(
-//              "$image",
-//              color: colorImage,
-//              height: 50,
-//              width: 50,
-//            ),
-//          )
-//        ],
-//      ),
-//    ),
-//  );
-//}
 
 void showToast({required String message,required ToastStates state}){
   Fluttertoast.showToast(
@@ -855,4 +816,71 @@ Color chosseToastColor(ToastStates state)
 
 }
 
+class CustomDropDownButton extends StatelessWidget {
+  final List itemList;
+  void Function(dynamic)? onChanged;
+  dynamic value;
+  String?textValidation,hint;
 
+  CustomDropDownButton({required this.itemList,required this.onChanged,required this.hint,required this.textValidation,this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField2<dynamic>(
+      decoration: InputDecoration(
+        isDense: true,
+        contentPadding: EdgeInsets.zero,
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: purpleColor,width: .2.h),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: purpleColor,width: .2.h),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red,width: .2.h),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        iconColor: purpleColor,
+
+      ),
+      isExpanded: true,
+      hint:  Text(
+        '$hint',
+        style: TextStyle(fontSize: 14),
+      ),
+      icon: const Icon(
+        Icons.arrow_drop_down,
+        color: Colors.black45,
+      ),
+      iconSize: 30,
+      buttonHeight: 60,
+      buttonPadding: const EdgeInsets.only(left: 20, right: 10),
+      dropdownDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      value:value,
+      items: itemList
+          .map((item) =>
+          DropdownMenuItem<dynamic>(
+            value: item,
+            child: Text(
+              item.name,
+              style: const TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          ))
+          .toList(),
+      validator: (value) {
+        if (value == null) {
+          return '$textValidation';
+        }
+      },
+      onChanged: onChanged,
+      onSaved: (value) {
+      },
+    );
+  }
+}

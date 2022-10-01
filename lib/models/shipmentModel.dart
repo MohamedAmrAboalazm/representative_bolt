@@ -1,7 +1,7 @@
 class ShipmentModel {
   bool? status;
-  String? errNum;
-  String? msg;
+  var errNum;
+  var msg;
   List<ShipmentRepresentative>? shipmentRepresentative;
 
   ShipmentModel(
@@ -33,37 +33,37 @@ class ShipmentModel {
 }
 
 class ShipmentRepresentative {
-  int? id;
-  String? nameShipment;
-  String? description;
-  int? customerCode;
-  int? productPrice;
-  int? orderNumber;
+  var id;
+  var nameShipment;
+  var description;
+  var customerCode;
+  var productPrice;
+  var orderNumber;
  var count;
-  int? shippingPrice;
-  int? returnPrice;
+  var shippingPrice;
+  var returnPrice;
  var weight;
  var size;
-  String? notes;
+  var notes;
  var deliveryDate;
   List<String>? startMap;
   List<String>? endMap;
-  int? clientId;
-  int? areaId;
-  int? serviceTypeId;
-  int? storeId;
-  int? shipmentStatusId;
+  var clientId;
+  var areaId;
+  var serviceTypeId;
+  var storeId;
+  var shipmentStatusId;
  var representativeId;
-  int? senderId;
+  var senderId;
  var additionalServiceId;
  var reasonId;
-  int? end;
-  int? statusShipments;
-  String? createdAt;
-  String? updatedAt;
-  String? totalShipment;
-  String? companyShipmentPrice;
-  String? representativeShipmentPrice;
+  var end;
+  var statusShipments;
+  var createdAt;
+  var updatedAt;
+  var totalShipment;
+  var companyShipmentPrice;
+  var representativeShipmentPrice;
   Area? area;
   Client? client;
   List<Representative>? representative;
@@ -227,9 +227,9 @@ class ShipmentRepresentative {
 }
 
 class Area {
-  int? id;
-  String? name;
-  int? provinceId;
+  var id;
+  var name;
+  var provinceId;
  var createdAt;
  var updatedAt;
 
@@ -255,19 +255,19 @@ class Area {
 }
 
 class Client {
-  int? id;
-  String? name;
+  var id;
+  var name;
  var email2;
-  String? address;
-  String? phone;
+  var address;
+  var phone;
  var phone2;
  var photo;
  var googleLocation;
  var userId;
  var cityId;
-  String? createdAt;
-  String? updatedAt;
-  String? imagePath;
+  var createdAt;
+  var updatedAt;
+  var imagePath;
 
   Client(
       {this.id,
@@ -320,24 +320,24 @@ class Client {
 }
 
 class Representative {
-  int? id;
-  String? name;
-  String? address;
+  var id;
+  var name;
+  var address;
  var cv;
-  String? photo;
-  String? faceIDCardPic;
-  String? backIDCardPic;
-  int? salary;
+  var photo;
+  var faceIDCardPic;
+  var backIDCardPic;
+  var salary;
  var wallet;
-  int? commission;
-  int? userId;
-  int? cityId;
-  String? createdAt;
-  String? updatedAt;
-  String? imagePath;
-  String? licensePhotoPath;
-  String? fishPhotoPath;
-  String? cvPath;
+  var commission;
+  var userId;
+  var cityId;
+  var createdAt;
+  var updatedAt;
+  var imagePath;
+  var licensePhotoPath;
+  var fishPhotoPath;
+  var cvPath;
   Pivot? pivot;
 
   Representative(
@@ -411,9 +411,9 @@ class Representative {
 }
 
 class Pivot {
-  int? shipmentId;
-  int? representativeId;
-  int? commission;
+  var shipmentId;
+  var representativeId;
+  var commission;
 
   Pivot({this.shipmentId, this.representativeId, this.commission});
 
@@ -433,10 +433,10 @@ class Pivot {
 }
 
 class ServiceType {
-  int? id;
-  String? type;
-  String? createdAt;
-  String? updatedAt;
+  var id;
+  var type;
+  var createdAt;
+  var updatedAt;
 
   ServiceType({this.id, this.type, this.createdAt, this.updatedAt});
 
@@ -458,10 +458,10 @@ class ServiceType {
 }
 
 class Shipmentstatu {
-  int? id;
-  String? name;
-  String? createdAt;
-  String? updatedAt;
+  var id;
+  var name;
+  var createdAt;
+  var updatedAt;
 
   Shipmentstatu({this.id, this.name, this.createdAt, this.updatedAt});
 
@@ -483,12 +483,12 @@ class Shipmentstatu {
 }
 
 class Store {
-  int? id;
-  String? name;
+  var id;
+  var name;
  var phone;
-  String? address;
-  int? brancheId;
-  int? employeeId;
+  var address;
+  var brancheId;
+  var employeeId;
  var createdAt;
  var updatedAt;
 
@@ -528,17 +528,17 @@ class Store {
 }
 
 class User {
-  int? id;
-  String? email;
+  var id;
+  var email;
  var userName;
  var emailVerifiedAt;
-  String? phoneNumber;
-  int? isActive;
-  String? userType;
-  String? token;
+  var phoneNumber;
+  var isActive;
+  var userType;
+  var token;
  var firebaseId;
-  String? createdAt;
-  String? updatedAt;
+  var createdAt;
+  var updatedAt;
   UserData? userData;
 
   User(
@@ -593,24 +593,24 @@ class User {
 }
 
 class UserData {
-  int? id;
-  String? name;
-  String? address;
-  String? phone;
-  String? photo;
+  var id;
+  var name;
+  var address;
+  var phone;
+  var photo;
   var googleLocation;
   var flyerStock;
-  int? pickUpFee;
-  int? minimumSundayPickUp;
+  var pickUpFee;
+  var minimumSundayPickUp;
   var shipmentType;
-  int? status;
-  int? userId;
-  int? cityId;
-  int? branchId;
-  int? paymentTypeId;
-  String? createdAt;
-  String? updatedAt;
-  String? imagePath;
+  var status;
+  var userId;
+  var cityId;
+  var branchId;
+  var paymentTypeId;
+  var createdAt;
+  var updatedAt;
+  var imagePath;
 
   UserData(
       {this.id,

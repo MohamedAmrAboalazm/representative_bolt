@@ -11,6 +11,7 @@ import 'package:representative_bolt/components/sharedpref/shared_preference.dart
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:representative_bolt/main_nav_screen/mandob_layout.dart';
 import 'package:representative_bolt/services/fcm_services.dart';
+import 'package:sizer/sizer.dart';
 import 'components/bloc/bloc_observer.dart';
 import 'components/bloc/cubit/cubit.dart';
 import 'constants/constatns.dart';
@@ -52,54 +53,59 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => MandobCubit()
-            .. getshipmentRepresentative(context)
-            ..getTotalShipment()
-            ..getAccountShipment()
-            ..getShipmentStatusModel()
-            ..getReasons()
-            ..getTodayDeliveries()
-             ..getNotifactions(),
-        ),
-        // BlocProvider(
-        //  // create: (context) => LoginCubitClass()..login("")
-        // ),
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return  MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => MandobCubit()
+                .. getshipmentRepresentative(context)
+                ..getTotalShipment()
+                ..getAccountShipment()
+                ..getShipmentStatusModel()
+                ..getReasons()
+                ..getTodayDeliveries()
+                ..getNotifactions()
+                ..getStories(),
+            ),
+            // BlocProvider(
+            //  // create: (context) => LoginCubitClass()..login("")
+            // ),
 
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          radioTheme: RadioThemeData(
-            fillColor: MaterialStateColor.resolveWith((states) => purple),
+          ],
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              radioTheme: RadioThemeData(
+                fillColor: MaterialStateColor.resolveWith((states) => purple),
+              ),
+              fontFamily: "hanimation",
+              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+                selectedIconTheme: IconThemeData(color: yellow),
+                selectedItemColor: yellow,
+                unselectedItemColor: Colors.grey,
+                backgroundColor: Colors.white,
+                elevation: 25,
+                type: BottomNavigationBarType.fixed,
+              ),
+            ),
+            supportedLocales: context.supportedLocales,
+            localizationsDelegates: [
+              context.localizationDelegates[0],
+              context.localizationDelegates[1],
+              context.localizationDelegates[2],
+              context.localizationDelegates[3],
+              DefaultWidgetsLocalizations.delegate,
+              DefaultMaterialLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            locale: const Locale("ar"),
+            home: token != null ? MandobLayout() : LoginScreen(),
           ),
-          fontFamily: "hanimation",
-          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-            selectedIconTheme: IconThemeData(color: yellow),
-            selectedItemColor: yellow,
-            unselectedItemColor: Colors.grey,
-            backgroundColor: Colors.white,
-            elevation: 25,
-            type: BottomNavigationBarType.fixed,
-          ),
-        ),
-        supportedLocales: context.supportedLocales,
-        localizationsDelegates: [
-          context.localizationDelegates[0],
-          context.localizationDelegates[1],
-          context.localizationDelegates[2],
-          context.localizationDelegates[3],
-          DefaultWidgetsLocalizations.delegate,
-          DefaultMaterialLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: const Locale("ar"),
-        home: token != null ? MandobLayout() : LoginScreen(),
-      ),
+        );
+      },
     );
   }
 }

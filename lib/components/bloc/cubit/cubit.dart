@@ -31,7 +31,9 @@ import 'package:representative_bolt/models/reasons_model.dart';
 import 'package:representative_bolt/models/represtative_account.dart';
 import 'package:representative_bolt/models/search_model.dart';
 import 'package:representative_bolt/models/shipment_status_model.dart';
+import 'package:representative_bolt/models/store_model.dart';
 import 'package:representative_bolt/models/today_deliveries_model.dart';
+import 'package:representative_bolt/models/total_shipment.dart';
 import 'package:representative_bolt/notifications/notifications_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -103,15 +105,6 @@ class MandobCubit extends Cubit<MandobStates> {
     "assets/icons/noun-accounting-4679331.svg",
     "assets/icons/Edit.svg",
   ];
-  List<String> DropBoxNames = [
-    "تم استلام البيك اب",
-        "في الطريق الي المخزن",
-    "تسليم ناجح",
-    "مرتجع جزئي  مسدد قيمة الشحن",
-    " مرتجع جزئي و لم يسدد قيمة الشحن",
-    "مرتجع كامل مسدد قيمة الشحن",
-    "مرتجع كامل و لم يسدد قيمة الشحن",
-  ];
   List<Widget> drawerScreens = [
     //ChangeStatusOfShipment(),
     AccountingScreen(),
@@ -129,7 +122,6 @@ class MandobCubit extends Cubit<MandobStates> {
     "7",
     "8",
     "9",
-    "10",
   ];
   List<String> radioKeysSelectReason = [
     "1",
@@ -200,7 +192,6 @@ class MandobCubit extends Cubit<MandobStates> {
         getTotalShipment();
         getshipmentRepresentative(context);
       }
-      getTotalShipment();
     emit(MandobBottomNavStyate());
   }
 
@@ -219,7 +210,7 @@ class MandobCubit extends Cubit<MandobStates> {
       shipmentModel = ShipmentModel.fromJson(value.data);
       emit(SuccessshipmentStateState());
     }).catchError((e) {
-      print('Error Here>>>>>: ${e.response!.data["status"]}');
+      print('Error Here>>>>>: ${e.response!.data}');
       if(e.response.data["status"] ==  "Token is Expired"||e.response!.data["errors"]["status"] == "not active")
       {
 
@@ -263,7 +254,8 @@ class MandobCubit extends Cubit<MandobStates> {
     });
   }
 
-  Map<String, dynamic> totalShipment = {};
+  TotalShipmentModel? totalShipmentModel;
+
 
   void getTotalShipment() async{
     var token =await SharedCashHelper.getValue(key: "token");
@@ -272,14 +264,8 @@ class MandobCubit extends Cubit<MandobStates> {
             url: "api/mobile/totalGetShipmentRepresentative",
             authorization: "Bearer $token")
         .then((value) {
-      totalShipment = value.data["data"];
-      print(
-          "  totalShipment : >>>>>>>>>>>M>>>>>>>>>>>>>>>>     $totalShipment");
-
-      if (kDebugMode) {
-        print(value.toString());
-      }
-
+      print("B22>>>>>>>>>>totalShipment>>>>>>>>>>>>>>>>${value.data}");
+      totalShipmentModel=TotalShipmentModel.fromJson(value.data);
       emit(SuccesstotalshipmentStateState());
     }).catchError((e) {
       if (kDebugMode) {
@@ -318,7 +304,8 @@ class MandobCubit extends Cubit<MandobStates> {
   void getTodayDeliveries() async{
     var token =await SharedCashHelper.getValue(key: "token");
     emit(LoadingTodayDelivriesState());
-    DioHelper.getData(
+    DioHelper.
+    getData(
         url: "api/mobile/shipmentStatu6",
         authorization: "Bearer $token")
         .then((value) {
@@ -395,8 +382,6 @@ class MandobCubit extends Cubit<MandobStates> {
   }
 
   SearchModel ?searchModel;
-
-
 //  void searchById(int id) {
 //    emit(LoadingshipmentStateStatesearch());
 //    DioHelper.postData(
@@ -629,6 +614,28 @@ class MandobCubit extends Cubit<MandobStates> {
       emit(ErrorshipmentStateAddNotes());
 
     }
+  }
+
+   StoreModel? storeModel;
+    int? idOfStroe;
+   List StoriesList=[];
+  void getStories() async{
+    var token =await SharedCashHelper.getValue(key: "token");
+    DioHelper.getData(
+      authorization:  "Bearer ${token}",
+      url: "api/mobile/getCStore",
+    )
+        .then((value)  {
+      print('B11>>>>>>>>getStories>>>>>>>>>:${value.data}');
+      storeModel=StoreModel.fromJson(value.data);
+       storeModel!.store!.forEach((element) {
+         StoriesList!.add(element);
+      });
+      emit(SuccessGetStoriesState());
+    }).catchError((erorr){
+      print(erorr);
+      emit(ErorrGetStoriesState());
+    });
   }
 
   //////////////////////////////Notifactions/////////////////////////////////

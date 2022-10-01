@@ -119,7 +119,7 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                           Expanded(
                               child: BuildShippingItem(
                                   text: "عدد الشحنات",
-                                  price: cubit.totalShipment["count_Shipment"]
+                                  price: cubit.totalShipmentModel!.data!.countShipment
                                       .toString(),
                                   image:
                                       "assets/icons/noun-packing-1914671.svg",
@@ -132,7 +132,7 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                                child: BuildShippingItem(
                                 text: "أجمالي قيمة الشحنات",
                                 price:
-                                    "${cubit.totalShipment["total_collection_balance"].toString()} جنيه",
+                                    "${ cubit.totalShipmentModel!.data!.totalCollectionBalance.toString()} جنيه",
                                 image: "assets/icons/noun-money-4677837.svg",
                                 ColorItem: greenLight),
                           )),
@@ -143,7 +143,7 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                               child: BuildShippingItem(
                                   text: "قيمة عمولات الشحنات",
                                   price:
-                                      "${cubit.totalShipment["total_commission"].toString()} جنيه",
+                                      "${ cubit.totalShipmentModel!.data!.totalCommission.toString()} جنيه",
                                   image:
                                       "assets/icons/noun-commission-1575877.svg",
                                   ColorItem: blueLight)),
@@ -513,13 +513,13 @@ shipmentItem(context, ShipmentRepresentative model, index) {
               ),
               Column(
                 children: [
-             /*     defaultButton(context, text: "مكانك الحالي ", onPressed: (){
+                   /*     defaultButton(context, text: "مكانك الحالي ", onPressed: (){
                     navigateTo(context, GetCurrentLocationScreen());
                   }, widthButton: .3, borderRadius: 8, colorButton: purple),
                   defaultButton(context, text: "جهه الوصول", onPressed: (){
                     navigateTo(context, GetCurrentLocationScreen());
                   }, widthButton: .3, borderRadius: 8, colorButton: purple),*/
-                  BlocBuilder<MandobCubit, MandobStates>(
+                  /*BlocBuilder<MandobCubit, MandobStates>(
                     builder: (context, state) {
                       if(model.shipmentstatu!.id!<=6)
                       {
@@ -541,7 +541,7 @@ shipmentItem(context, ShipmentRepresentative model, index) {
                       }
 
                     },
-                  ),
+                  ),*/
                   Container(
                     decoration: BoxDecoration(
                       color: ShipmentColor,
