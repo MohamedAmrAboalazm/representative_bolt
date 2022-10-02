@@ -29,7 +29,7 @@ class SuccessshipmentStateState extends MandobStates {}
 
 class ErrorshipmentStateState extends MandobStates {}
 
-
+class ReturnState extends MandobStates {}
 
 class LoadingStatuRepresentative extends MandobStates {}
 
@@ -94,6 +94,11 @@ class SuccessGetStoriesState extends MandobStates {}
 
 class ErorrGetStoriesState extends MandobStates {}
 
+class ShowErrorMsgInSnackBar extends MandobStates {}
+
+class ConvertDateToString extends MandobStates {}
+
+class GetDateAndShowIt extends MandobStates {}
 //+++++++++++++++++++++++++++++Maps++++++++++++++++++++++
 
 class SucessGetCurrentLocation extends MandobStates {}

@@ -36,7 +36,7 @@ class Shipment {
   int? orderNumber;
   int? count;
   int? shippingPrice;
-  int? returnPrice;
+  var  returnPrice;
   int? weight;
   String? size;
   String? notes;

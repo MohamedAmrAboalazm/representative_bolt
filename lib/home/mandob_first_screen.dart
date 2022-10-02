@@ -44,7 +44,7 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
         var cubit = MandobCubit.get(context);
         return Scaffold(
           body: ConditionalBuilder(
-            condition: cubit.shipmentModel != null,
+            condition: cubit.shipmentModel != null&& cubit.totalShipmentModel!=null,
             builder: (context) => SingleChildScrollView(
               child: Container(
                 color: Colors.grey[200],

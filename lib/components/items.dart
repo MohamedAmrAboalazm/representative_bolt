@@ -634,6 +634,7 @@ class CustomHeadOfDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     var cubit = MandobCubit.get(context);
     return  Container(
+      height:6.5.h,
       margin: EdgeInsets.symmetric(horizontal: 20),
       decoration:BoxDecoration(
         color: Colors.grey[200],
@@ -684,9 +685,8 @@ class CustomListOfDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     var cubit = MandobCubit.get(context);
     return   Container(
-      height: MediaQuery.of(context).size.height*.09,
-      width: MediaQuery.of(context).size.width*.755,
-      margin: EdgeInsets.symmetric(horizontal: 20),
+      height:6.h,
+      margin: EdgeInsetsDirectional.only(start:2.h,end:8.1.h),
       decoration:BoxDecoration(
         color: Colors.grey[200],
         border: Border.all(
@@ -732,9 +732,10 @@ class CustomTextFormField extends StatelessWidget {
   final double marginStart;
   final double marginEnd;
   final double marginBottom;
+  String? Function(String?)?  validator;
   var controller=TextEditingController();
 
-  CustomTextFormField({required this.controller,required this.hintText, required this.maxLines,this.marginBottom=0,this.marginStart=20,this.marginEnd=20,this.marginTop=0});
+  CustomTextFormField({required this.controller,required this.validator,required this.hintText, required this.maxLines,this.marginBottom=0,this.marginStart=20,this.marginEnd=20,this.marginTop=0});
 
   @override
   Widget build(BuildContext context) {
@@ -752,7 +753,14 @@ class CustomTextFormField extends StatelessWidget {
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color:Colors.grey[400]!),
               borderRadius: BorderRadius.all(Radius.circular(10))),
+          errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color:Colors.grey[400]!),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          border: OutlineInputBorder(
+              borderSide: BorderSide(color:Colors.grey[400]!),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
         ),
+        validator: validator,
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -572,7 +573,7 @@ class MandobCubit extends Cubit<MandobStates> {
 
 
   NoteModel ?noteModel;
-  notesRepresentative({id,notes,return_price,shipment_status_id,reason_id}) async {
+  updateShipmentRepresentative(id,{note,status_return,date,return_price,shipment_status_id,count_product,return_count_product,store_id}) async {
     var token =await SharedCashHelper.getValue(key: "token");
 
     try{
@@ -583,10 +584,14 @@ class MandobCubit extends Cubit<MandobStates> {
         token: "",
         url: "api/mobile/updateshipmentRepresentative/$id",
         data: {
-          "notes": notes,
-          "return_price":return_price,
           "shipment_status_id":shipment_status_id,
-          "reason_id":reason_id
+          "store_id":store_id,
+          "status_return":status_return,
+          "date":date,
+          "note": note,
+          "count_product":count_product,
+          "return_count_product":return_count_product,
+          "return_price":return_price,
         },
       );
 
@@ -617,7 +622,7 @@ class MandobCubit extends Cubit<MandobStates> {
   }
 
    StoreModel? storeModel;
-    int? idOfStroe;
+    int? idOfStore;
    List StoriesList=[];
   void getStories() async{
     var token =await SharedCashHelper.getValue(key: "token");
@@ -636,6 +641,43 @@ class MandobCubit extends Cubit<MandobStates> {
       print(erorr);
       emit(ErorrGetStoriesState());
     });
+  }
+
+  String completeShowMsg = "";
+  DateTime? date;
+  String stringDate = "";
+
+  void convertDateToString() {
+    if(stringDate == "")
+    {
+      completeShowMsg = "برجاء تحديد تاريخ الوصول";
+      emit(ShowErrorMsgInSnackBar());
+    }
+    stringDate = DateFormat("y-MM-dd").format(date!);
+    log("stringDate:>${stringDate}");
+    emit(ConvertDateToString());
+  }
+
+  void getDate({required DateTime myDate}) {
+    date = myDate;
+    log("date:>${date}");
+    convertDateToString();
+    emit(GetDateAndShowIt());
+  }
+
+  bool isReturn=false;
+  String returnText="مرتجع غير مسدد قيمه الشحن";
+
+  void changeBreakableState(value)
+  {
+    isReturn=value;
+    if(value)
+    {
+      returnText="مرتجع مسدد قيمه الشحن";
+    }
+    else   returnText="مرتجع غير مسدد قيمه الشحن";
+
+    emit(ReturnState());
   }
 
   //////////////////////////////Notifactions/////////////////////////////////

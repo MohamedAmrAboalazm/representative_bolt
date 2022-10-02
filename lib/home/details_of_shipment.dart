@@ -74,7 +74,7 @@ class DetailsOfShipment extends StatelessWidget {
                               mainAxisAlignment:MainAxisAlignment.center,
                               children: [
                                 if(model.shipmentstatu!.id!>=1||model.shipmentstatu!.id!<10)
-                                  Text("${DateFormat("dd/MM/yyyy").format(DateTime.parse("${model.shipmentstatu!.createdAt}"))}",style: TextStyle(fontSize:10,color:purple)),
+                                  Text("${DateFormat("dd/MM/yyyy").format(DateTime.parse("${model.createdAt}"))}",style: TextStyle(fontSize:10,color:purple)),
                                 const SizedBox(height: 5,),
                                 Container(
                                   width:35,
@@ -96,7 +96,7 @@ class DetailsOfShipment extends StatelessWidget {
                               mainAxisAlignment:MainAxisAlignment.center,
                               children: [
                                 if(model.shipmentstatu!.id!>=2||model.shipmentstatu!.id!<10)
-                                  Text("${DateFormat("dd/MM/yyyy").format(DateTime.parse("${model.shipmentstatu!.createdAt}"))}",style: TextStyle(fontSize:10,color:purple)),
+                                  Text("${DateFormat("dd/MM/yyyy").format(DateTime.parse("${model.createdAt}"))}",style: TextStyle(fontSize:10,color:purple)),
                                 const SizedBox(height: 5,),
                                 Container(
                                   width:35,
@@ -118,7 +118,7 @@ class DetailsOfShipment extends StatelessWidget {
                               mainAxisAlignment:MainAxisAlignment.center,
                               children: [
                                 if(model.shipmentstatu!.id!>=6||model.shipmentstatu!.id!<10)
-                                  Text("${DateFormat("dd/MM/yyyy").format(DateTime.parse("${model.shipmentstatu!.createdAt}"))}",style: TextStyle(fontSize:10,color:purple)),
+                                  Text("${DateFormat("dd/MM/yyyy").format(DateTime.parse("${model.createdAt}"))}",style: TextStyle(fontSize:10,color:purple)),
                                 SizedBox(height: 5,),
                                 Container(
                                   width:35,
@@ -284,24 +284,7 @@ class DetailsOfShipment extends StatelessWidget {
                     itemCount: cubit.represenativeShipmentbyId!.detali!.length,
 
                   ),
-
-                  if((int.parse(model.shipmentStatusId!.toString())>=7))
-                    Column(
-                      children: [
-                        CustomTextFormField(controller:notesController,hintText: "ملاحظاتك", maxLines: 4),
-                        SizedBox(height: 10,),
-                        defaultButton(context,colorButton: purple,text: "أضف ملاحظتك", onPressed: (){
-                          cubit.notesRepresentative(id: model.id, notes: notesController.text,shipment_status_id: model.shipmentStatusId,return_price:0,reason_id:null);
-                          cubit.getshipmentRepresentative(context);
-                          navigateAndFinsh(context, MandobLayout());
-                          print(notesController.text);
-                          if(state is SuccessshipmentStateAddNotes)
-                            showToast(message: "تم أضافه الملاحظه", state: ToastStates.SUCCES);
-                          notesController.clear();
-                        },borderRadius: 8,widthButton:.44),
-                      ],
-                    ),
-                  if(!(int.parse(model.shipmentStatusId!.toString())>=7))
+                  if((int.parse(model.shipmentStatusId!.toString())<=5)||(int.parse(model.shipmentStatusId!.toString())==10))
                     defaultButtonWithIcon(context,hightButton: .1,colorButtom: yellow,borderRadius:30,colorImage:black,colorText:black,widthButton: .8,onPressed: (){
                       navigateTo(context, ChangeStatusOfShipment(itemIndex));
                       }
