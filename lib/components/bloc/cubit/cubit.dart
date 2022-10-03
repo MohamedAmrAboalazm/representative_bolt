@@ -865,11 +865,11 @@ class MandobCubit extends Cubit<MandobStates> {
     required String datetime,
   })
   {
-    MessageModel model=MessageModel(text: text,receiveruId: receiverId,senderuId: 1,dateTime: datetime);
+    MessageModel model=MessageModel(text: text,receiveruId: receiverId,senderuId: SharedCashHelper.getValue(key: "UserId"),dateTime: datetime);
     FirebaseFirestore
         .instance
         .collection("users")
-        .doc(1.toString())
+        .doc(SharedCashHelper.getValue(key: "UserId").toString())
         .collection("chat")
         .doc(receiverId.toString())
         .collection("messages")
@@ -885,7 +885,7 @@ class MandobCubit extends Cubit<MandobStates> {
         .collection("users")
         .doc(receiverId.toString())
         .collection("chat")
-        .doc(1.toString())
+        .doc(SharedCashHelper.getValue(key:"UserId").toString())
         .collection("messages")
         .add(model.toMap())
         .then((value){
@@ -894,6 +894,28 @@ class MandobCubit extends Cubit<MandobStates> {
         .catchError((erorr){
       emit(ErorrSendMessageState());
     });
+  }
+
+  List<MessageModel> messages=[];
+  void getMessages({required String? receiverId})
+  {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(SharedCashHelper.getValue(key: "UserId").toString())
+        .collection("chat")
+        .doc(receiverId)
+        .collection("messages")
+        .orderBy("dateTime",descending: true)
+        .snapshots()
+        .listen((event) {
+      messages=[];
+      event.docs.forEach((element) {
+        messages.add(MessageModel.fromJson(element.data()));
+
+      });
+      emit(SocialGetMessagesSucessState());
+    });
+
   }
   }
 

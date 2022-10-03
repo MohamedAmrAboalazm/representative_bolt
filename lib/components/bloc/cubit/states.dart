@@ -115,6 +115,7 @@ class SucessSendMessageState extends MandobStates {}
 
 class  ErorrSendMessageState extends MandobStates {}
 
+class SocialGetMessagesSucessState extends MandobStates{}
 
 //*******************Notifactions********************
 

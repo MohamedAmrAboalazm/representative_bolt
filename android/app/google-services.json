@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "731421583091",
+    "project_id": "bolt-shipping",
+    "storage_bucket": "bolt-shipping.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:731421583091:android:7fc86e3342414dfa367986",
+        "android_client_info": {
+          "package_name": "com.example.representative_bolt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "731421583091-ekv6i6tm2fjdr7tq03q8ki8oohoaeqku.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.representative_bolt",
+            "certificate_hash": "b870754bdc7af3393085a07d9cafd1a7ac50eccd"
+          }
+        },
+        {
+          "client_id": "731421583091-a7tio914beb79oih7o8u5vg00igmu1bs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVDpoECbm866fKqhgTyTgvirPCYCe7o6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "731421583091-a7tio914beb79oih7o8u5vg00igmu1bs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

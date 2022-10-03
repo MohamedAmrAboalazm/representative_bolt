@@ -1,5 +1,7 @@
 
 
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -182,6 +184,8 @@ try{
   );
    if(response.statusCode  == 200){
      loginModel =  UserDataModel.fromJson(response.data);
+     SharedCashHelper.setValue(key: "UserId", value: loginModel!.user!.id);
+      log("UserId>>>>>>>>>>>${loginModel!.user!.id}");
 
      if (kDebugMode) {
        print(response.data.toString());
