@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:representative_bolt/colors.dart';
 import 'package:representative_bolt/components/bloc/cubit/cubit.dart';
 import 'package:representative_bolt/components/items.dart';
+import 'package:representative_bolt/components/sharedpref/shared_preference.dart';
 import 'package:representative_bolt/home/change_status_of_shipment.dart';
 import 'package:representative_bolt/sms/sms_screen.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -40,7 +41,8 @@ class DetailsOfShipment extends StatelessWidget {
   builder: (context, state) {
 
     var cubit = MandobCubit.get(context);
-
+         log("PPj?>>${model.client!.phone}");
+         SharedCashHelper.setValue(key: "ClientPhone", value: model.client!.phone);
       return  Scaffold(
           appBar: customAppBar(context, imageTitle: "assets/icons/noun-shipping-3484992.svg", imageAction: "assets/icons/menu.svg", text: "تفاصيل الشحنة"),
           body: ConditionalBuilder(
@@ -54,9 +56,9 @@ class DetailsOfShipment extends StatelessWidget {
                       defaultText(text: "(${model.id})",fontSize:20),
                     ],
                   ),
-                  defaultButtonWithIcon(context, text: "دردشه", image:  "assets/icons/noun-talk-4679128.svg", onPressed: (){
+/*                  defaultButtonWithIcon(context, text: "دردشه", image:  "assets/icons/noun-talk-4679128.svg", onPressed: (){
                     showToast(message: "SOOOOON", state: ToastStates.SUCCES);
-                  }, widthButton: .6, borderRadius: 25, colorText: Colors.white, colorImage: Colors.white, colorButtom: purple,bottomMargin:15,hightIcon:.05,widthIcon:.05, hightButton: .1),
+                  }, widthButton: .6, borderRadius: 25, colorText: Colors.white, colorImage: Colors.white, colorButtom: purple,bottomMargin:15,hightIcon:.05,widthIcon:.05, hightButton: .1),*/
                   CardItem(buildYourContainer:
                   Stack(
                     alignment:AlignmentDirectional.center,
@@ -208,7 +210,7 @@ class DetailsOfShipment extends StatelessWidget {
                           },
                           onTapMessage: (){
                             // launchFromUrl("sms:+2${01277364554}");
-                            navigateTo(context,  SmsScreen(),);
+                            navigateTo(context,  SmsScreen(model.client!.phone),);
                           },
                           colorData: purple,
                           ShippingWidth: .32,
@@ -226,7 +228,7 @@ class DetailsOfShipment extends StatelessWidget {
                             },
                             onTapMessage: (){
                               //launchFromUrl("sms:+2${01277364554}");
-                              navigateTo(context,  SmsScreen(),);
+                              navigateTo(context,  SmsScreen(model.client!.phone2),);
                             },
                             colorData: purple,
                             ShippingWidth: .32,

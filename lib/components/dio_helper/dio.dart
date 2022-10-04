@@ -1,10 +1,8 @@
 import 'package:dio/dio.dart';
 
 class DioHelper {
-  static Dio? dio,dioMap;
- // https://waz3ly.net/dashboard/
-  //https://wasela.innovations-eg.com/
-  //https://dashboard.pngshipping.com/
+  static Dio? dio,dioSMS,dioMap;
+
   static init() {
     dio = Dio(
       BaseOptions(
@@ -15,6 +13,12 @@ class DioHelper {
     dioMap=Dio(
       BaseOptions(
         baseUrl: "https://maps.googleapis.com/maps/",
+        receiveDataWhenStatusError: true,
+      ),
+    );
+    dioSMS=Dio(
+      BaseOptions(
+        baseUrl: "https://smssmartegypt.com/",
         receiveDataWhenStatusError: true,
       ),
     );

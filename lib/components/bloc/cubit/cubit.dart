@@ -53,7 +53,8 @@ class MandobCubit extends Cubit<MandobStates> {
   static MandobCubit get(context) => BlocProvider.of(context);
   int CurrentIndex = 0;
   String CurrentIndexRadioShipmentStates = "1";
-  String? CurrentIndexRadioSelectReason ;
+  String? CurrentIndexRadioSelectReason;
+
   bool isChecked1 = false;
   bool isChecked2 = false;
   bool isChecked3 = false;
@@ -136,6 +137,7 @@ class MandobCubit extends Cubit<MandobStates> {
     "9",
     "10",
   ];
+
   void showDialog() {
     emit(MandobShowDialogState());
   }
@@ -171,38 +173,38 @@ class MandobCubit extends Cubit<MandobStates> {
   }
 
   bool isOpenDropDownShipmentState = false;
+
   void changeDropDownShipmentState() {
     isOpenDropDownShipmentState = !isOpenDropDownShipmentState;
     emit(MandobDropDownShipmentStatesState());
   }
 
   bool isOpenDropDownSelectReason = false;
+
   void changeDropDownSelectReason() {
     isOpenDropDownSelectReason = !isOpenDropDownSelectReason;
     emit(MandobDropDownSelectReasonState());
   }
 
-  void changeIndex(int index,context) {
+  void changeIndex(int index, context) {
     CurrentIndex = index;
-    if(CurrentIndex==2)
+    if (CurrentIndex == 2)
       getAccountShipment();
-    if(CurrentIndex==1)
+    if (CurrentIndex == 1)
       getTodayDeliveries();
-    if(CurrentIndex==0)
-      {
-        getTotalShipment();
-        getshipmentRepresentative(context);
-      }
+    if (CurrentIndex == 0) {
+      getTotalShipment();
+      getshipmentRepresentative(context);
+    }
     emit(MandobBottomNavStyate());
   }
 
   ShipmentModel? shipmentModel;
   List<Map<String, dynamic>>? shipment;
 
-  void getshipmentRepresentative(context) async  {
-
+  void getshipmentRepresentative(context) async {
     emit(LoadingshipmentStateState());
-    var token =await SharedCashHelper.getValue(key: "token");
+    var token = await SharedCashHelper.getValue(key: "token");
     DioHelper.getData(
         url: "api/mobile/shipmentRepresentative",
         authorization: "Bearer $token")
@@ -212,9 +214,8 @@ class MandobCubit extends Cubit<MandobStates> {
       emit(SuccessshipmentStateState());
     }).catchError((e) {
       print('Error Here>>>>>: ${e.response!.data}');
-      if(e.response.data["status"] ==  "Token is Expired"||e.response!.data["errors"]["status"] == "not active")
-      {
-
+      if (e.response.data["status"] == "Token is Expired" ||
+          e.response!.data["errors"]["status"] == "not active") {
         navigateAndFinsh(context, LoginScreen());
         SharedCashHelper.removeValue(key: "token");
         SharedCashHelper.removeValue(key: "imagePath");
@@ -226,8 +227,8 @@ class MandobCubit extends Cubit<MandobStates> {
   ShipmentStatusModel? shipmentStatusModel;
   List<Map<String, dynamic>>? ShipmentStatus;
 
-  void getShipmentStatusModel()async {
-    var token =await SharedCashHelper.getValue(key: "token");
+  void getShipmentStatusModel() async {
+    var token = await SharedCashHelper.getValue(key: "token");
     emit(LoadingStatuRepresentative());
     DioHelper.getData(
         url: "api/mobile/shipmentStatuRepresentative",
@@ -243,7 +244,8 @@ class MandobCubit extends Cubit<MandobStates> {
       }
       if (kDebugMode) {
         print(
-            " modelllll shepment 0 >>>>>>>>>>>   ${shipmentStatusModel!.shipmentStatuRepresentative![0].id}");
+            " modelllll shepment 0 >>>>>>>>>>>   ${shipmentStatusModel!
+                .shipmentStatuRepresentative![0].id}");
       }
       if (kDebugMode) {
         print("Map shipment = >>>>>>>>>>>>  ");
@@ -258,15 +260,15 @@ class MandobCubit extends Cubit<MandobStates> {
   TotalShipmentModel? totalShipmentModel;
 
 
-  void getTotalShipment() async{
-    var token =await SharedCashHelper.getValue(key: "token");
+  void getTotalShipment() async {
+    var token = await SharedCashHelper.getValue(key: "token");
     emit(LoadingtotalshipmentStateState());
     DioHelper.getData(
-            url: "api/mobile/totalGetShipmentRepresentative",
-            authorization: "Bearer $token")
+        url: "api/mobile/totalGetShipmentRepresentative",
+        authorization: "Bearer $token")
         .then((value) {
       print("B22>>>>>>>>>>totalShipment>>>>>>>>>>>>>>>>${value.data}");
-      totalShipmentModel=TotalShipmentModel.fromJson(value.data);
+      totalShipmentModel = TotalShipmentModel.fromJson(value.data);
       emit(SuccesstotalshipmentStateState());
     }).catchError((e) {
       if (kDebugMode) {
@@ -277,15 +279,17 @@ class MandobCubit extends Cubit<MandobStates> {
   }
 
   RepresentativeAccount? representativeAccount;
-  void getAccountShipment() async{
-    var token =await SharedCashHelper.getValue(key: "token");
+
+  void getAccountShipment() async {
+    var token = await SharedCashHelper.getValue(key: "token");
     emit(LoadingAccountshipmentStateState());
     DioHelper.getData(
-            url: "api/mobile/representative_account",
-            authorization: "Bearer $token")
+        url: "api/mobile/representative_account",
+        authorization: "Bearer $token")
         .then((value) {
-      print(" totalShipment : >>>>>>>>>>>Accountshipment>>>>>>>>>>>>>>>>${value.data}");
-       representativeAccount = RepresentativeAccount.fromJson(value.data);
+      print(" totalShipment : >>>>>>>>>>>Accountshipment>>>>>>>>>>>>>>>>${value
+          .data}");
+      representativeAccount = RepresentativeAccount.fromJson(value.data);
 
 
       if (kDebugMode) {
@@ -302,8 +306,9 @@ class MandobCubit extends Cubit<MandobStates> {
   }
 
   TodayDeliveriesModel? todayDeliveriesModel;
-  void getTodayDeliveries() async{
-    var token =await SharedCashHelper.getValue(key: "token");
+
+  void getTodayDeliveries() async {
+    var token = await SharedCashHelper.getValue(key: "token");
     emit(LoadingTodayDelivriesState());
     DioHelper.
     getData(
@@ -320,7 +325,8 @@ class MandobCubit extends Cubit<MandobStates> {
       }
       if (kDebugMode) {
         print(
-            " shipmentStatu6 0 >>>>>>>>>>>   ${todayDeliveriesModel!.shipmentStatu6![0].id}");
+            " shipmentStatu6 0 >>>>>>>>>>>   ${todayDeliveriesModel!
+                .shipmentStatu6![0].id}");
       }
       if (kDebugMode) {
         print("Map shipment = >>>>>>>>>>>>  ");
@@ -334,15 +340,17 @@ class MandobCubit extends Cubit<MandobStates> {
 
 
   RepresenativeShipmentId? represenativeShipmentbyId;
+
   void getRepresenativeShipmentById(id) async {
-    var token =await SharedCashHelper.getValue(key: "token");
+    var token = await SharedCashHelper.getValue(key: "token");
     emit(LoadingRepresenativeShipmentIdState());
     DioHelper.getData(
         url: "api/mobile/detail/$id",
         authorization: "Bearer $token")
         .then((value) {
       represenativeShipmentbyId = RepresenativeShipmentId.fromJson(value.data);
-      print("totalShipment : >>>>>>>>>>>RepresenativeShipmentById>>>>>>>>>>>>>>>>$represenativeShipmentbyId");
+      print(
+          "totalShipment : >>>>>>>>>>>RepresenativeShipmentById>>>>>>>>>>>>>>>>$represenativeShipmentbyId");
 
       if (kDebugMode) {
         print(value.toString());
@@ -358,8 +366,9 @@ class MandobCubit extends Cubit<MandobStates> {
   }
 
   ReasonsModel? reasonsModel;
-  void getReasons() async{
-    var token =await SharedCashHelper.getValue(key: "token");
+
+  void getReasons() async {
+    var token = await SharedCashHelper.getValue(key: "token");
     emit(LoadingReasonsState());
     DioHelper.getData(
         url: "api/mobile/reason",
@@ -383,6 +392,7 @@ class MandobCubit extends Cubit<MandobStates> {
   }
 
   SearchModel ?searchModel;
+
 //  void searchById(int id) {
 //    emit(LoadingshipmentStateStatesearch());
 //    DioHelper.postData(
@@ -400,16 +410,15 @@ class MandobCubit extends Cubit<MandobStates> {
 //    });
 //  }
   String ?erorrSearch;
-  bool? isSearch=false;
+  bool? isSearch = false;
+
   searchByIId(id) async {
-    var token =await SharedCashHelper.getValue(key: "token");
+    var token = await SharedCashHelper.getValue(key: "token");
     emit(LoadingshipmentStateStatesearch());
 
-    try{
-
-
+    try {
       Response response = await DioHelper.postData(
-       accessToken: "",
+        accessToken: "",
         authorization: "Bearer $token",
         token: "",
         url: "api/mobile/shipmentRepresentativesearch",
@@ -419,38 +428,32 @@ class MandobCubit extends Cubit<MandobStates> {
         },
       );
 
-      if(response.statusCode  == 200){
-        searchModel =  SearchModel.fromJson(response.data);
-         isSearch=true;
-         if(searchModel!.searchDate==null)
-           {
-             isSearch=false;
-           }
+      if (response.statusCode == 200) {
+        searchModel = SearchModel.fromJson(response.data);
+        isSearch = true;
+        if (searchModel!.searchDate == null) {
+          isSearch = false;
+        }
 
         if (kDebugMode) {
           print("search =>>>>>> ${response.data}");
         }
 
         emit(SuccessshipmentStateStatesearch());
-
       }
-
-
-
-    } on DioError catch(e){
+    } on DioError catch (e) {
       if (kDebugMode) {
         print(e.response!.statusCode.toString());
-         isSearch=false;
+        isSearch = false;
       }
       if (kDebugMode) {
         print(e.response!.data.toString());
       }
-     if (e.response!.statusCode == 422) {
-       print(erorrSearch);
-     }
+      if (e.response!.statusCode == 422) {
+        print(erorrSearch);
+      }
 
       emit(ErrorshipmentStateStatesearch());
-
     }
     //  DioHelper.postData(url: LOGIN, data: {
     //   'phone_number': phoneController.text,
@@ -478,15 +481,15 @@ class MandobCubit extends Cubit<MandobStates> {
 
 
   }
+
   FilterModel ?filterModel;
-  bool? isFilter=false;
+  bool? isFilter = false;
+
   filterByStatus(id) async {
-    var token =await SharedCashHelper.getValue(key: "token");
+    var token = await SharedCashHelper.getValue(key: "token");
     emit(LoadingshipmentStateStateFilter());
 
-    try{
-
-
+    try {
       Response response = await DioHelper.postData(
         accessToken: "",
         authorization: "Bearer $token",
@@ -498,10 +501,9 @@ class MandobCubit extends Cubit<MandobStates> {
         },
       );
 
-      if(response.statusCode  == 200){
-        filterModel = FilterModel.fromJson(response.data) ;
-        isFilter=true;
-
+      if (response.statusCode == 200) {
+        filterModel = FilterModel.fromJson(response.data);
+        isFilter = true;
 
 
         if (kDebugMode) {
@@ -509,19 +511,12 @@ class MandobCubit extends Cubit<MandobStates> {
         }
 
 
-
-
-
         emit(SuccessshipmentStateStatesearch());
-
       }
-
-
-
-    } on DioError catch(e){
+    } on DioError catch (e) {
       if (kDebugMode) {
         print(e.response!.statusCode.toString());
-        isSearch=false;
+        isSearch = false;
       }
       if (kDebugMode) {
         print(e.response!.data.toString());
@@ -535,7 +530,6 @@ class MandobCubit extends Cubit<MandobStates> {
 //      }
 
       emit(ErrorshipmentStateStateFilter());
-
     }
     //  DioHelper.postData(url: LOGIN, data: {
     //   'phone_number': phoneController.text,
@@ -563,51 +557,48 @@ class MandobCubit extends Cubit<MandobStates> {
 
 
   }
-  int CurrentIndexRadioButton=5;
-  void changeRadioButton(value)
-  {
-    CurrentIndexRadioButton=value;
+
+  int CurrentIndexRadioButton = 5;
+
+  void changeRadioButton(value) {
+    CurrentIndexRadioButton = value;
     emit(RadioButtonState());
   }
 
 
-
   NoteModel ?noteModel;
-  updateShipmentRepresentative(id,{note,status_return,date,return_price,shipment_status_id,count_product,return_count_product,store_id}) async {
-    var token =await SharedCashHelper.getValue(key: "token");
 
-    try{
+  updateShipmentRepresentative(id,
+      {note, status_return, date, return_price, shipment_status_id, count_product, return_count_product, store_id}) async {
+    var token = await SharedCashHelper.getValue(key: "token");
 
+    try {
       Response response = await DioHelper.postData(
         accessToken: "",
         authorization: "Bearer $token",
         token: "",
         url: "api/mobile/updateshipmentRepresentative/$id",
         data: {
-          "shipment_status_id":shipment_status_id,
-          "store_id":store_id,
-          "status_return":status_return,
-          "date":date,
+          "shipment_status_id": shipment_status_id,
+          "store_id": store_id,
+          "status_return": status_return,
+          "date": date,
           "note": note,
-          "count_product":count_product,
-          "return_count_product":return_count_product,
-          "return_price":return_price,
+          "count_product": count_product,
+          "return_count_product": return_count_product,
+          "return_price": return_price,
         },
       );
 
-      if(response.statusCode  == 200){
-        noteModel = NoteModel.fromJson(response.data) ;
+      if (response.statusCode == 200) {
+        noteModel = NoteModel.fromJson(response.data);
 
         if (kDebugMode) {
           print("note =>>>!!!!>>> ${response.data}");
         }
-
-
       }
       emit(SuccessshipmentStateAddNotes());
-
-
-    } on DioError catch(e){
+    } on DioError catch (e) {
       if (kDebugMode) {
         print(e.response!.statusCode.toString());
       }
@@ -617,27 +608,27 @@ class MandobCubit extends Cubit<MandobStates> {
 
 
       emit(ErrorshipmentStateAddNotes());
-
     }
   }
 
-   StoreModel? storeModel;
-    int? idOfStore;
-   List StoriesList=[];
-  void getStories() async{
-    var token =await SharedCashHelper.getValue(key: "token");
+  StoreModel? storeModel;
+  int? idOfStore;
+  List StoriesList = [];
+
+  void getStories() async {
+    var token = await SharedCashHelper.getValue(key: "token");
     DioHelper.getData(
-      authorization:  "Bearer ${token}",
+      authorization: "Bearer ${token}",
       url: "api/mobile/getCStore",
     )
-        .then((value)  {
+        .then((value) {
       print('B11>>>>>>>>getStories>>>>>>>>>:${value.data}');
-      storeModel=StoreModel.fromJson(value.data);
-       storeModel!.store!.forEach((element) {
-         StoriesList!.add(element);
+      storeModel = StoreModel.fromJson(value.data);
+      storeModel!.store!.forEach((element) {
+        StoriesList!.add(element);
       });
       emit(SuccessGetStoriesState());
-    }).catchError((erorr){
+    }).catchError((erorr) {
       print(erorr);
       emit(ErorrGetStoriesState());
     });
@@ -648,8 +639,7 @@ class MandobCubit extends Cubit<MandobStates> {
   String stringDate = "";
 
   void convertDateToString() {
-    if(stringDate == "")
-    {
+    if (stringDate == "") {
       completeShowMsg = "برجاء تحديد تاريخ الوصول";
       emit(ShowErrorMsgInSnackBar());
     }
@@ -665,17 +655,16 @@ class MandobCubit extends Cubit<MandobStates> {
     emit(GetDateAndShowIt());
   }
 
-  bool isReturn=false;
-  String returnText="مرتجع غير مسدد قيمه الشحن";
+  bool isReturn = false;
+  String returnText = "مرتجع غير مسدد قيمه الشحن";
 
-  void changeBreakableState(value)
-  {
-    isReturn=value;
-    if(value)
-    {
-      returnText="مرتجع مسدد قيمه الشحن";
+  void changeBreakableState(value) {
+    isReturn = value;
+    if (value) {
+      returnText = "مرتجع مسدد قيمه الشحن";
     }
-    else   returnText="مرتجع غير مسدد قيمه الشحن";
+    else
+      returnText = "مرتجع غير مسدد قيمه الشحن";
 
     emit(ReturnState());
   }
@@ -683,19 +672,20 @@ class MandobCubit extends Cubit<MandobStates> {
   //////////////////////////////Notifactions/////////////////////////////////
   NotifactionsModel? notifactionsModel;
 
-  void getNotifactions() async  {
+  void getNotifactions() async {
     var token = await SharedCashHelper.getValue(key: "token");
     emit(LoadingNotificationStateState());
-    try{
-      DioHelper. getData(
+    try {
+      DioHelper.getData(
           url: "api/mobile/notification_representative",
           authorization: "Bearer ${token}").then((value) {
         notifactionsModel = NotifactionsModel.fromJson(value.data);
-        log("oooooooooo(((getNotifactions)))aaaaaaaaaaaaa ${value.data.toString()}");
+        log("oooooooooo(((getNotifactions)))aaaaaaaaaaaaa ${value.data
+            .toString()}");
         emit(SucessNotificationStateState());
       });
     }
-    on DioError catch (error){
+    on DioError catch (error) {
       log(error.toString());
       emit(ErorrNotificationStateState());
     }
@@ -722,7 +712,7 @@ class MandobCubit extends Cubit<MandobStates> {
     try {
       var location = await liveLocation.getLocation();
       print("Lat:${location.latitude},Long:${location.longitude}");
-      CurrentLocation="${location.latitude},${location.longitude}";
+      CurrentLocation = "${location.latitude},${location.longitude}";
       if (streamSubscription != null) {
         streamSubscription!.cancel();
       }
@@ -732,7 +722,9 @@ class MandobCubit extends Cubit<MandobStates> {
       });
       Timer.periodic(Duration(seconds: 20), (timer) {
         print("After 20 second$newlatLng");
-        setCurrentLocation(currentLocation: "${newlatLng!.latitude},${newlatLng!.longitude}",id: id);
+        setCurrentLocation(
+            currentLocation: "${newlatLng!.latitude},${newlatLng!.longitude}",
+            id: id);
       });
       emit(SucessGetCurrentLocation());
     } on PlatformException catch (e) {
@@ -741,20 +733,20 @@ class MandobCubit extends Cubit<MandobStates> {
     }
   }
 
-  setCurrentLocation({currentLocation,id}) async {
-    var token =await SharedCashHelper.getValue(key: "token");
-    try{
+  setCurrentLocation({currentLocation, id}) async {
+    var token = await SharedCashHelper.getValue(key: "token");
+    try {
       Response response = await DioHelper.postData(
         accessToken: "",
         authorization: "Bearer ${token}",
         token: "",
         url: "api/mobile/create_map/$id",
         data: {
-          "distance":currentLocation,
+          "distance": currentLocation,
         },
       );
-      if(response.statusCode  == 200){
-        mapModel = MapModel.fromJson(response.data) ;
+      if (response.statusCode == 200) {
+        mapModel = MapModel.fromJson(response.data);
         log("!!!!!!!!!###>$mapModel");
 
         if (kDebugMode) {
@@ -762,7 +754,7 @@ class MandobCubit extends Cubit<MandobStates> {
         }
       }
       emit(SucessGetCurrentLocation());
-    } on DioError catch(e){
+    } on DioError catch (e) {
       if (kDebugMode) {
         print(e.response!.statusCode.toString());
       }
@@ -770,11 +762,12 @@ class MandobCubit extends Cubit<MandobStates> {
         print(e.response!.data.toString());
       }
       emit(ErorrGetCurrentLocation());
-
     }
   }
+
   int num = 0;
- /*  void getCurrentLocation() async {
+
+  /*  void getCurrentLocation() async {
     try {
      // Uint8List imageData = await getMarker();
       var location = await liveLocation.getLocation();
@@ -806,28 +799,29 @@ class MandobCubit extends Cubit<MandobStates> {
 
   void updateLocation(/*Uint8List imageData,*/ LocationData locationData) {
     LatLng latLng = LatLng(locationData.latitude!, locationData.longitude!);
-    
-      myMarker = Marker(
-        markerId: MarkerId("me"),
-        position: latLng,
-        // icon: BitmapDescriptor.fromBytes(imageData),
-        flat: true,
-        draggable: false,
-        rotation: locationData.heading!,
-      );
-      mycircle = Circle(
-        circleId: CircleId("person"),
-        center: latLng,
-        radius: 10,
-        strokeWidth: 2,
-        strokeColor: Colors.blue,
-        fillColor: Colors.blue.withAlpha(60),
-      );
-      emit(SucessUpdateMarkerAndCircle());
+
+    myMarker = Marker(
+      markerId: MarkerId("me"),
+      position: latLng,
+      // icon: BitmapDescriptor.fromBytes(imageData),
+      flat: true,
+      draggable: false,
+      rotation: locationData.heading!,
+    );
+    mycircle = Circle(
+      circleId: CircleId("person"),
+      center: latLng,
+      radius: 10,
+      strokeWidth: 2,
+      strokeColor: Colors.blue,
+      fillColor: Colors.blue.withAlpha(60),
+    );
+    emit(SucessUpdateMarkerAndCircle());
   }
 
   void navigateTo(double lat, double lng) async {
-    var uri = Uri.parse("https://www.google.com/maps/search/?api=1&query=$lat,$lng");
+    var uri = Uri.parse(
+        "https://www.google.com/maps/search/?api=1&query=$lat,$lng");
     if (await canLaunchUrlString(uri.toString())) {
       await launchUrlString(uri.toString());
     } else {
@@ -857,15 +851,18 @@ class MandobCubit extends Cubit<MandobStates> {
   //    // emit(ErrorshipmentStateState());
   //   });
   // }
-///chats func
+  ///chats func
   RepresentativeModel? representativeData;
+
   void sendMessage({
     required String text,
     required int? receiverId,
     required String datetime,
-  })
-  {
-    MessageModel model=MessageModel(text: text,receiveruId: receiverId,senderuId: SharedCashHelper.getValue(key: "UserId"),dateTime: datetime);
+  }) {
+    MessageModel model = MessageModel(text: text,
+        receiveruId: receiverId,
+        senderuId: SharedCashHelper.getValue(key: "UserId"),
+        dateTime: datetime);
     FirebaseFirestore
         .instance
         .collection("users")
@@ -874,10 +871,10 @@ class MandobCubit extends Cubit<MandobStates> {
         .doc(receiverId.toString())
         .collection("messages")
         .add(model.toMap())
-        .then((value){
+        .then((value) {
       emit(SucessSendMessageState());
     })
-        .catchError((erorr){
+        .catchError((erorr) {
       emit(ErorrSendMessageState());
     });
     FirebaseFirestore
@@ -885,43 +882,63 @@ class MandobCubit extends Cubit<MandobStates> {
         .collection("users")
         .doc(receiverId.toString())
         .collection("chat")
-        .doc(SharedCashHelper.getValue(key:"UserId").toString())
+        .doc(SharedCashHelper.getValue(key: "UserId").toString())
         .collection("messages")
         .add(model.toMap())
-        .then((value){
+        .then((value) {
       emit(SucessSendMessageState());
     })
-        .catchError((erorr){
+        .catchError((erorr) {
       emit(ErorrSendMessageState());
     });
   }
 
-  List<MessageModel> messages=[];
-  void getMessages({required String? receiverId})
-  {
+  List<MessageModel> messages = [];
+
+  void getMessages({required String? receiverId}) {
     FirebaseFirestore.instance
         .collection("users")
         .doc(SharedCashHelper.getValue(key: "UserId").toString())
         .collection("chat")
         .doc(receiverId)
         .collection("messages")
-        .orderBy("dateTime",descending: true)
+        .orderBy("dateTime", descending: true)
         .snapshots()
         .listen((event) {
-      messages=[];
+      messages = [];
       event.docs.forEach((element) {
         messages.add(MessageModel.fromJson(element.data()));
-
       });
       emit(SocialGetMessagesSucessState());
     });
-
-  }
   }
 
+  void sendVerificationCode(phone)
+  {
+    log("sendVerificationCode>>${phone}");
+    DioHelper.dioSMS!.post("sms/api/otp-send",data:
+        {
+          "username": "Bolt",
+          "password": "Bolt@123",
+          "sender": "Bolt",
+           "mobile": "2${SharedCashHelper.getValue(key: "ClientPhone")}",
+        }).
+    then((value) => print('B11>>>>>>>>getOTP>>>>>>>>>:${value.data}') );
+  }
+
+  void sendMessageSMS(phone)
+  {
+    log("sendMessageSMS>>${phone}");
+    DioHelper.dioSMS!.get("sms/api",queryParameters:
+    {
+      "username": "Bolt",
+      "password": "Bolt@123",
+      "sendername": "Bolt",
+      "mobiles": "2${phone}",
+      "message":"yy"
+    }).
+    then((value) => print('B11>>>>>>>>getSMS>>>>>>>>>:${value.data}') );
+  }
 
 
-
-
-
-
+}
