@@ -53,8 +53,7 @@ class MandobCubit extends Cubit<MandobStates> {
   static MandobCubit get(context) => BlocProvider.of(context);
   int CurrentIndex = 0;
   String CurrentIndexRadioShipmentStates = "1";
-  String? CurrentIndexRadioSelectReason;
-
+   var CurrentIndexRadioShipmentReturn=false;
   bool isChecked1 = false;
   bool isChecked2 = false;
   bool isChecked3 = false;
@@ -100,20 +99,7 @@ class MandobCubit extends Cubit<MandobStates> {
       label: "دردشه ",
     ),
   ];
-  List<String> SvgPics = [
-    "assets/icons/feedback.svg",
-    "assets/icons/settings (3).svg",
-    "assets/icons/Contact US.svg",
-    "assets/icons/noun-accounting-4679331.svg",
-    "assets/icons/Edit.svg",
-  ];
-  List<Widget> drawerScreens = [
-    //ChangeStatusOfShipment(),
-    AccountingScreen(),
-    AccountingScreen(),
-    ChatsScreen(),
-    NotificationsScreen(),
-  ];
+
   List<String> radioKeysShipmentStates = [
     "1",
     "2",
@@ -121,22 +107,8 @@ class MandobCubit extends Cubit<MandobStates> {
     "4",
     "5",
     "6",
-    "7",
-    "8",
-    "9",
   ];
-  List<String> radioKeysSelectReason = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-  ];
+
 
   void showDialog() {
     emit(MandobShowDialogState());
@@ -167,9 +139,9 @@ class MandobCubit extends Cubit<MandobStates> {
     emit(MandobRadioButtonShipmentStatesState());
   }
 
-  void changeIndexRadioSelectReason(var index) {
-    CurrentIndexRadioSelectReason = index;
-    emit(MandobRadioButtonSelectReasonState());
+  void changeIndexRadioShipmentReturn(var index) {
+    CurrentIndexRadioShipmentReturn = index;
+    emit(MandobRadioButtonShipmentReturnState());
   }
 
   bool isOpenDropDownShipmentState = false;
@@ -569,7 +541,7 @@ class MandobCubit extends Cubit<MandobStates> {
   NoteModel ?noteModel;
 
   updateShipmentRepresentative(id,
-      {note, status_return, date, return_price, shipment_status_id, count_product, return_count_product, store_id}) async {
+      {note, date, return_price, shipment_status_id, count_product, return_count_product, store_id}) async {
     var token = await SharedCashHelper.getValue(key: "token");
 
     try {
@@ -581,7 +553,7 @@ class MandobCubit extends Cubit<MandobStates> {
         data: {
           "shipment_status_id": shipment_status_id,
           "store_id": store_id,
-          "status_return": status_return,
+          "status_return": CurrentIndexRadioShipmentReturn,
           "date": date,
           "note": note,
           "count_product": count_product,
@@ -653,20 +625,6 @@ class MandobCubit extends Cubit<MandobStates> {
     log("date:>${date}");
     convertDateToString();
     emit(GetDateAndShowIt());
-  }
-
-  bool isReturn = false;
-  String returnText = "مرتجع غير مسدد قيمه الشحن";
-
-  void changeBreakableState(value) {
-    isReturn = value;
-    if (value) {
-      returnText = "مرتجع مسدد قيمه الشحن";
-    }
-    else
-      returnText = "مرتجع غير مسدد قيمه الشحن";
-
-    emit(ReturnState());
   }
 
   //////////////////////////////Notifactions/////////////////////////////////

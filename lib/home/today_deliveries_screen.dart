@@ -103,13 +103,7 @@ shipmentItemofTodayDelivery(context, ShipmentStatu6 model, index) {
                     text: "${model.deliveryDate==null?"غير محدد":model.deliveryDate}",
                     isExistIcons: false,
                   ),
-                  DetailsOfShippingItemWithData(
-                    colorData: purple,
-                    ShippingWidth: .32,
-                    name: "موعد توصيل الشحنة",
-                    text: "0:10 A",
-                    isExistIcons: false,
-                  ),
+
                 ],
               ),
               Container(

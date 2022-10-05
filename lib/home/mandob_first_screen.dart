@@ -30,8 +30,8 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
 
   @override
   void initState() {
-    MandobCubit.get(context).getshipmentRepresentative(context);
-    MandobCubit.get(context).getTotalShipment();
+/*    MandobCubit.get(context).getshipmentRepresentative(context);
+    MandobCubit.get(context).getTotalShipment();*/
   }
   @override
   Widget build(BuildContext context) {
@@ -168,7 +168,11 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                                   controller: SearchController,
                                   onChanged: (value){
                                     if(SearchController.text.isEmpty)
-                                    cubit.getshipmentRepresentative(context);
+                                      {
+                                        cubit.isSearch=false;
+                                        cubit.getshipmentRepresentative(context);
+                                      }
+
                                   },
                                   decoration: const InputDecoration(
                                     focusedBorder: OutlineInputBorder(
@@ -222,8 +226,7 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                                       color: purple,
                                       child: Center(
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
                                             const Text(
@@ -232,12 +235,12 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                                                   color: Colors.white,
                                                   fontSize: 20),
                                             ),
-
                                             CustomRadioWithText(text: "قيد التوصيل",value: 0,
                                               onChanged: (value){
                                               cubit.changeRadioButton(value);
                                               if(cubit.CurrentIndexRadioButton==0)
-                                              { idFilter=6;
+                                              { idFilter=3;
+                                                cubit.isFilter=true;
                                                cubit.isSearch=false;
                                               cubit.filterByStatus(idFilter);
                                               }
@@ -251,6 +254,7 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                                               cubit.changeRadioButton(value);
                                               if(cubit.CurrentIndexRadioButton==1)
                                               { idFilter=8;
+                                              cubit.isFilter=true;
                                               cubit.isSearch=false;
                                               cubit.filterByStatus(idFilter);
                                               }
@@ -263,7 +267,8 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                                             CustomRadioWithText(text: "تم استلام البيك أب",value: 2,onChanged: (value){
                                               cubit.changeRadioButton(value);
                                               if(cubit.CurrentIndexRadioButton==2)
-                                              { idFilter=3;
+                                              { idFilter=1;
+                                              cubit.isFilter=true;
                                               cubit.isSearch=false;
                                               cubit.filterByStatus(idFilter);
                                               }
@@ -276,7 +281,22 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                                             CustomRadioWithText(text: "تم التسليم بنجاح",value: 3,onChanged: (value){
                                               cubit.changeRadioButton(value);
                                               if(cubit.CurrentIndexRadioButton==3)
-                                              { idFilter=7;
+                                              { idFilter=4;
+                                              cubit.isFilter=true;
+                                              cubit.isSearch=false;
+                                              cubit.filterByStatus(idFilter);
+                                              }
+                                              else{
+                                                idFilter=0;
+                                                cubit.isFilter=false;
+                                              }
+                                            },selectedRadio: cubit.CurrentIndexRadioButton,
+                                            ),
+                                            CustomRadioWithText(text: "شحنة مؤجلة",value: 4,onChanged: (value){
+                                              cubit.changeRadioButton(value);
+                                              if(cubit.CurrentIndexRadioButton==4)
+                                              { idFilter=6;
+                                              cubit.isFilter=true;
                                               cubit.isSearch=false;
                                               cubit.filterByStatus(idFilter);
                                               }
@@ -291,9 +311,10 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                                               children: [
                                                 ElevatedButton(
                                                     style: ElevatedButton.styleFrom(
-                                                      primary: Colors.white, ),// Backg,
+                                                      primary: Colors.white, ),
                                                     child: const Text('حفظ',style: TextStyle(color:purple),),
                                                     onPressed: () {
+
                                                       Navigator.pop(context);
                                                     }
 
@@ -402,7 +423,7 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    if (cubit.isSearch == false&&cubit.isFilter == false&& cubit.shipmentModel!.shipmentRepresentative!.length>0||SearchController.text.isEmpty)
+                    if (cubit.isSearch == false&&cubit.isFilter == false&& cubit.shipmentModel!.shipmentRepresentative!.length>0)
                        ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -645,13 +666,7 @@ shipmentOneItem(context, SearchDate searchModel) {
                     text: "${searchModel!.deliveryDate==null?"غير محدد":searchModel!.deliveryDate}",
                     isExistIcons: false,
                   ),
-                  DetailsOfShippingItemWithData(
-                    colorData: purple,
-                    ShippingWidth: .32,
-                    name: "موعد توصيل الشحنة",
-                    text: "0:10 A",
-                    isExistIcons: false,
-                  ),
+
                 ],
               ),
               Container(
@@ -683,12 +698,13 @@ shipmentFilterItem(context, ShipmentStatus model,index) {
   var ShipmentStateId = model.shipmentStatusId;
   Color ShipmentColor;
 
-
   if (int.parse(ShipmentStateId.toString()) == 3) {
     ShipmentColor = Colors.green;
-  } else if (int.parse(ShipmentStateId.toString())  == 2) {
+  }
+  else if (int.parse(ShipmentStateId.toString())  == 2) {
     ShipmentColor = Colors.amber;
-  } else
+  }
+  else
     ShipmentColor = purple;
 
   return BlocBuilder<MandobCubit, MandobStates>(
@@ -756,13 +772,7 @@ shipmentFilterItem(context, ShipmentStatus model,index) {
                     text: "${model.deliveryDate==null?"غير محدد":model.deliveryDate}",
                     isExistIcons: false,
                   ),
-                  DetailsOfShippingItemWithData(
-                    colorData: purple,
-                    ShippingWidth: .32,
-                    name: "موعد توصيل الشحنة",
-                    text: "0:10 A",
-                    isExistIcons: false,
-                  ),
+
                 ],
               ),
               Container(

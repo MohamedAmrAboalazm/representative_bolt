@@ -1,7 +1,7 @@
 class FilterModel {
   bool? status;
-  String? errNum;
-  String? msg;
+ var errNum;
+ var msg;
   List<ShipmentStatus>? shipmentStatus;
 
   FilterModel({this.status, this.errNum, this.msg, this.shipmentStatus});
@@ -33,36 +33,42 @@ class FilterModel {
 
 class ShipmentStatus {
   int? id;
-  String? nameShipment;
-  String? description;
+ var nameShipment;
+ var description;
   int? customerCode;
   int? productPrice;
   int? orderNumber;
-  int? count;
+  var count;
   int? shippingPrice;
+  var discountValue;
   int? returnPrice;
   int? weight;
-  String? size;
-  String? notes;
-  String? deliveryDate;
+  var size;
+ var notes;
+  var deliveryDate;
+  List<String>? startMap;
+  List<String>? endMap;
   int? clientId;
-  int? areaId;
+  int? startAreaId;
+  int? endAreaId;
   int? serviceTypeId;
   int? storeId;
   int? shipmentStatusId;
-  int? representativeId;
   int? senderId;
-  int? additionalServiceId;
+  var reasonId;
   int? end;
-  String? createdAt;
-  String? updatedAt;
-  String? totalShipment;
-  Area? area;
+  int? statusShipments;
+  int? breakable;
+ var createdAt;
+ var updatedAt;
+ var totalShipment;
+ var companyShipmentPrice;
+ var representativeShipmentPrice;
+  var area;
   Client? client;
-  Representative? representative;
+  List<Representative>? representative;
   ServiceType? serviceType;
   Shipmentstatu? shipmentstatu;
-  String? additionalservice;
   Store? store;
   User? user;
 
@@ -75,29 +81,35 @@ class ShipmentStatus {
         this.orderNumber,
         this.count,
         this.shippingPrice,
+        this.discountValue,
         this.returnPrice,
         this.weight,
         this.size,
         this.notes,
         this.deliveryDate,
+        this.startMap,
+        this.endMap,
         this.clientId,
-        this.areaId,
+        this.startAreaId,
+        this.endAreaId,
         this.serviceTypeId,
         this.storeId,
         this.shipmentStatusId,
-        this.representativeId,
         this.senderId,
-        this.additionalServiceId,
+        this.reasonId,
         this.end,
+        this.statusShipments,
+        this.breakable,
         this.createdAt,
         this.updatedAt,
         this.totalShipment,
+        this.companyShipmentPrice,
+        this.representativeShipmentPrice,
         this.area,
         this.client,
         this.representative,
         this.serviceType,
         this.shipmentstatu,
-        this.additionalservice,
         this.store,
         this.user});
 
@@ -110,36 +122,45 @@ class ShipmentStatus {
     orderNumber = json['order_number'];
     count = json['count'];
     shippingPrice = json['shipping_price'];
+    discountValue = json['discount_value'];
     returnPrice = json['return_price'];
     weight = json['weight'];
     size = json['size'];
     notes = json['notes'];
     deliveryDate = json['delivery_date'];
+    startMap = json['start_map'].cast<String>();
+    endMap = json['end_map'].cast<String>();
     clientId = json['client_id'];
-    areaId = json['area_id'];
+    startAreaId = json['start_area_id'];
+    endAreaId = json['end_area_id'];
     serviceTypeId = json['service_type_id'];
     storeId = json['store_id'];
     shipmentStatusId = json['shipment_status_id'];
-    representativeId = json['representative_id'];
     senderId = json['sender_id'];
-    additionalServiceId = json['additional_service_id'];
+    reasonId = json['reason_id'];
     end = json['end'];
+    statusShipments = json['status_shipments'];
+    breakable = json['breakable'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     totalShipment = json['total_shipment'];
-    area = json['area'] != null ? new Area.fromJson(json['area']) : null;
+    companyShipmentPrice = json['company_shipment_price'];
+    representativeShipmentPrice = json['representative_shipment_price'];
+    area = json['area'];
     client =
     json['client'] != null ? new Client.fromJson(json['client']) : null;
-    representative = json['representative'] != null
-        ? new Representative.fromJson(json['representative'])
-        : null;
+    if (json['representative'] != null) {
+      representative = <Representative>[];
+      json['representative'].forEach((v) {
+        representative!.add(new Representative.fromJson(v));
+      });
+    }
     serviceType = json['service_type'] != null
         ? new ServiceType.fromJson(json['service_type'])
         : null;
     shipmentstatu = json['shipmentstatu'] != null
         ? new Shipmentstatu.fromJson(json['shipmentstatu'])
         : null;
-    additionalservice = json['additionalservice'];
     store = json['store'] != null ? new Store.fromJson(json['store']) : null;
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
   }
@@ -154,31 +175,37 @@ class ShipmentStatus {
     data['order_number'] = this.orderNumber;
     data['count'] = this.count;
     data['shipping_price'] = this.shippingPrice;
+    data['discount_value'] = this.discountValue;
     data['return_price'] = this.returnPrice;
     data['weight'] = this.weight;
     data['size'] = this.size;
     data['notes'] = this.notes;
     data['delivery_date'] = this.deliveryDate;
+    data['start_map'] = this.startMap;
+    data['end_map'] = this.endMap;
     data['client_id'] = this.clientId;
-    data['area_id'] = this.areaId;
+    data['start_area_id'] = this.startAreaId;
+    data['end_area_id'] = this.endAreaId;
     data['service_type_id'] = this.serviceTypeId;
     data['store_id'] = this.storeId;
     data['shipment_status_id'] = this.shipmentStatusId;
-    data['representative_id'] = this.representativeId;
     data['sender_id'] = this.senderId;
-    data['additional_service_id'] = this.additionalServiceId;
+    data['reason_id'] = this.reasonId;
     data['end'] = this.end;
+    data['status_shipments'] = this.statusShipments;
+    data['breakable'] = this.breakable;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['total_shipment'] = this.totalShipment;
-    if (this.area != null) {
-      data['area'] = this.area!.toJson();
-    }
+    data['company_shipment_price'] = this.companyShipmentPrice;
+    data['representative_shipment_price'] = this.representativeShipmentPrice;
+    data['area'] = this.area;
     if (this.client != null) {
       data['client'] = this.client!.toJson();
     }
     if (this.representative != null) {
-      data['representative'] = this.representative!.toJson();
+      data['representative'] =
+          this.representative!.map((v) => v.toJson()).toList();
     }
     if (this.serviceType != null) {
       data['service_type'] = this.serviceType!.toJson();
@@ -186,7 +213,6 @@ class ShipmentStatus {
     if (this.shipmentstatu != null) {
       data['shipmentstatu'] = this.shipmentstatu!.toJson();
     }
-    data['additionalservice'] = this.additionalservice;
     if (this.store != null) {
       data['store'] = this.store!.toJson();
     }
@@ -197,48 +223,21 @@ class ShipmentStatus {
   }
 }
 
-class Area {
-  int? id;
-  String? name;
-  int? provinceId;
-  String? createdAt;
-  String? updatedAt;
-
-  Area({this.id, this.name, this.provinceId, this.createdAt, this.updatedAt});
-
-  Area.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    provinceId = json['province_id'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['province_id'] = this.provinceId;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    return data;
-  }
-}
-
 class Client {
   int? id;
-  String? name;
-  String? email2;
-  String? address;
-  String? phone;
-  String? phone2;
-  String? photo;
-  String? googleLocation;
-  int? userId;
-  int? cityId;
-  String? createdAt;
-  String? updatedAt;
-  String? imagePath;
+ var name;
+  var email2;
+ var address;
+ var phone;
+  var phone2;
+  var photo;
+  var googleLocation;
+  var userId;
+  var cityId;
+  var employeeId;
+ var createdAt;
+ var updatedAt;
+ var imagePath;
 
   Client(
       {this.id,
@@ -251,6 +250,7 @@ class Client {
         this.googleLocation,
         this.userId,
         this.cityId,
+        this.employeeId,
         this.createdAt,
         this.updatedAt,
         this.imagePath});
@@ -266,6 +266,7 @@ class Client {
     googleLocation = json['google_location'];
     userId = json['user_id'];
     cityId = json['city_id'];
+    employeeId = json['employee_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     imagePath = json['image_path'];
@@ -283,6 +284,7 @@ class Client {
     data['google_location'] = this.googleLocation;
     data['user_id'] = this.userId;
     data['city_id'] = this.cityId;
+    data['employee_id'] = this.employeeId;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['image_path'] = this.imagePath;
@@ -292,40 +294,37 @@ class Client {
 
 class Representative {
   int? id;
-  String? name;
-  String? address;
-  String? photo;
-  String? licensePhoto;
-  String? fishPhoto;
-  int? nationalId;
-  String? wallet;
-  int? commission;
+ var name;
+ var address;
+  var cv;
+  var photo;
+  var faceIDCardPic;
+  var backIDCardPic;
   int? salary;
-  int? isActive;
-  String? cv;
+  int? wallet;
+  int? commission;
   int? userId;
   int? cityId;
-  String? createdAt;
-  String? updatedAt;
-  String? imagePath;
-  String? licensePhotoPath;
-  String? fishPhotoPath;
-  String? cvPath;
+ var createdAt;
+ var updatedAt;
+ var imagePath;
+ var licensePhotoPath;
+ var fishPhotoPath;
+ var cvPath;
+  Pivot? pivot;
   User? user;
 
   Representative(
       {this.id,
         this.name,
         this.address,
+        this.cv,
         this.photo,
-        this.licensePhoto,
-        this.fishPhoto,
-        this.nationalId,
+        this.faceIDCardPic,
+        this.backIDCardPic,
+        this.salary,
         this.wallet,
         this.commission,
-        this.salary,
-        this.isActive,
-        this.cv,
         this.userId,
         this.cityId,
         this.createdAt,
@@ -334,21 +333,20 @@ class Representative {
         this.licensePhotoPath,
         this.fishPhotoPath,
         this.cvPath,
+        this.pivot,
         this.user});
 
   Representative.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     address = json['address'];
+    cv = json['cv'];
     photo = json['photo'];
-    licensePhoto = json['license_photo'];
-    fishPhoto = json['fish_photo'];
-    nationalId = json['national_id'];
+    faceIDCardPic = json['face_ID_card_pic'];
+    backIDCardPic = json['back_ID_card_pic'];
+    salary = json['salary'];
     wallet = json['wallet'];
     commission = json['commission'];
-    salary = json['salary'];
-    isActive = json['is_active'];
-    cv = json['cv'];
     userId = json['user_id'];
     cityId = json['city_id'];
     createdAt = json['created_at'];
@@ -357,6 +355,7 @@ class Representative {
     licensePhotoPath = json['license_photo_path'];
     fishPhotoPath = json['fish_photo_path'];
     cvPath = json['cv_path'];
+    pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
   }
 
@@ -365,15 +364,13 @@ class Representative {
     data['id'] = this.id;
     data['name'] = this.name;
     data['address'] = this.address;
+    data['cv'] = this.cv;
     data['photo'] = this.photo;
-    data['license_photo'] = this.licensePhoto;
-    data['fish_photo'] = this.fishPhoto;
-    data['national_id'] = this.nationalId;
+    data['face_ID_card_pic'] = this.faceIDCardPic;
+    data['back_ID_card_pic'] = this.backIDCardPic;
+    data['salary'] = this.salary;
     data['wallet'] = this.wallet;
     data['commission'] = this.commission;
-    data['salary'] = this.salary;
-    data['is_active'] = this.isActive;
-    data['cv'] = this.cv;
     data['user_id'] = this.userId;
     data['city_id'] = this.cityId;
     data['created_at'] = this.createdAt;
@@ -382,6 +379,9 @@ class Representative {
     data['license_photo_path'] = this.licensePhotoPath;
     data['fish_photo_path'] = this.fishPhotoPath;
     data['cv_path'] = this.cvPath;
+    if (this.pivot != null) {
+      data['pivot'] = this.pivot!.toJson();
+    }
     if (this.user != null) {
       data['user'] = this.user!.toJson();
     }
@@ -389,22 +389,46 @@ class Representative {
   }
 }
 
+class Pivot {
+  int? shipmentId;
+  int? representativeId;
+  int? commission;
+
+  Pivot({this.shipmentId, this.representativeId, this.commission});
+
+  Pivot.fromJson(Map<String, dynamic> json) {
+    shipmentId = json['shipment_id'];
+    representativeId = json['representative_id'];
+    commission = json['commission'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['shipment_id'] = this.shipmentId;
+    data['representative_id'] = this.representativeId;
+    data['commission'] = this.commission;
+    return data;
+  }
+}
+
 class User {
   int? id;
-  String? email;
-  String? emailVerifiedAt;
-  String? phoneNumber;
+ var email;
+ var userName;
+  var emailVerifiedAt;
+ var phoneNumber;
   int? isActive;
-  String? userType;
-  String? token;
-  String? firebaseId;
-  String? createdAt;
-  String? updatedAt;
+ var userType;
+ var token;
+  var firebaseId;
+ var createdAt;
+ var updatedAt;
   UserData? userData;
 
   User(
       {this.id,
         this.email,
+        this.userName,
         this.emailVerifiedAt,
         this.phoneNumber,
         this.isActive,
@@ -418,6 +442,7 @@ class User {
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     email = json['email'];
+    userName = json['user_name'];
     emailVerifiedAt = json['email_verified_at'];
     phoneNumber = json['phone_number'];
     isActive = json['is_active'];
@@ -435,6 +460,7 @@ class User {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['email'] = this.email;
+    data['user_name'] = this.userName;
     data['email_verified_at'] = this.emailVerifiedAt;
     data['phone_number'] = this.phoneNumber;
     data['is_active'] = this.isActive;
@@ -452,39 +478,35 @@ class User {
 
 class UserData {
   int? id;
-  String? name;
-  String? address;
-  String? photo;
-  String? licensePhoto;
-  String? fishPhoto;
-  int? nationalId;
+ var name;
+ var address;
+  var cv;
+  var photo;
+  var faceIDCardPic;
+  var backIDCardPic;
+  int? salary;
   int? wallet;
   int? commission;
-  int? salary;
-  int? isActive;
-  String? cv;
   int? userId;
   int? cityId;
-  String? createdAt;
-  String? updatedAt;
-  String? imagePath;
-  String? licensePhotoPath;
-  String? fishPhotoPath;
-  String? cvPath;
+ var createdAt;
+ var updatedAt;
+ var imagePath;
+ var licensePhotoPath;
+ var fishPhotoPath;
+ var cvPath;
 
   UserData(
       {this.id,
         this.name,
         this.address,
+        this.cv,
         this.photo,
-        this.licensePhoto,
-        this.fishPhoto,
-        this.nationalId,
+        this.faceIDCardPic,
+        this.backIDCardPic,
+        this.salary,
         this.wallet,
         this.commission,
-        this.salary,
-        this.isActive,
-        this.cv,
         this.userId,
         this.cityId,
         this.createdAt,
@@ -498,15 +520,13 @@ class UserData {
     id = json['id'];
     name = json['name'];
     address = json['address'];
+    cv = json['cv'];
     photo = json['photo'];
-    licensePhoto = json['license_photo'];
-    fishPhoto = json['fish_photo'];
-    nationalId = json['national_id'];
+    faceIDCardPic = json['face_ID_card_pic'];
+    backIDCardPic = json['back_ID_card_pic'];
+    salary = json['salary'];
     wallet = json['wallet'];
     commission = json['commission'];
-    salary = json['salary'];
-    isActive = json['is_active'];
-    cv = json['cv'];
     userId = json['user_id'];
     cityId = json['city_id'];
     createdAt = json['created_at'];
@@ -522,15 +542,13 @@ class UserData {
     data['id'] = this.id;
     data['name'] = this.name;
     data['address'] = this.address;
+    data['cv'] = this.cv;
     data['photo'] = this.photo;
-    data['license_photo'] = this.licensePhoto;
-    data['fish_photo'] = this.fishPhoto;
-    data['national_id'] = this.nationalId;
+    data['face_ID_card_pic'] = this.faceIDCardPic;
+    data['back_ID_card_pic'] = this.backIDCardPic;
+    data['salary'] = this.salary;
     data['wallet'] = this.wallet;
     data['commission'] = this.commission;
-    data['salary'] = this.salary;
-    data['is_active'] = this.isActive;
-    data['cv'] = this.cv;
     data['user_id'] = this.userId;
     data['city_id'] = this.cityId;
     data['created_at'] = this.createdAt;
@@ -545,9 +563,9 @@ class UserData {
 
 class ServiceType {
   int? id;
-  String? type;
-  String? createdAt;
-  String? updatedAt;
+ var type;
+ var createdAt;
+ var updatedAt;
 
   ServiceType({this.id, this.type, this.createdAt, this.updatedAt});
 
@@ -570,9 +588,9 @@ class ServiceType {
 
 class Shipmentstatu {
   int? id;
-  String? name;
-  String? createdAt;
-  String? updatedAt;
+ var name;
+ var createdAt;
+ var updatedAt;
 
   Shipmentstatu({this.id, this.name, this.createdAt, this.updatedAt});
 
@@ -595,13 +613,13 @@ class Shipmentstatu {
 
 class Store {
   int? id;
-  String? name;
-  String? phone;
-  String? address;
+ var name;
+  var phone;
+  var address;
   int? brancheId;
-  int? employeeId;
-  String? createdAt;
-  String? updatedAt;
+  var employeeId;
+ var createdAt;
+ var updatedAt;
 
   Store(
       {this.id,
@@ -634,6 +652,92 @@ class Store {
     data['employee_id'] = this.employeeId;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+
+class ProductData {
+  int? id;
+ var name;
+  int? height;
+  int? width;
+  int? length;
+  int? size;
+  int? subCategoryId;
+ var createdAt;
+ var updatedAt;
+  Pivot? pivot;
+
+  ProductData(
+      {this.id,
+        this.name,
+        this.height,
+        this.width,
+        this.length,
+        this.size,
+        this.subCategoryId,
+        this.createdAt,
+        this.updatedAt,
+        this.pivot});
+
+  ProductData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    height = json['height'];
+    width = json['width'];
+    length = json['length'];
+    size = json['size'];
+    subCategoryId = json['sub_category_id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['height'] = this.height;
+    data['width'] = this.width;
+    data['length'] = this.length;
+    data['size'] = this.size;
+    data['sub_category_id'] = this.subCategoryId;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    if (this.pivot != null) {
+      data['pivot'] = this.pivot!.toJson();
+    }
+    return data;
+  }
+}
+
+class AdditionalServiceData {
+  int? id;
+ var type;
+ var createdAt;
+ var updatedAt;
+  Pivot? pivot;
+
+  AdditionalServiceData(
+      {this.id, this.type, this.createdAt, this.updatedAt, this.pivot});
+
+  AdditionalServiceData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    type = json['type'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['type'] = this.type;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    if (this.pivot != null) {
+      data['pivot'] = this.pivot!.toJson();
+    }
     return data;
   }
 }

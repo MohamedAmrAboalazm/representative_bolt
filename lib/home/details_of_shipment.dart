@@ -41,7 +41,6 @@ class DetailsOfShipment extends StatelessWidget {
   builder: (context, state) {
 
     var cubit = MandobCubit.get(context);
-         log("PPj?>>${model.client!.phone}");
          SharedCashHelper.setValue(key: "ClientPhone", value: model.client!.phone);
       return  Scaffold(
           appBar: customAppBar(context, imageTitle: "assets/icons/noun-shipping-3484992.svg", imageAction: "assets/icons/menu.svg", text: "تفاصيل الشحنة"),
@@ -286,7 +285,7 @@ class DetailsOfShipment extends StatelessWidget {
                     itemCount: cubit.represenativeShipmentbyId!.detali!.length,
 
                   ),
-                  if((int.parse(model.shipmentStatusId!.toString())<=5)||(int.parse(model.shipmentStatusId!.toString())==10))
+                  if(int.parse(model.shipmentStatusId!.toString())<=3)
                     defaultButtonWithIcon(context,hightButton: .1,colorButtom: yellow,borderRadius:30,colorImage:black,colorText:black,widthButton: .8,onPressed: (){
                       navigateTo(context, ChangeStatusOfShipment(itemIndex));
                       }

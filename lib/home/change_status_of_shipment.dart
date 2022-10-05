@@ -69,18 +69,9 @@ class ChangeStatusOfShipment extends StatelessWidget {
                    physics: NeverScrollableScrollPhysics(),
                    shrinkWrap: true,
                    itemBuilder:(context, index) => CustomListOfDropDown(textList:"${cubit.shipmentStatusModel!.shipmentStatuRepresentative![index].name}",indexRadio: index,isShipmentStates: true),
-                   itemCount: cubit.shipmentStatusModel!.shipmentStatuRepresentative!.length-1,
+                   itemCount: cubit.shipmentStatusModel!.shipmentStatuRepresentative!.length,
                  ),
                  if(cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1].name== "Picked")
-                   Padding(
-                     padding:  EdgeInsetsDirectional.only(top:1.h,end:8.1.h,start: 2.h,bottom: 1.h),
-                     child: CustomDropDownButton(hint: 'أختر المخزن',itemList:  cubit.StoriesList,textValidation:  'أختر المخزن',
-                         onChanged: (value) {
-                           cubit.idOfStore=value.id;
-                           log("AAA?>${cubit.idOfStore}");
-                         }),
-                   ),
-                 if(cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1].name== "Received")
                    Padding(
                      padding:  EdgeInsetsDirectional.only(top:1.h,end:8.1.h,start: 2.h,bottom: 1.h),
                      child: CustomDropDownButton(hint: 'أختر المخزن',itemList:  cubit.StoriesList,textValidation:  'أختر المخزن',
@@ -100,7 +91,7 @@ class ChangeStatusOfShipment extends StatelessWidget {
                               log("AAA?>${cubit.idOfStore}");
                              }),
                        ),
-                       Padding(
+                      /* Padding(
                          padding:  EdgeInsetsDirectional.only(end: 2.h,start: 3.h),
                          child: Row(
                            children: [
@@ -120,7 +111,42 @@ class ChangeStatusOfShipment extends StatelessWidget {
                              ),
                            ],
                          ),
-                       ),
+                       ),*/
+                         Padding(
+                           padding:  EdgeInsetsDirectional.only(top:.5.h,start: 2.h,bottom: .5.h),
+                           child: Row(children: [
+                             Row(
+                               children: [
+                                 Radio(
+                                   value:false,
+                                   onChanged: (s)
+                                   {
+                                     cubit.changeIndexRadioShipmentReturn(s);
+                                   },
+                                   groupValue:cubit.CurrentIndexRadioShipmentReturn,
+                                 ),
+                                 Text(
+                                     "مرتجع غير مسدد قيمة الشحن",style: TextStyle(fontSize: 9.sp,color:purple)
+                                 ),
+                               ],
+                             ),
+                             Row(
+                               children: [
+                                 Radio(
+                                   value:true,
+                                   onChanged: (s)
+                                   {
+                                     cubit.changeIndexRadioShipmentReturn(s);
+                                   },
+                                   groupValue:cubit.CurrentIndexRadioShipmentReturn,
+                                 ),
+                                 Text(
+                                     "مرتجع  مسدد قيمة الشحن",style: TextStyle(fontSize: 9.sp,color:purple)
+                                 ),
+                               ],
+                             ),
+                           ],),
+                         ),
                        CustomTextFormField(controller:notesController,hintText: "ملاحظاتك",validator: (value){
                          if (value!.isEmpty) {
                            return "ملاحظاتك";
@@ -237,31 +263,46 @@ class ChangeStatusOfShipment extends StatelessWidget {
                              }),
                        ),
                        Padding(
-                         padding:  EdgeInsetsDirectional.only(end: 2.h,start: 3.h),
-                         child: Row(
-                           children: [
-                             Text("${cubit.returnText}",style: TextStyle(fontSize: 10.sp)),
-                             SizedBox(width: 5.h,),
-                             FlutterSwitch(
-                               height: 3.h,
-                               width: 8.h,
-                               padding: 4.0,
-                               toggleSize: 15.0,
-                               borderRadius: 20,
-                               activeColor: purpleColor,
-                               value:cubit.isReturn,
-                               onToggle: (value) {
-                                 cubit.changeBreakableState(value);
-                               },
-                             ),
-                           ],
-                         ),
+                         padding:  EdgeInsetsDirectional.only(top:.5.h,start: 2.h,bottom: .5.h),
+                         child: Row(children: [
+                           Row(
+                             children: [
+                               Radio(
+                                 value:false,
+                                 onChanged: (s)
+                                 {
+                                   cubit.changeIndexRadioShipmentReturn(s);
+                                 },
+                                 groupValue:cubit.CurrentIndexRadioShipmentReturn,
+                               ),
+                               Text(
+                                   "مرتجع غير مسدد قيمة الشحن",style: TextStyle(fontSize: 9.sp,color:purple)
+                               ),
+                             ],
+                           ),
+                           Row(
+                             children: [
+                               Radio(
+                                 value:true,
+                                 onChanged: (s)
+                                 {
+                                   cubit.changeIndexRadioShipmentReturn(s);
+                                 },
+                                 groupValue:cubit.CurrentIndexRadioShipmentReturn,
+                               ),
+                               Text(
+                                   "مرتجع  مسدد قيمة الشحن",style: TextStyle(fontSize: 9.sp,color:purple)
+                               ),
+                             ],
+                           ),
+                         ],),
                        ),
                        CustomTextFormField(controller:notesController,hintText: "ملاحظاتك",validator: (value){
                          if (value!.isEmpty) {
                            return "ملاحظاتك";
                          }
                        }, maxLines: 4,marginBottom: 20,marginTop: 10),
+
                      ],
                    ),
                  if(cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1].name== "Other")
@@ -309,12 +350,11 @@ class ChangeStatusOfShipment extends StatelessWidget {
                          cubit.shipmentModel!.shipmentRepresentative![itemIndex!].id,
                          store_id: cubit.idOfStore,
                          date: cubit.stringDate,
-                         status_return: cubit.isReturn,
                          note:  notesController.text,
                          return_price:priceController.text,
                          count_product: countProduct.text,
                          return_count_product: returnCountProduct.text,
-                         shipment_status_id:  cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1].id,
+                         shipment_status_id:cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1].id,
                        );
                      }
 

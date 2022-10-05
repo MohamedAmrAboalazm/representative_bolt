@@ -12,6 +12,8 @@ class MandobDropDownSelectReasonState extends MandobStates{}
 
 class MandobRadioButtonShipmentStatesState extends MandobStates{}
 
+class MandobRadioButtonShipmentReturnState extends MandobStates{}
+
 class MandobRadioButtonSelectReasonState extends MandobStates{}
 
 class MandobShowDialogState extends MandobStates{}

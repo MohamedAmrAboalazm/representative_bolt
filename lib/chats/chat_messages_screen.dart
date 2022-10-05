@@ -22,7 +22,7 @@ class ChatMessagesScreen extends StatelessWidget {
          builder: (context, state) {
            var cubit=MandobCubit.get(context);
            return Scaffold(
-           appBar: customAppBar(context, imageTitle: "assets/icons/noun-talk-4679128.svg",imageAction: "assets/icons/menu.svg", text: "دردشة"),
+           appBar:generateAppBarForCompanyMainScreens(title: "دردشة", svgPath: "noun-talk-4679128", context: context, mainScreen: true),
             body: Column(
              children: [
                Expanded(
@@ -79,7 +79,8 @@ class ChatMessagesScreen extends StatelessWidget {
                                  text: textController.text.trim(),
                                  receiverId: 1000,
                                  datetime: DateTime.now().toString());
-                             textController.text = "";
+                                 textController.text = "";
+
                            }
                          },
                            minWidth: 1,

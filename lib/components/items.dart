@@ -379,30 +379,27 @@ class CardItem extends StatelessWidget {
     return AppBar(
       leading: GestureDetector(
           onTap: (){
-            SharedCashHelper.removeValue(key: "token").then((value)
-            {
-              navigateAndFinsh(context, LoginScreen());
-            });
+           Navigator.pop(context);
           },
         child: Padding(
-        padding: const EdgeInsets.only(right: 20),
-        child: SvgPicture.asset("assets/images/Logout.svg",color: Colors.white,),
+        padding: const EdgeInsets.only(right: 10),
+        child:Icon(Icons.arrow_back_ios,size: 3.h),
         ),
       ),
-      toolbarHeight: MediaQuery.of(context).size.height*.18,
+      toolbarHeight:14.h,
       backgroundColor: purple,
       title: Container(
       color: purple,
       width: width,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top:10),
-            child: SvgPicture.asset("$imageTitle",width: 100,height: 100,color: Colors.white,),
-          ),
-          Text("$text",style: TextStyle(color: Colors.white,fontSize: 25),)
-        ],
+      child: Padding(
+        padding:  EdgeInsets.only(top:2.h,left: 5.h,bottom: 2.h),
+        child: Column(
+          children: [
+            SvgPicture.asset("$imageTitle",width: 80,height: 70,color: Colors.white,),
+            Text("$text",style: TextStyle(color: Colors.white,fontSize: 15.sp),)
+          ],
 
+        ),
       ),
     ),
       elevation: 0,
@@ -423,7 +420,7 @@ AppBar generateAppBarForCompanyMainScreens({
   double textSize = 25,
 }) {
   return AppBar(
-    toolbarHeight: 140,
+    toolbarHeight: 14.h,
     backgroundColor: purple,
     centerTitle: true,
     foregroundColor: Colors.white,
@@ -697,19 +694,17 @@ class CustomListOfDropDown extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: Container(
-
         child: Padding(
           padding: const EdgeInsetsDirectional.only(start:10),
           child:  Row(
             children: [
               Radio(
-
-                value:isShipmentStates?cubit.radioKeysShipmentStates[indexRadio]:cubit.radioKeysSelectReason[indexRadio],
+                value:cubit.radioKeysShipmentStates[indexRadio],
                 onChanged: (s)
                 {
-                  isShipmentStates?cubit.changeIndexRadioShipmentStates(s):cubit.changeIndexRadioSelectReason(s);
+                   cubit.changeIndexRadioShipmentStates(s);
                 },
-                groupValue:isShipmentStates?cubit.CurrentIndexRadioShipmentStates:cubit.CurrentIndexRadioSelectReason,
+                groupValue:cubit.CurrentIndexRadioShipmentStates,
               ),
               Expanded(
                 child:
