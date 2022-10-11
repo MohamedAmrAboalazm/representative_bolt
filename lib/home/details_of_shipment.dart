@@ -74,21 +74,21 @@ class DetailsOfShipment extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment:MainAxisAlignment.center,
                               children: [
-                                if(model.shipmentstatu!.id!>=1||model.shipmentstatu!.id!<10)
+                                if(model.shipmentstatu!.id!>=1)
                                   Text("${DateFormat("dd/MM/yyyy").format(DateTime.parse("${model.createdAt}"))}",style: TextStyle(fontSize:10,color:purple)),
                                 const SizedBox(height: 5,),
                                 Container(
                                   width:35,
                                   height:35,
                                   decoration:  BoxDecoration(
-                                    color:model.shipmentstatu!.id!>=1||model.shipmentstatu!.id!<10? purple:Colors.grey,
+                                    color: model.shipmentstatu!.id!>=1? purple:Colors.grey,
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(Icons.check,size: 22,color: Colors.white),
                                 ),
                                 SizedBox(height: 5,),
-                                if(model.shipmentstatu!.id!>=1||model.shipmentstatu!.id!<10)
-                                  Text("أستلام الشحنه",style: TextStyle(fontSize:10,color:purple)),
+                                 if(model.shipmentstatu!.id!>=1)
+                                  Text("Picked",style: TextStyle(fontSize:10,color:purple)),
                               ],
                             ),
                           ),
@@ -96,21 +96,21 @@ class DetailsOfShipment extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment:MainAxisAlignment.center,
                               children: [
-                                if(model.shipmentstatu!.id!>=2||model.shipmentstatu!.id!<10)
+                                if(model.shipmentstatu!.id!>=3)
                                   Text("${DateFormat("dd/MM/yyyy").format(DateTime.parse("${model.createdAt}"))}",style: TextStyle(fontSize:10,color:purple)),
                                 const SizedBox(height: 5,),
                                 Container(
                                   width:35,
                                   height:35,
                                   decoration:  BoxDecoration(
-                                    color:model.shipmentstatu!.id!>=2||model.shipmentstatu!.id!<10 ? purple:Colors.grey,
+                                    color: model.shipmentstatu!.id!>=3 ? purple:Colors.grey,
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(Icons.check,size: 22,color: Colors.white),
                                 ),
                                 SizedBox(height: 5,),
-                                if(model.shipmentstatu!.id!>=2||model.shipmentstatu!.id!<10)
-                                  Text("في الطريق الي المغزن",style: TextStyle(fontSize:10,color:purple)),
+                                if(model.shipmentstatu!.id!>=3)
+                                  Text("Out of delivery",style: TextStyle(fontSize:10,color:purple)),
                               ],
                             ),
                           ),
@@ -118,20 +118,20 @@ class DetailsOfShipment extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment:MainAxisAlignment.center,
                               children: [
-                                if(model.shipmentstatu!.id!>=6||model.shipmentstatu!.id!<10)
+                                if(model.shipmentstatu!.id!>=4)
                                   Text("${DateFormat("dd/MM/yyyy").format(DateTime.parse("${model.createdAt}"))}",style: TextStyle(fontSize:10,color:purple)),
                                 SizedBox(height: 5,),
                                 Container(
                                   width:35,
                                   height:35,
                                   decoration: BoxDecoration(
-                                    color:model.shipmentstatu!.id!>=6||model.shipmentstatu!.id!<10 ? purple:Colors.grey,
+                                    color: model.shipmentstatu!.id!>=4 ? purple:Colors.grey,
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(Icons.check,size: 22,color: Colors.white),
                                 ),
                                 SizedBox(height: 5,),
-                                if(model.shipmentstatu!.id!>=6||model.shipmentstatu!.id!<10)
+                                if(model.shipmentstatu!.id!>=4)
                                   Text("${model.shipmentstatu!.name}",style: TextStyle(fontSize:10,color:purple)),
                               ],
                             ),
@@ -281,8 +281,8 @@ class DetailsOfShipment extends StatelessWidget {
                   ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) => represenativeShipmentIdItem(context,cubit.represenativeShipmentbyId!.detali![index], index),
-                    itemCount: cubit.represenativeShipmentbyId!.detali!.length,
+                    itemBuilder: (context, index) => represenativeShipmentIdItem(context,cubit.represenativeShipmentDetails!.detali![index], index),
+                    itemCount: cubit.represenativeShipmentDetails!.detali!.length,
 
                   ),
                   if(int.parse(model.shipmentStatusId!.toString())<=3)
@@ -295,7 +295,7 @@ class DetailsOfShipment extends StatelessWidget {
               ),
             ),
             fallback:  (context) => Center(child: CircularProgressIndicator()),
-            condition: model!=null&&cubit.represenativeShipmentbyId!=null,
+            condition: model!=null&&cubit.represenativeShipmentDetails!=null,
           )
 
       );
@@ -332,9 +332,9 @@ represenativeShipmentIdItem(context, Detali model, index) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DetailsOfShippingItem(context,text:"${model.shipmentstatu!.name}",),
-            DetailsOfShippingItemWithData(name: "اسم المندوبأ",text:"${model.representative!.name}",colorData: black,
+            DetailsOfShippingItemWithData(name: "اسم المندوبأ",text:"${model.user!.userData!.name}",colorData: black,
                 ShippingWidth: .22,isExistIcons: false),
-            DetailsOfShippingItemWithData(name: "رقم المندوب",text:"${model.representative!.user!.phoneNumber}",colorData: black,
+            DetailsOfShippingItemWithData(name: "رقم المندوب",text:"${model.user!.phoneNumber}",colorData: black,
                 ShippingWidth: .22,isExistIcons: false),
 
           ],

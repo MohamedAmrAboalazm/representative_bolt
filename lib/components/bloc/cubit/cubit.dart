@@ -24,6 +24,7 @@ import 'package:representative_bolt/home/change_status_of_shipment.dart';
 import 'package:representative_bolt/home/mandob_first_screen.dart';
 import 'package:representative_bolt/home/today_deliveries_screen.dart';
 import 'package:representative_bolt/login/loginScreen.dart';
+import 'package:representative_bolt/models/distance_model.dart';
 import 'package:representative_bolt/models/filter_search_model.dart';
 import 'package:representative_bolt/models/map_model.dart';
 import 'package:representative_bolt/models/note_model.dart';
@@ -38,6 +39,7 @@ import 'package:representative_bolt/models/total_shipment.dart';
 import 'package:representative_bolt/notifications/notifications_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import '../../../constants/end_points_urls_api.dart';
 import '../../../models/filter_search_model.dart';
 import '../../../models/message_model.dart';
 import '../../../models/representative_data_model.dart';
@@ -311,7 +313,7 @@ class MandobCubit extends Cubit<MandobStates> {
   }
 
 
-  RepresenativeShipmentId? represenativeShipmentbyId;
+  RepresenativeShipmentDetails? represenativeShipmentDetails;
 
   void getRepresenativeShipmentById(id) async {
     var token = await SharedCashHelper.getValue(key: "token");
@@ -320,9 +322,9 @@ class MandobCubit extends Cubit<MandobStates> {
         url: "api/mobile/detail/$id",
         authorization: "Bearer $token")
         .then((value) {
-      represenativeShipmentbyId = RepresenativeShipmentId.fromJson(value.data);
+      represenativeShipmentDetails = RepresenativeShipmentDetails.fromJson(value.data);
       print(
-          "totalShipment : >>>>>>>>>>>RepresenativeShipmentById>>>>>>>>>>>>>>>>$represenativeShipmentbyId");
+          "totalShipment : >>>>>>>>>>>RepresenativeShipmentById>>>>>>>>>>>>>>>>$represenativeShipmentDetails");
 
       if (kDebugMode) {
         print(value.toString());
@@ -364,23 +366,6 @@ class MandobCubit extends Cubit<MandobStates> {
   }
 
   SearchModel ?searchModel;
-
-//  void searchById(int id) {
-//    emit(LoadingshipmentStateStatesearch());
-//    DioHelper.postData(
-//            url: "api/mobile/shipmentRepresentativesearch",
-//            data: {"number_id": id},
-//            authorization: "Bearer $token",
-//            token: "",
-//            accessToken: "")
-//        .then((value) {
-//      print(value.data.toString());
-//      emit(SuccessshipmentStateStatesearch());
-//    }).catchError((e) {
-//      print(e.toString());
-//      emit(ErrorshipmentStateStatesearch());
-//    });
-//  }
   String ?erorrSearch;
   bool? isSearch = false;
 
@@ -540,8 +525,7 @@ class MandobCubit extends Cubit<MandobStates> {
 
   NoteModel ?noteModel;
 
-  updateShipmentRepresentative(id,
-      {note, date, return_price, shipment_status_id, count_product, return_count_product, store_id}) async {
+  updateShipmentRepresentative(id,{note, date, return_price, shipment_status_id, count_product, return_count_product, store_id}) async {
     var token = await SharedCashHelper.getValue(key: "token");
 
     try {
@@ -664,32 +648,10 @@ class MandobCubit extends Cubit<MandobStates> {
   // }
   String? CurrentLocation;
   LatLng? newlatLng;
+  LatLng? CurrentlatLng;
   MapModel? mapModel;
 
-  Future<void> getCurrentLocation(id) async {
-    try {
-      var location = await liveLocation.getLocation();
-      print("Lat:${location.latitude},Long:${location.longitude}");
-      CurrentLocation = "${location.latitude},${location.longitude}";
-      if (streamSubscription != null) {
-        streamSubscription!.cancel();
-      }
-      streamSubscription = liveLocation.onLocationChanged.listen((newLocation) {
-        newlatLng = LatLng(newLocation.latitude!, newLocation.longitude!);
-        print("Newwwwww$newlatLng");
-      });
-      Timer.periodic(Duration(seconds: 20), (timer) {
-        print("After 20 second$newlatLng");
-        setCurrentLocation(
-            currentLocation: "${newlatLng!.latitude},${newlatLng!.longitude}",
-            id: id);
-      });
-      emit(SucessGetCurrentLocation());
-    } on PlatformException catch (e) {
-      print(e.message);
-      emit(ErorrGetCurrentLocation());
-    }
-  }
+
 
   setCurrentLocation({currentLocation, id}) async {
     var token = await SharedCashHelper.getValue(key: "token");
@@ -714,7 +676,7 @@ class MandobCubit extends Cubit<MandobStates> {
       emit(SucessGetCurrentLocation());
     } on DioError catch (e) {
       if (kDebugMode) {
-        print(e.response!.statusCode.toString());
+        print("QQQQ${e.response!.statusCode.toString()}");
       }
       if (kDebugMode) {
         print(e.response!.data.toString());
@@ -722,8 +684,6 @@ class MandobCubit extends Cubit<MandobStates> {
       emit(ErorrGetCurrentLocation());
     }
   }
-
-  int num = 0;
 
   /*  void getCurrentLocation() async {
     try {
@@ -786,7 +746,7 @@ class MandobCubit extends Cubit<MandobStates> {
       throw 'Could not launch ${uri.toString()}';
     }
   }
-
+  
   // void getPlaces(String place,String sessionToken)
   // {
   //   DioHelper.getMapData(
@@ -809,7 +769,104 @@ class MandobCubit extends Cubit<MandobStates> {
   //    // emit(ErrorshipmentStateState());
   //   });
   // }
-  ///chats func
+
+  LatLng? latLongTemp ;
+  LatLng? latLongOld  ;
+  LatLng? latLongNew  ;
+  DistanceModel? distanceModel;
+  num? totalDistance;
+  num? distanceNow  ;
+  Future<void> getCurrentLocation({index,id}) async {
+
+    try {
+      var location = await liveLocation.getLocation();
+      print("Lat:${location.latitude},Long:${location.longitude}");
+      CurrentLocation = "${location.latitude},${location.longitude}";
+      CurrentlatLng= LatLng(location.latitude!, location.longitude!);
+      latLongNew = CurrentlatLng ;
+        getTotalDistance(index);
+      if (streamSubscription != null) {
+        streamSubscription!.cancel();
+      }
+      streamSubscription = liveLocation.onLocationChanged.listen((newLocation) {
+
+        newlatLng = LatLng(newLocation.latitude!, newLocation.longitude!);
+
+        latLongOld = latLongNew ;
+        latLongTemp = newlatLng ;
+        latLongNew = latLongTemp ;
+        // print("Old$latLongOld");
+        // print("New$latLongNew");
+        // print("Temp$latLongTemp");
+        if(latLongNew != latLongOld)
+          {
+            print("Newwwwww$newlatLng");
+            getDistanceNow(index: index,id: id);
+          }
+
+      });
+
+     /* Timer.periodic(Duration(minutes: 1), (timer) {
+        print("After 1 min$newlatLng");
+       // getDistanceMatrix(id: id,index: index);
+
+
+      });*/
+      emit(SucessGetCurrentLocation());
+    } on PlatformException catch (e) {
+      print(e.message);
+      emit(ErorrGetCurrentLocation());
+    }
+  }
+
+  void getTotalDistance(index) async {
+    try {
+      print("XXXXZZZZ");
+      //${double.parse(shipmentModel!.shipmentRepresentative![index].endMap![0])}
+      var response = await Dio().get('https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${CurrentlatLng!.latitude},${CurrentlatLng!.longitude}&origins=${double.parse(shipmentModel!.shipmentRepresentative![index].endMap![0])},${double.parse(shipmentModel!.shipmentRepresentative![index].endMap![1])}&key=${GOOGLE_APIKEY}');
+      distanceModel=DistanceModel.fromJson(response.data);
+      totalDistance=distanceModel!.rows![0].elements![0].distance!.value;
+      print("totalDistance>>${totalDistance}");
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void getDistanceNow({index,id}) async {
+    try {
+      print("XXXXZZZZ");
+      //${double.parse(shipmentModel!.shipmentRepresentative![index].endMap![0])}
+      var response = await Dio().get('https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${newlatLng!.latitude},${newlatLng!.longitude}&origins=${double.parse(shipmentModel!.shipmentRepresentative![index].endMap![0])},${double.parse(shipmentModel!.shipmentRepresentative![index].endMap![1])}&key=${GOOGLE_APIKEY}');
+      distanceModel=DistanceModel.fromJson(response.data);
+      distanceNow =distanceModel!.rows![0].elements![0].distance!.value;
+          print("distanceNow>>${distanceNow}");
+      print("MMMM>>>${1 -  num.parse((distanceNow! / totalDistance!).toStringAsFixed(2))}");
+       if(1 -  num.parse((distanceNow! / totalDistance!).toStringAsFixed(2)) == 0.25)
+         {
+          setCurrentLocation(currentLocation: "${newlatLng!.latitude},${newlatLng!.longitude}",id: id);
+         //  invoke function That Tell BackEnd This is Quarter of The Distance
+         }else if (1 - num.parse((distanceNow! / totalDistance!).toStringAsFixed(2)) == 0.50)
+          {
+            setCurrentLocation(currentLocation: "${newlatLng!.latitude},${newlatLng!.longitude}",id: id);
+            //  invoke function That Tell BackEnd This is half of The Distance
+          }else if (1 -  num.parse((distanceNow! / totalDistance!).toStringAsFixed(2)) == 0.75)
+            {
+              setCurrentLocation(currentLocation: "${newlatLng!.latitude},${newlatLng!.longitude}",id: id);
+              //  invoke function That Tell BackEnd This is 0.75 of The Distance
+            }else if (1 -  num.parse((distanceNow! / totalDistance!).toStringAsFixed(0)) == 1)
+              {
+              //  The Representative Has Arrived Besalama
+              }
+      print("QQ?${response.data}");
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
+
+
+  ///chats func<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><><<<<<>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   RepresentativeModel? representativeData;
 
   void sendMessage({

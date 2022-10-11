@@ -76,7 +76,6 @@ class GetCurrentLocationScreen extends StatelessWidget {
           floatingActionButton: IconButton(
             icon: Icon(Icons.location_searching),
             onPressed: () {
-             cuibt.getCurrentLocation(context);
             },
           ),
         );

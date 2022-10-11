@@ -534,21 +534,21 @@ shipmentItem(context, ShipmentRepresentative model, index) {
               ),
               Column(
                 children: [
-                   /*     defaultButton(context, text: "مكانك الحالي ", onPressed: (){
+     /*                  defaultButton(context, text: "مكانك الحالي ", onPressed: (){
                     navigateTo(context, GetCurrentLocationScreen());
                   }, widthButton: .3, borderRadius: 8, colorButton: purple),
                   defaultButton(context, text: "جهه الوصول", onPressed: (){
                     navigateTo(context, GetCurrentLocationScreen());
                   }, widthButton: .3, borderRadius: 8, colorButton: purple),*/
-                  /*BlocBuilder<MandobCubit, MandobStates>(
+                  BlocBuilder<MandobCubit, MandobStates>(
                     builder: (context, state) {
-                      if(model.shipmentstatu!.id!<=6)
+                      if(model.shipmentstatu!.id==3)
                       {
                         if( MandobCubit.get(context).CurrentLocation==null)
                         {
                           return defaultButtonWithIcon(context,hightButton: .09, text: "أبدا الرحله", image:  "assets/icons/noun-talk-4679128.svg", onPressed: ()async{
-                            print("!!!AAA>${model.id}");
-                            await MandobCubit.get(context).getCurrentLocation(model.id);
+                             print("!!!AAA>${model.id}");
+                             await MandobCubit.get(context).getCurrentLocation(index: index,id: model.id);
                             log("!!!${MandobCubit.get(context).CurrentLocation.toString()}");
                           }, widthButton: .3, borderRadius: 10, colorText: Colors.white, colorImage: Colors.white, colorButtom: Colors.green,bottomMargin:15,hightIcon:.05,widthIcon:.05);
                         }
@@ -562,7 +562,38 @@ shipmentItem(context, ShipmentRepresentative model, index) {
                       }
 
                     },
-                  ),*/
+                  ),
+                  /*   if(model.shipmentStatusId<=2)
+                    defaultButton(context, text: "Accept ", onPressed: (){
+                      MandobCubit.get(context).updateShipmentRepresentative(context,id: model.id,shipment_status_id: 3);
+                    }, widthButton: .3, borderRadius: 8, colorButton: Colors.green),
+                  if(model.shipmentStatusId<=2)
+                    defaultButton(context, text: "Reject", onPressed: (){
+                      showDialog(
+                          context: context,
+                          builder:(BuildContext context){
+                            return CustomTextFormDialog(
+                                heightDialog: 2.5.h,
+                                containerofdata: Column(
+                                  children: [
+                                    SizedBox(height: 2.h,),
+                                    CustomTextFormField(
+                                      hintText: "سبب الرفض",
+                                      maxLines: 1,
+                                      marginTop: 1.h,
+                                      controller: rejectText,
+
+                                    ),
+                                    SizedBox(height: 4.h,),
+                                    defaultButton(context, text: "تأكيد", onPressed: (){
+                                      MandobCubit.get(context).updateShipmentRepresentative(context,id: model.id,shipment_status_id: 13,notes: rejectText.text);
+                                      Navigator.pop(context);
+                                    }, widthButton: .3, borderRadius: 8, colorButton: Colors.red),
+                                  ],
+                                ));
+                          }
+                      );
+                    }, widthButton: .3, borderRadius: 8, colorButton: Colors.red),*/
                   Container(
                     decoration: BoxDecoration(
                       color: ShipmentColor,
@@ -716,6 +747,7 @@ shipmentFilterItem(context, ShipmentStatus model,index) {
             MandobCubit.get(context).getRepresenativeShipmentById(model.id);
               navigateTo(context, DetailsOfShipment(index,model));
             print("nammmmmmmmm>>>>>>'''''${model.id}");
+
            // navigateTo(context, DetailsOfShipment(index));
           },
           child: Stack(

@@ -28,7 +28,7 @@ class MapModel {
 class Maps {
   Null? location;
   List<String>? distance;
-  Null? status;
+  var status;
   String? shipmentId;
   int? representativeId;
   String? updatedAt;

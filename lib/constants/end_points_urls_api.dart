@@ -31,6 +31,6 @@ const GET_GENERAL_LIMITED_WIEGHT = "api/mobile/weight";
 const COD_AND_BALANCE = "api/mobile/all-company-account";
 const GET_CHART_DATA = "api/mobile/shipmentStatusChart";
 const String TWILIO_SMS_API = 'https://api.twilio.com/2010-04-01';
-
+const GOOGLE_APIKEY="AIzaSyDnBsw8Ed22Q7piCJAZsHPvf81q2Vqinnc";
 
 const shipmentRepresentative = "api/mobile/shipmentRepresentative";

@@ -1,12 +1,13 @@
-class RepresenativeShipmentId {
+class RepresenativeShipmentDetails {
   bool? status;
   String? errNum;
   String? msg;
   List<Detali>? detali;
 
-  RepresenativeShipmentId({this.status, this.errNum, this.msg, this.detali});
+  RepresenativeShipmentDetails(
+      {this.status, this.errNum, this.msg, this.detali});
 
-  RepresenativeShipmentId.fromJson(Map<String, dynamic> json) {
+  RepresenativeShipmentDetails.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     errNum = json['errNum'];
     msg = json['msg'];
@@ -32,67 +33,57 @@ class RepresenativeShipmentId {
 
 class Detali {
   int? id;
-  int? representativeId;
+  int? userId;
   int? shipmentId;
   int? shipmentStatusId;
   int? storeId;
   String? createdAt;
   String? updatedAt;
-  Representative? representative;
-  Shipment? shipment;
   Shipmentstatu? shipmentstatu;
+  User? user;
   Store? store;
 
   Detali(
       {this.id,
-        this.representativeId,
+        this.userId,
         this.shipmentId,
         this.shipmentStatusId,
         this.storeId,
         this.createdAt,
         this.updatedAt,
-        this.representative,
-        this.shipment,
         this.shipmentstatu,
+        this.user,
         this.store});
 
   Detali.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    representativeId = json['representative_id'];
+    userId = json['user_id'];
     shipmentId = json['shipment_id'];
     shipmentStatusId = json['shipment_status_id'];
     storeId = json['store_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    representative = json['representative'] != null
-        ? new Representative.fromJson(json['representative'])
-        : null;
-    shipment = json['shipment'] != null
-        ? new Shipment.fromJson(json['shipment'])
-        : null;
     shipmentstatu = json['shipmentstatu'] != null
         ? new Shipmentstatu.fromJson(json['shipmentstatu'])
         : null;
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
     store = json['store'] != null ? new Store.fromJson(json['store']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['representative_id'] = this.representativeId;
+    data['user_id'] = this.userId;
     data['shipment_id'] = this.shipmentId;
     data['shipment_status_id'] = this.shipmentStatusId;
     data['store_id'] = this.storeId;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    if (this.representative != null) {
-      data['representative'] = this.representative!.toJson();
-    }
-    if (this.shipment != null) {
-      data['shipment'] = this.shipment!.toJson();
-    }
     if (this.shipmentstatu != null) {
       data['shipmentstatu'] = this.shipmentstatu!.toJson();
+    }
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
     }
     if (this.store != null) {
       data['store'] = this.store!.toJson();
@@ -101,101 +92,84 @@ class Detali {
   }
 }
 
-class Representative {
+class Shipmentstatu {
   int? id;
   String? name;
-  String? address;
-  String? photo;
-  String? licensePhoto;
-  String? fishPhoto;
-  int? nationalId;
-  int? wallet;
-  int? salary;
-  int? commission;
-  int? isActive;
-  String? cv;
-  int? userId;
-  int? cityId;
   String? createdAt;
   String? updatedAt;
-  String? imagePath;
-  String? licensePhotoPath;
-  String? fishPhotoPath;
-  String? cvPath;
-  User? user;
 
-  Representative(
+  Shipmentstatu(
       {this.id,
         this.name,
-        this.address,
-        this.photo,
-        this.licensePhoto,
-        this.fishPhoto,
-        this.nationalId,
-        this.wallet,
-        this.salary,
-        this.commission,
-        this.isActive,
-        this.cv,
-        this.userId,
-        this.cityId,
         this.createdAt,
-        this.updatedAt,
-        this.imagePath,
-        this.licensePhotoPath,
-        this.fishPhotoPath,
-        this.cvPath,
-        this.user});
+        this.updatedAt,});
 
-  Representative.fromJson(Map<String, dynamic> json) {
+  Shipmentstatu.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    address = json['address'];
-    photo = json['photo'];
-    licensePhoto = json['license_photo'];
-    fishPhoto = json['fish_photo'];
-    nationalId = json['national_id'];
-    wallet = json['wallet'];
-    salary = json['salary'];
-    commission = json['commission'];
-    isActive = json['is_active'];
-    cv = json['cv'];
-    userId = json['user_id'];
-    cityId = json['city_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    imagePath = json['image_path'];
-    licensePhotoPath = json['license_photo_path'];
-    fishPhotoPath = json['fish_photo_path'];
-    cvPath = json['cv_path'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
-    data['address'] = this.address;
-    data['photo'] = this.photo;
-    data['license_photo'] = this.licensePhoto;
-    data['fish_photo'] = this.fishPhoto;
-    data['national_id'] = this.nationalId;
-    data['wallet'] = this.wallet;
-    data['salary'] = this.salary;
-    data['commission'] = this.commission;
-    data['is_active'] = this.isActive;
-    data['cv'] = this.cv;
-    data['user_id'] = this.userId;
-    data['city_id'] = this.cityId;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    data['image_path'] = this.imagePath;
-    data['license_photo_path'] = this.licensePhotoPath;
-    data['fish_photo_path'] = this.fishPhotoPath;
-    data['cv_path'] = this.cvPath;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
-    }
+    return data;
+  }
+}
+
+class Rescheduled {
+  int? id;
+  String? date;
+  int? count;
+  String? note;
+  int? totalPrice;
+  int? shipmentStatusId;
+  int? shipmentId;
+  int? userId;
+  String? createdAt;
+  String? updatedAt;
+
+  Rescheduled(
+      {this.id,
+        this.date,
+        this.count,
+        this.note,
+        this.totalPrice,
+        this.shipmentStatusId,
+        this.shipmentId,
+        this.userId,
+        this.createdAt,
+        this.updatedAt});
+
+  Rescheduled.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    date = json['date'];
+    count = json['count'];
+    note = json['note'];
+    totalPrice = json['total_price'];
+    shipmentStatusId = json['shipment_status_id'];
+    shipmentId = json['shipment_id'];
+    userId = json['user_id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['date'] = this.date;
+    data['count'] = this.count;
+    data['note'] = this.note;
+    data['total_price'] = this.totalPrice;
+    data['shipment_status_id'] = this.shipmentStatusId;
+    data['shipment_id'] = this.shipmentId;
+    data['user_id'] = this.userId;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }
@@ -203,12 +177,13 @@ class Representative {
 class User {
   int? id;
   String? email;
-  String? emailVerifiedAt;
+  String? userName;
+  Null? emailVerifiedAt;
   String? phoneNumber;
   int? isActive;
   String? userType;
   String? token;
-  int? firebaseId;
+  Null? firebaseId;
   String? createdAt;
   String? updatedAt;
   UserData? userData;
@@ -216,6 +191,7 @@ class User {
   User(
       {this.id,
         this.email,
+        this.userName,
         this.emailVerifiedAt,
         this.phoneNumber,
         this.isActive,
@@ -229,6 +205,7 @@ class User {
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     email = json['email'];
+    userName = json['user_name'];
     emailVerifiedAt = json['email_verified_at'];
     phoneNumber = json['phone_number'];
     isActive = json['is_active'];
@@ -246,6 +223,7 @@ class User {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['email'] = this.email;
+    data['user_name'] = this.userName;
     data['email_verified_at'] = this.emailVerifiedAt;
     data['phone_number'] = this.phoneNumber;
     data['is_active'] = this.isActive;
@@ -265,15 +243,13 @@ class UserData {
   int? id;
   String? name;
   String? address;
-  String? photo;
-  String? licensePhoto;
-  String? fishPhoto;
-  int? nationalId;
-  int? wallet;
+  Null? cv;
+  Null? photo;
+  Null? faceIDCardPic;
+  Null? backIDCardPic;
   int? salary;
+  int? wallet;
   int? commission;
-  int? isActive;
-  String? cv;
   int? userId;
   int? cityId;
   String? createdAt;
@@ -287,15 +263,13 @@ class UserData {
       {this.id,
         this.name,
         this.address,
-        this.photo,
-        this.licensePhoto,
-        this.fishPhoto,
-        this.nationalId,
-        this.wallet,
-        this.salary,
-        this.commission,
-        this.isActive,
         this.cv,
+        this.photo,
+        this.faceIDCardPic,
+        this.backIDCardPic,
+        this.salary,
+        this.wallet,
+        this.commission,
         this.userId,
         this.cityId,
         this.createdAt,
@@ -309,15 +283,13 @@ class UserData {
     id = json['id'];
     name = json['name'];
     address = json['address'];
-    photo = json['photo'];
-    licensePhoto = json['license_photo'];
-    fishPhoto = json['fish_photo'];
-    nationalId = json['national_id'];
-    wallet = json['wallet'];
-    salary = json['salary'];
-    commission = json['commission'];
-    isActive = json['is_active'];
     cv = json['cv'];
+    photo = json['photo'];
+    faceIDCardPic = json['face_ID_card_pic'];
+    backIDCardPic = json['back_ID_card_pic'];
+    salary = json['salary'];
+    wallet = json['wallet'];
+    commission = json['commission'];
     userId = json['user_id'];
     cityId = json['city_id'];
     createdAt = json['created_at'];
@@ -333,15 +305,13 @@ class UserData {
     data['id'] = this.id;
     data['name'] = this.name;
     data['address'] = this.address;
-    data['photo'] = this.photo;
-    data['license_photo'] = this.licensePhoto;
-    data['fish_photo'] = this.fishPhoto;
-    data['national_id'] = this.nationalId;
-    data['wallet'] = this.wallet;
-    data['salary'] = this.salary;
-    data['commission'] = this.commission;
-    data['is_active'] = this.isActive;
     data['cv'] = this.cv;
+    data['photo'] = this.photo;
+    data['face_ID_card_pic'] = this.faceIDCardPic;
+    data['back_ID_card_pic'] = this.backIDCardPic;
+    data['salary'] = this.salary;
+    data['wallet'] = this.wallet;
+    data['commission'] = this.commission;
     data['user_id'] = this.userId;
     data['city_id'] = this.cityId;
     data['created_at'] = this.createdAt;
@@ -354,155 +324,13 @@ class UserData {
   }
 }
 
-class Shipment {
-  int? id;
-  String? nameShipment;
-  String? description;
-  int? customerCode;
-  int? productPrice;
-  int? orderNumber;
-  int? count;
-  int? shippingPrice;
-  int? returnPrice;
-  int? weight;
-  String? size;
-  String? notes;
-  String? deliveryDate;
-  int? clientId;
-  int? areaId;
-  int? serviceTypeId;
-  int? storeId;
-  int? shipmentStatusId;
-  int? representativeId;
-  int? senderId;
-  int? additionalServiceId;
-  int? reasonId;
-  int? end;
-  String? createdAt;
-  String? updatedAt;
-  String? totalShipment;
-
-  Shipment(
-      {this.id,
-        this.nameShipment,
-        this.description,
-        this.customerCode,
-        this.productPrice,
-        this.orderNumber,
-        this.count,
-        this.shippingPrice,
-        this.returnPrice,
-        this.weight,
-        this.size,
-        this.notes,
-        this.deliveryDate,
-        this.clientId,
-        this.areaId,
-        this.serviceTypeId,
-        this.storeId,
-        this.shipmentStatusId,
-        this.representativeId,
-        this.senderId,
-        this.additionalServiceId,
-        this.reasonId,
-        this.end,
-        this.createdAt,
-        this.updatedAt,
-        this.totalShipment});
-
-  Shipment.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    nameShipment = json['name_shipment'];
-    description = json['description'];
-    customerCode = json['customer_code'];
-    productPrice = json['product_price'];
-    orderNumber = json['order_number'];
-    count = json['count'];
-    shippingPrice = json['shipping_price'];
-    returnPrice = json['return_price'];
-    weight = json['weight'];
-    size = json['size'];
-    notes = json['notes'];
-    deliveryDate = json['delivery_date'];
-    clientId = json['client_id'];
-    areaId = json['area_id'];
-    serviceTypeId = json['service_type_id'];
-    storeId = json['store_id'];
-    shipmentStatusId = json['shipment_status_id'];
-    representativeId = json['representative_id'];
-    senderId = json['sender_id'];
-    additionalServiceId = json['additional_service_id'];
-    reasonId = json['reason_id'];
-    end = json['end'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    totalShipment = json['total_shipment'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name_shipment'] = this.nameShipment;
-    data['description'] = this.description;
-    data['customer_code'] = this.customerCode;
-    data['product_price'] = this.productPrice;
-    data['order_number'] = this.orderNumber;
-    data['count'] = this.count;
-    data['shipping_price'] = this.shippingPrice;
-    data['return_price'] = this.returnPrice;
-    data['weight'] = this.weight;
-    data['size'] = this.size;
-    data['notes'] = this.notes;
-    data['delivery_date'] = this.deliveryDate;
-    data['client_id'] = this.clientId;
-    data['area_id'] = this.areaId;
-    data['service_type_id'] = this.serviceTypeId;
-    data['store_id'] = this.storeId;
-    data['shipment_status_id'] = this.shipmentStatusId;
-    data['representative_id'] = this.representativeId;
-    data['sender_id'] = this.senderId;
-    data['additional_service_id'] = this.additionalServiceId;
-    data['reason_id'] = this.reasonId;
-    data['end'] = this.end;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['total_shipment'] = this.totalShipment;
-    return data;
-  }
-}
-
-class Shipmentstatu {
-  int? id;
-  String? name;
-  String? createdAt;
-  String? updatedAt;
-
-  Shipmentstatu({this.id, this.name, this.createdAt, this.updatedAt});
-
-  Shipmentstatu.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    return data;
-  }
-}
-
 class Store {
   int? id;
   String? name;
-  String? phone;
-  String? address;
+  Null? phone;
+  Null? address;
   int? brancheId;
-  int? employeeId;
+  Null? employeeId;
   String? createdAt;
   String? updatedAt;
 
