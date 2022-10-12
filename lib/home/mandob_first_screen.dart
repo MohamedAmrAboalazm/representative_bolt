@@ -434,13 +434,15 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                     if (cubit.isSearch == true)
                       shipmentOneItem(context, cubit.searchModel!.searchDate!),
                     if (cubit.isFilter == true)
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: cubit.filterModel!.shipmentStatus!.length,
-                          itemBuilder: (context, index) {
-                            return shipmentFilterItem(context, cubit.filterModel!.shipmentStatus![index],index);
-                          }),
+                        ConditionalBuilder(condition:  cubit.filterModel != null,
+                            builder: (context) => ListView.builder(
+         physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: cubit.filterModel!.shipmentStatus!.length,
+        itemBuilder: (context, index) {
+        return shipmentFilterItem(context, cubit.filterModel!.shipmentStatus![index],index);
+        }),
+                            fallback: (context) => Center(child: CircularProgressIndicator()))
 
 
 

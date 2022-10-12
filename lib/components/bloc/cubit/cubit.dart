@@ -640,12 +640,6 @@ class MandobCubit extends Cubit<MandobStates> {
   Marker? myMarker;
   Circle? mycircle;
 
-  // Future<Uint8List> getMarker() async {
-  //   ByteData byteData = await rootBundle.load("assets/personMap.jpg");
-  //    emit(SucessGetMarkerImage());
-  //   return byteData.buffer.asUint8List();
-  //
-  // }
   String? CurrentLocation;
   LatLng? newlatLng;
   LatLng? CurrentlatLng;
@@ -685,57 +679,7 @@ class MandobCubit extends Cubit<MandobStates> {
     }
   }
 
-  /*  void getCurrentLocation() async {
-    try {
-     // Uint8List imageData = await getMarker();
-      var location = await liveLocation.getLocation();
-      print("Lat:${location.latitude},Long:${location.longitude}");
-      if (streamSubscription != null) {
-        streamSubscription!.cancel();
-      }
-      streamSubscription = liveLocation.onLocationChanged.listen((newLocation) {
-        LatLng newlatLng = LatLng(newLocation.latitude!, newLocation.longitude!);
-        if (googleMapController != null) {
-          print("Sucess${num++}");
-          googleMapController!.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(
-              target: newlatLng,
-              zoom: 20,
-            ),
-          ));
-        } else
-          print("nullllllllllllalala");
-        updateLocation( newLocation);
-      });
-      updateLocation( location);
-      emit(SucessGetCurrentLocation());
-    } on PlatformException catch (e) {
-      print(e.message);
-      emit(ErorrGetCurrentLocation());
-    }
-  }*/
 
-  void updateLocation(/*Uint8List imageData,*/ LocationData locationData) {
-    LatLng latLng = LatLng(locationData.latitude!, locationData.longitude!);
-
-    myMarker = Marker(
-      markerId: MarkerId("me"),
-      position: latLng,
-      // icon: BitmapDescriptor.fromBytes(imageData),
-      flat: true,
-      draggable: false,
-      rotation: locationData.heading!,
-    );
-    mycircle = Circle(
-      circleId: CircleId("person"),
-      center: latLng,
-      radius: 10,
-      strokeWidth: 2,
-      strokeColor: Colors.blue,
-      fillColor: Colors.blue.withAlpha(60),
-    );
-    emit(SucessUpdateMarkerAndCircle());
-  }
 
   void navigateTo(double lat, double lng) async {
     var uri = Uri.parse(
@@ -783,6 +727,7 @@ class MandobCubit extends Cubit<MandobStates> {
       print("Lat:${location.latitude},Long:${location.longitude}");
       CurrentLocation = "${location.latitude},${location.longitude}";
       CurrentlatLng= LatLng(location.latitude!, location.longitude!);
+      setCurrentLocation(currentLocation: "${CurrentlatLng!.latitude},${CurrentlatLng!.longitude}",id: id);
       latLongNew = CurrentlatLng ;
         getTotalDistance(index);
       if (streamSubscription != null) {
@@ -853,17 +798,16 @@ class MandobCubit extends Cubit<MandobStates> {
             {
               setCurrentLocation(currentLocation: "${newlatLng!.latitude},${newlatLng!.longitude}",id: id);
               //  invoke function That Tell BackEnd This is 0.75 of The Distance
-            }else if (1 -  num.parse((distanceNow! / totalDistance!).toStringAsFixed(0)) == 1)
+            }else if (1 -  num.parse((distanceNow! / totalDistance!).toStringAsFixed(0)) == 0.0)
               {
               //  The Representative Has Arrived Besalama
+                setCurrentLocation(currentLocation: "${newlatLng!.latitude},${newlatLng!.longitude}",id: id);
               }
       print("QQ?${response.data}");
     } catch (e) {
       print(e);
     }
   }
-
-
 
 
   ///chats func<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><><<<<<>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
