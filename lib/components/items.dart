@@ -887,3 +887,26 @@ class CustomDropDownButton extends StatelessWidget {
     );
   }
 }
+
+class CustomTextFormDialog extends StatelessWidget {
+  double heightDialog;
+  Widget containerofdata;
+
+  CustomTextFormDialog({required this.heightDialog, required this.containerofdata});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      alignment: Alignment.center,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        height: heightDialog.h,
+        child:containerofdata,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+      ),
+    );
+  }
+}

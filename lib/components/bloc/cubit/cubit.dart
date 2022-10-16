@@ -210,7 +210,6 @@ class MandobCubit extends Cubit<MandobStates> {
         .then((value) {
       print('B5555555555555555555555555555555: ${value.data}');
       shipmentStatusModel = ShipmentStatusModel.fromJson(value.data);
-      // shipment = value.data;
       print("^^^^^^^^^^^^  $token");
       print("^^^^^^SM^^^^^^  $shipmentStatusModel");
       if (kDebugMode) {
@@ -218,8 +217,7 @@ class MandobCubit extends Cubit<MandobStates> {
       }
       if (kDebugMode) {
         print(
-            " modelllll shepment 0 >>>>>>>>>>>   ${shipmentStatusModel!
-                .shipmentStatuRepresentative![0].id}");
+            " modelllll shepment 0 >>>>>>>>>>>   ${shipmentStatusModel!.shipmentStatuRepresentative![0].id}");
       }
       if (kDebugMode) {
         print("Map shipment = >>>>>>>>>>>>  ");
@@ -524,8 +522,9 @@ class MandobCubit extends Cubit<MandobStates> {
 
 
   NoteModel ?noteModel;
-
-  updateShipmentRepresentative(id,{note, date, return_price, shipment_status_id, count_product, return_count_product, store_id}) async {
+  var rejectText=TextEditingController();
+  var cancelationText=TextEditingController();
+  updateShipmentRepresentative(context,id,{note, date, return_price, shipment_status_id, count_product, return_count_product, store_id}) async {
     var token = await SharedCashHelper.getValue(key: "token");
 
     try {
@@ -548,10 +547,15 @@ class MandobCubit extends Cubit<MandobStates> {
 
       if (response.statusCode == 200) {
         noteModel = NoteModel.fromJson(response.data);
-
+        getshipmentRepresentative(context);
+         CurrentLocation=null;
+        cancelationText.clear();
+        rejectText.clear();
+         SharedCashHelper.removeValue(key: "CurrentLocation");
         if (kDebugMode) {
           print("note =>>>!!!!>>> ${response.data}");
         }
+        emit(SuccessshipmentStateAddNotes());
       }
       emit(SuccessshipmentStateAddNotes());
     } on DioError catch (e) {
@@ -561,7 +565,6 @@ class MandobCubit extends Cubit<MandobStates> {
       if (kDebugMode) {
         print(e.response!.data.toString());
       }
-
 
       emit(ErrorshipmentStateAddNotes());
     }
@@ -725,7 +728,13 @@ class MandobCubit extends Cubit<MandobStates> {
     try {
       var location = await liveLocation.getLocation();
       print("Lat:${location.latitude},Long:${location.longitude}");
+      await FirebaseFirestore.instance.collection('location').doc('user1').set({
+        'latitude': location!.latitude,
+        'longitude': location!.longitude,
+        'name': 'MoAmr'
+      }, SetOptions(merge: true));
       CurrentLocation = "${location.latitude},${location.longitude}";
+      SharedCashHelper.setValue(key: "CurrentLocation", value: CurrentLocation);
       CurrentlatLng= LatLng(location.latitude!, location.longitude!);
       setCurrentLocation(currentLocation: "${CurrentlatLng!.latitude},${CurrentlatLng!.longitude}",id: id);
       latLongNew = CurrentlatLng ;
@@ -733,16 +742,18 @@ class MandobCubit extends Cubit<MandobStates> {
       if (streamSubscription != null) {
         streamSubscription!.cancel();
       }
-      streamSubscription = liveLocation.onLocationChanged.listen((newLocation) {
+      streamSubscription = liveLocation.onLocationChanged.listen((newLocation)async {
 
         newlatLng = LatLng(newLocation.latitude!, newLocation.longitude!);
-
+        await FirebaseFirestore.instance.collection('location').doc('user1').set({
+          'latitude': newlatLng!.latitude,
+          'longitude': newlatLng!.longitude,
+          'name': 'MoAmr'
+        }, SetOptions(merge: true));
         latLongOld = latLongNew ;
         latLongTemp = newlatLng ;
         latLongNew = latLongTemp ;
-        // print("Old$latLongOld");
-        // print("New$latLongNew");
-        // print("Temp$latLongTemp");
+
         if(latLongNew != latLongOld)
           {
             print("Newwwwww$newlatLng");

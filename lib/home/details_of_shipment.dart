@@ -13,6 +13,7 @@ import 'package:representative_bolt/components/sharedpref/shared_preference.dart
 import 'package:representative_bolt/home/change_status_of_shipment.dart';
 import 'package:representative_bolt/sms/sms_screen.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../components/bloc/cubit/states.dart';
@@ -24,7 +25,7 @@ class DetailsOfShipment extends StatelessWidget {
 
   int? itemIndex;
   dynamic model;
-
+  final formKeyValidate = GlobalKey<FormState>();
   DetailsOfShipment(this.itemIndex,this.model);
 
   @override
@@ -176,10 +177,58 @@ class DetailsOfShipment extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          if(model.shipmentStatusId==3&&SharedCashHelper.getValue(key: "CurrentLocation")!=null)
                           Padding(
                             padding:  EdgeInsetsDirectional.only(start: 10),
-                            child: defaultButton(context, text: "إلغاء", onPressed: (){}, widthButton:.2, borderRadius: 25, colorButton: Colors.red),
+                            child: defaultButton(context, text: "إلغاء", onPressed: (){
+                              showDialog(
+                                  context: context,
+                                  builder:(BuildContext context){
+                                    return Form(
+                                      key: formKeyValidate,
+                                      child: CustomTextFormDialog(
+                                          heightDialog: 3.5.h,
+                                          containerofdata: Column(
+                                            children: [
+                                              SizedBox(height: 2.h,),
+                                              CustomTextFormField(
+                                                validator: (v){
+                                                  if (v!.isEmpty) {
+                                                    return "أدخل سبب الالغاء";
+                                                  }
+                                                },
+                                                hintText: "سبب الالغاء",
+                                                maxLines: 1,
+                                                marginTop: 1.h,
+                                                controller: cubit.rejectText,
+
+                                              ),
+                                              Padding(
+                                                padding:  EdgeInsetsDirectional.only(top:1.h,end:8.1.h,start: 2.h,bottom: 1.h),
+                                                child: CustomDropDownButton(hint: 'أختر المخزن',itemList:  cubit.StoriesList,textValidation:  'أختر المخزن',
+                                                    onChanged: (value) {
+                                                      cubit.idOfStore=value.id;
+                                                      log("AAA?>${cubit.idOfStore}");
+                                                    }),
+                                              ),
+                                              SizedBox(height: 2.h,),
+                                              defaultButton(context, text: "تأكيد", onPressed: (){
+                                                if(formKeyValidate.currentState!.validate())
+                                                  {
+                                                    MandobCubit.get(context).updateShipmentRepresentative(context,model.id,shipment_status_id: 7,note: cubit.cancelationText.text,store_id:cubit.idOfStore);
+                                                    Navigator.pop(context);
+                                                    cubit.cancelationText.clear();
+                                                  }
+
+                                              }, widthButton: .3, borderRadius: 8, colorButton: Colors.red),
+                                            ],
+                                          )),
+                                    );
+                                  }
+                              );
+                            }, widthButton:.2, borderRadius: 25, colorButton: Colors.red),
                           ),
+                          Spacer(),
                           defaultButton(context, text: "فتح العنوان علي الخريطه", onPressed: (){
                             cubit.navigateTo(double.parse(cubit.shipmentModel!.shipmentRepresentative![itemIndex!]!.endMap![0]), double.parse(cubit.shipmentModel!.shipmentRepresentative![itemIndex!]!.endMap![1]));
                           }, widthButton:.3, borderRadius: 25, colorButton: purple),

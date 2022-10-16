@@ -346,7 +346,7 @@ class ChangeStatusOfShipment extends StatelessWidget {
                    }
                   else if(formKeyValidate.currentState!.validate())
                      {
-                       cubit.updateShipmentRepresentative(
+                       cubit.updateShipmentRepresentative(context,
                          cubit.shipmentModel!.shipmentRepresentative![itemIndex!].id,
                          store_id: cubit.idOfStore,
                          date: cubit.stringDate,
