@@ -152,7 +152,6 @@ class DetailsOfShipment extends StatelessWidget {
                           //       height:  MediaQuery.of(context).size.height*.15,
                           //   ),
                           // ),
-
                           QrImage(
                             data: "'أسم الشحنه': '${model.nameShipment}'\n, 'أسم العميل': '${model.client!.name}'",
                             version: QrVersions.auto,
@@ -217,6 +216,7 @@ class DetailsOfShipment extends StatelessWidget {
                                                   {
                                                     MandobCubit.get(context).updateShipmentRepresentative(context,model.id,shipment_status_id: 7,note: cubit.cancelationText.text,store_id:cubit.idOfStore);
                                                     Navigator.pop(context);
+                                                    Navigator.pop(context);
                                                     cubit.cancelationText.clear();
                                                   }
 
@@ -257,7 +257,6 @@ class DetailsOfShipment extends StatelessWidget {
                             launchFromUrl("https://wa.me/+2${model.client!.phone}");
                           },
                           onTapMessage: (){
-                            // launchFromUrl("sms:+2${01277364554}");
                             navigateTo(context,  SmsScreen(model.client!.phone),);
                           },
                           colorData: purple,
@@ -275,7 +274,6 @@ class DetailsOfShipment extends StatelessWidget {
                               launchFromUrl("https://wa.me/+2${model.client!.phone2}");
                             },
                             onTapMessage: (){
-                              //launchFromUrl("sms:+2${01277364554}");
                               navigateTo(context,  SmsScreen(model.client!.phone2),);
                             },
                             colorData: purple,
@@ -334,7 +332,7 @@ class DetailsOfShipment extends StatelessWidget {
                     itemCount: cubit.represenativeShipmentDetails!.detali!.length,
 
                   ),
-                  if(int.parse(model.shipmentStatusId!.toString())<=3)
+                  if(model.shipmentStatusId<=3)
                     defaultButtonWithIcon(context,hightButton: .1,colorButtom: yellow,borderRadius:30,colorImage:black,colorText:black,widthButton: .8,onPressed: (){
                       navigateTo(context, ChangeStatusOfShipment(itemIndex));
                       }

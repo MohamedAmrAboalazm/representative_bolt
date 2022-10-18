@@ -20,15 +20,39 @@ class SmsScreen extends StatefulWidget {
 }
 
 class _SmsScreenState extends State<SmsScreen> {
-  var radioGval;
+  var radioIdVal;
 
   @override
   Widget build(BuildContext context) {
 
-    print(radioGval);
+    print(radioIdVal);
 
-    return BlocBuilder<MandobCubit, MandobStates>(
-  builder: (context, state) {
+    return BlocConsumer<MandobCubit, MandobStates>(
+      listener: (context, state){
+        if(state is SuccessSendSMSState)
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Directionality(
+                textDirection: TextDirection.rtl,
+                child: CustomDialog(text: "تم أرسال الرسالة بنجاح",image:"assets/icons/noun-success-4213622.svg",dialogHeight:.2,bigRadius:.05,smallRedius:.045,containerHight:.15),
+              );
+            });
+          else if(state is ErorrSendSMSState) showToast(message: "حدث خطأ في ارسال الرسالة", state: ToastStates.ERORR);
+          else if(state is SuccessSendOTPState)
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: CustomDialog(text: "تم أرسال OTP بنجاح",image:"assets/icons/noun-success-4213622.svg",dialogHeight:.2,bigRadius:.05,smallRedius:.045,containerHight:.15),
+                );
+              });
+          else if(state is ErorrSendOTPState)
+          showToast(message: "حدث خطأ في ارسال OTP", state: ToastStates.ERORR);
+      } ,
+   builder: (context, state) {
+   var cubit= MandobCubit.get(context);
     return Scaffold(
       appBar: generateAppBarForCompanyMainScreens(title: "SMS", svgPath: "noun-sms-1953496", context: context, mainScreen: true,imageSize: 80.0),
       body: SingleChildScrollView(
@@ -36,61 +60,31 @@ class _SmsScreenState extends State<SmsScreen> {
           children: [
               SizedBox(height: 10,),
             defaultText(text: "أختر صيغة ال SMS",fontSize: 20),
-            CardItem(buildYourContainer:
-             Row(
-              children: [
-                Radio(
-                  value: 'one',
-                  onChanged: (s)
-                  {
-                    setState(() {
-                      radioGval =s ;
-                    });
-                  },
-                  groupValue: radioGval,
+            ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (context, index) =>  CardItem(buildYourContainer:
+                    Row(
+                        children: [
+                           Radio(
+                        value: index,
+                        onChanged: (index)
+                        {
+                          setState(() {
+                            radioIdVal =index ;
+                          });
+                        },
+                        groupValue: radioIdVal,
                 ),
-                Expanded(
-                  child:
-                  Text(
-                    "مرحبا - انا مندوب الشحن لشحنة (123456) من (Shop Samar) حاولت أتصل بحضرتك يرجي اعادة الأتصال",
-
+                           Expanded(child:Text("${cubit.MessagesSMS[index]}",
                   ),
                 ),
               ],
             )
-                , hightCard: .2, marginTop: 20, marginEnd: 20, marginBottom: 20, marginStart: 20),
-            CardItem(buildYourContainer:
-            Row(
-              children: [
-                Radio(
-                  value: 'two',
-                  onChanged: (s)
-                  {
-                    setState(() {
-                      radioGval = s ;
-                    });
-                  },
-                  groupValue: radioGval,
-                ),
-                Expanded(
-                  child: Text(
-                    "مرحبا - انا مندوب الشحن لشحنة (123456) من (Shop Samar) حاولت أتصل بحضرتك يرجي اعادة الأتصال",
-
-                  ),
-                ),
-              ],
-            )
-                , hightCard: .2, marginTop: 0, marginEnd: 20, marginBottom: 20, marginStart: 20),
+                , hightCard: .2, marginTop: 10, marginEnd: 20, marginBottom: 10, marginStart: 20) ,
+                  itemCount: cubit.MessagesSMS.length),
             defaultButton(context,colorButton: purple, text: "تأكيد وأرسال", widthButton: .5, borderRadius: 20,onPressed: (){
-              MandobCubit.get(context).sendMessageSMS(widget.phone);
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: CustomDialog(text: "تم أرسال الرسالة بنجاح",image:"assets/icons/noun-success-4213622.svg",dialogHeight:.38,bigRadius:.09,smallRedius:.08,containerHight:.3),
-                    );
-                  });
+             cubit.sendMessageSMS(widget.phone,cubit.MessagesSMS[radioIdVal]);
+
             }),
             SizedBox(width: 2.h,),
             defaultButton(context,colorButton: purple, text: "أرسال OTP للعميل", widthButton: .8, borderRadius: 5,onPressed: (){

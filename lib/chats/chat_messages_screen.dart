@@ -8,7 +8,6 @@ import 'package:representative_bolt/components/sharedpref/shared_preference.dart
 import 'package:representative_bolt/constants/themes.dart';
 import 'package:representative_bolt/models/message_model.dart';
 import 'package:sizer/sizer.dart';
-
 import '../colors.dart';
 
 class ChatMessagesScreen extends StatelessWidget {

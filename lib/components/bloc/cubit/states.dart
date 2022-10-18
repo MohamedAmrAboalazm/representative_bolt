@@ -126,3 +126,18 @@ class LoadingNotificationStateState extends MandobStates {}
 class SucessNotificationStateState extends MandobStates {}
 
 class ErorrNotificationStateState extends MandobStates {}
+
+//############SMS#########################
+class LoadingSMSState extends MandobStates {}
+
+class SuccessSMSState extends MandobStates {}
+
+class ErrorSMSState extends MandobStates {}
+
+class SuccessSendSMSState extends MandobStates {}
+
+class ErorrSendSMSState extends MandobStates {}
+
+class SuccessSendOTPState extends MandobStates {}
+
+class ErorrSendOTPState extends MandobStates {}

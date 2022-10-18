@@ -548,6 +548,8 @@ class MandobCubit extends Cubit<MandobStates> {
       if (response.statusCode == 200) {
         noteModel = NoteModel.fromJson(response.data);
         getshipmentRepresentative(context);
+        if(searchModel!=null)
+        searchByIId(id);
          CurrentLocation=null;
         cancelationText.clear();
         rejectText.clear();
@@ -612,6 +614,24 @@ class MandobCubit extends Cubit<MandobStates> {
     log("date:>${date}");
     convertDateToString();
     emit(GetDateAndShowIt());
+  }
+
+  List MessagesSMS=[];
+  void getSMSMessage() async {
+    var token = await SharedCashHelper.getValue(key: "token");
+    emit(LoadingSMSState());
+    DioHelper.getData(
+        url: "api/mobile/getSmsMessage",
+        authorization: "Bearer $token")
+        .then((value) {
+          for(int i=0;i<value.data["SmsMessage"].length;i++)
+        MessagesSMS.add(value.data["SmsMessage"][i]["text"]);
+      print("SMSSS>>$MessagesSMS");
+      emit(SuccessSMSState());
+    }).catchError((e) {
+        log(e.toString());
+      emit(ErrorSMSState());
+    });
   }
 
   //////////////////////////////Notifactions/////////////////////////////////
@@ -682,8 +702,6 @@ class MandobCubit extends Cubit<MandobStates> {
     }
   }
 
-
-
   void navigateTo(double lat, double lng) async {
     var uri = Uri.parse(
         "https://www.google.com/maps/search/?api=1&query=$lat,$lng");
@@ -728,10 +746,10 @@ class MandobCubit extends Cubit<MandobStates> {
     try {
       var location = await liveLocation.getLocation();
       print("Lat:${location.latitude},Long:${location.longitude}");
-      await FirebaseFirestore.instance.collection('location').doc('user1').set({
+      await FirebaseFirestore.instance.collection('location').doc('${shipmentModel!.shipmentRepresentative![0].representative![0].id}').set({
         'latitude': location!.latitude,
         'longitude': location!.longitude,
-        'name': 'MoAmr'
+        'name': '${shipmentModel!.shipmentRepresentative![0].representative![0].name}'
       }, SetOptions(merge: true));
       CurrentLocation = "${location.latitude},${location.longitude}";
       SharedCashHelper.setValue(key: "CurrentLocation", value: CurrentLocation);
@@ -745,10 +763,10 @@ class MandobCubit extends Cubit<MandobStates> {
       streamSubscription = liveLocation.onLocationChanged.listen((newLocation)async {
 
         newlatLng = LatLng(newLocation.latitude!, newLocation.longitude!);
-        await FirebaseFirestore.instance.collection('location').doc('user1').set({
+        await FirebaseFirestore.instance.collection('location').doc('${shipmentModel!.shipmentRepresentative![0].representative![0].id}').set({
           'latitude': newlatLng!.latitude,
           'longitude': newlatLng!.longitude,
-          'name': 'MoAmr'
+          'name':'${shipmentModel!.shipmentRepresentative![0].representative![0].name}'
         }, SetOptions(merge: true));
         latLongOld = latLongNew ;
         latLongTemp = newlatLng ;
@@ -824,11 +842,7 @@ class MandobCubit extends Cubit<MandobStates> {
   ///chats func<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><><<<<<>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   RepresentativeModel? representativeData;
 
-  void sendMessage({
-    required String text,
-    required int? receiverId,
-    required String datetime,
-  }) {
+  void sendMessage({required String text,required int? receiverId,required String datetime,}) {
     MessageModel model = MessageModel(text: text,
         receiveruId: receiverId,
         senderuId: SharedCashHelper.getValue(key: "UserId"),
@@ -891,23 +905,35 @@ class MandobCubit extends Cubit<MandobStates> {
           "username": "Bolt",
           "password": "Bolt@123",
           "sender": "Bolt",
-           "mobile": "2${SharedCashHelper.getValue(key: "ClientPhone")}",
+           "mobile": "2${phone}",
         }).
-    then((value) => print('B11>>>>>>>>getOTP>>>>>>>>>:${value.data}') );
+    then((value) {
+      print('B11>>>>>>>>getOTP>>>>>>>>>:${value.data}');
+      emit(SuccessSendOTPState());
+    } ).catchError((){
+      emit(ErorrSendOTPState());
+    });
   }
 
-  void sendMessageSMS(phone)
+  void sendMessageSMS(phone,message)
   {
-    log("sendMessageSMS>>${phone}");
+
+    log("sendMessageSMS>>${phone},${message}");
     DioHelper.dioSMS!.get("sms/api",queryParameters:
     {
       "username": "Bolt",
       "password": "Bolt@123",
       "sendername": "Bolt",
       "mobiles": "2${phone}",
-      "message":"yy"
+      "message":"$message"
     }).
-    then((value) => print('B11>>>>>>>>getSMS>>>>>>>>>:${value.data}') );
+    then((value) {
+       print('B11>>>>>>>>getSMS>>>>>>>>>:${value.data}');
+       emit(SuccessSendSMSState());
+    }).catchError((e){
+      print('B11>>>>>>>>getSMS>>>>>>>>>:${e.toString()}');
+      emit(ErorrSendSMSState());
+    });
   }
 
 

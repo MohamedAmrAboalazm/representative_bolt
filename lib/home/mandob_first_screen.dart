@@ -38,9 +38,7 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return BlocConsumer<MandobCubit, MandobStates>(
-      listener: (context, state) {
-
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         var cubit = MandobCubit.get(context);
         return Scaffold(
@@ -344,68 +342,6 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                               },
                             );
                           },
-//                         onTap: (){
-//                           showDialog(
-//                               context: context,
-//                               builder: (BuildContext context) {
-//                                 return Directionality(
-//                                   textDirection: TextDirection.rtl,
-//                                   child: Dialog(
-//                                     backgroundColor: Colors.transparent,
-//                                     shape: RoundedRectangleBorder(
-//                                         borderRadius:BorderRadius.circular(10.0)), //this right here
-//                                     child:SizedBox(
-//                                       height: height * .52,
-//                                       child: Stack(
-//                                         alignment: AlignmentDirectional.topCenter,
-//                                         children: [
-//                                           Align(
-//                                             alignment: AlignmentDirectional.bottomCenter,
-//                                             child: Container(
-//                                               height: height * .44,
-//                                               decoration: const BoxDecoration(
-//                                                 color: purple,
-//                                                 borderRadius: BorderRadius.all(Radius.circular(10)),
-//                                               ),
-//                                             ),
-//                                           ),
-//                                           Column(
-//                                             children: [
-//                                               CustomCircleAvatarAssetsImage(image: "assets/icons/noun-packing-1914671.svg",smallRedius: .082,
-//                                                 bigRadius: .09,backgroundColorBig:Colors.white,backgroundColorSmall:purple,),
-//                                               const SizedBox(height: 5,),
-//                                               const Text("أختر نوع الشحنة",style:TextStyle(color: Colors.white,fontSize: 20),),
-//                                               CheckBoxOfDialog(text:"قيد التوصيل",isChecked:cubit.isChecked1,onTap:(){cubit.changeFirstCheckBoxDialog();}),
-//                                               CheckBoxOfDialog(text:"مرتجع",isChecked:cubit.isChecked2,onTap:(){cubit.changeSecondCheckBoxDialog();}),
-//                                               CheckBoxOfDialog(text:"تم استلام البيك أب",isChecked:cubit.isChecked3,onTap:(){cubit.changeThirdCheckBoxDialog();}),
-//                                               CheckBoxOfDialog(text:"تم التسليم بنجاح",isChecked:cubit.isChecked4,onTap:(){cubit.changeFourthCheckBoxDialog();}),
-//                                               const SizedBox(height: 10,),
-//                                               Container(
-//                                                 width: MediaQuery.of(context).size.width *.47,
-//                                                 decoration: BoxDecoration(
-//                                                   color: Colors.white,
-//                                                   borderRadius: BorderRadius.circular(8),
-//                                                 ),
-//                                                 child: MaterialButton(
-//                                                   onPressed: () {},
-//                                                   child: const Text(
-//                                                     "بحث",
-//                                                     style: TextStyle(
-//                                                         color:purple,
-//                                                         fontSize: 20),
-//                                                   ),
-//                                                 ),
-//                                               ),
-//                                             ],
-//                                           ),
-//
-//                                         ],
-//                                       ),
-//                                     ),
-//                                   ),
-//                                 );
-//                               });
-//                         },
                           child: Padding(
                             padding: const EdgeInsets.only(
                               top: 10,
@@ -430,6 +366,7 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                           shrinkWrap: true,
                           itemCount: cubit.shipmentModel!.shipmentRepresentative!.length,
                           itemBuilder: (context, index) {
+                            cubit.searchModel=null;
                             return shipmentItem(context, cubit.shipmentModel!.shipmentRepresentative![index],index);
                           }),
                     if (cubit.isSearch == true)
@@ -631,6 +568,7 @@ shipmentItem(context, ShipmentRepresentative model, index) {
 
 shipmentOneItem(context, SearchDate searchModel) {
   var ShipmentStateId = searchModel!.shipmentStatusId;
+  MandobCubit.get(context).isFilter=false;
   Color ShipmentColor;
   if (int.parse(ShipmentStateId.toString()) == 3) {
     ShipmentColor = Colors.green;
@@ -644,7 +582,7 @@ shipmentOneItem(context, SearchDate searchModel) {
         child: InkWell(
           onTap: () {
             MandobCubit.get(context).getRepresenativeShipmentById(searchModel.id);
-            navigateTo(context, DetailsOfShipment(2,searchModel));
+            navigateTo(context, DetailsOfShipment(0,searchModel));
             print("IDDDDDDDD>>>>>>'''''${searchModel.id}");
             print("IDDDDDDDD>>>>>>'''''${searchModel.nameShipment}");
 
@@ -706,20 +644,84 @@ shipmentOneItem(context, SearchDate searchModel) {
 
                 ],
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: ShipmentColor,
-                  borderRadius: BorderRadius.circular(5),
+              Column(children: [
+                BlocBuilder<MandobCubit, MandobStates>(
+                  builder: (context, state) {
+
+                    if(searchModel.shipmentstatu!.id==3)
+                    {
+                      if(SharedCashHelper.getValue(key: "CurrentLocation")==null)
+                      {
+                        return defaultButtonWithIcon(context,hightButton: .09, text: "أبدا الرحله", image:  "assets/icons/noun-talk-4679128.svg", onPressed: ()async{
+                          print("!!!AAA>${searchModel.id}");
+                          await MandobCubit.get(context).getCurrentLocation(index: searchModel,id: searchModel.id);
+                          log("!!!${MandobCubit.get(context).CurrentLocation.toString()}");
+                        }, widthButton: .3, borderRadius: 10, colorText: Colors.white, colorImage: Colors.white, colorButtom: Colors.green,bottomMargin:15,hightIcon:.05,widthIcon:.05);
+                      }
+                      else
+                      {
+                        return SizedBox();
+                      }
+                    }
+                    else{
+                      return SizedBox();
+                    }
+
+                  },
                 ),
-                height: MediaQuery.of(context).size.height * .04,
-                width: MediaQuery.of(context).size.width * .36,
-                child: Center(
-                  child: Text(
-                    "${searchModel.shipmentstatu!.name}",
-                    style: TextStyle(color: Colors.white, fontSize: 10),
+                if(searchModel.shipmentStatusId==10)
+                  defaultButton(context, text: "Accept ", onPressed: (){
+                    MandobCubit.get(context).updateShipmentRepresentative(context,searchModel.id,shipment_status_id: 1);
+                  }, widthButton: .3, borderRadius: 8, colorButton: Colors.green),
+                if(searchModel.shipmentStatusId==10)
+                  defaultButton(context, text: "Reject", onPressed: (){
+                    showDialog(
+                        context: context,
+                        builder:(BuildContext context){
+                          return CustomTextFormDialog(
+                              heightDialog: 2.5.h,
+                              containerofdata: Column(
+                                children: [
+                                  SizedBox(height: 2.h,),
+                                  CustomTextFormField(
+                                    validator: (v){
+                                      if (v!.isEmpty) {
+                                        return "أدخل سبب الرفض";
+                                      }
+                                    },
+                                    hintText: "سبب الرفض",
+                                    maxLines: 1,
+                                    marginTop: 1.h,
+                                    controller:MandobCubit.get(context).rejectText,
+
+                                  ),
+                                  SizedBox(height: 4.h,),
+                                  defaultButton(context, text: "تأكيد", onPressed: (){
+                                    MandobCubit.get(context).updateShipmentRepresentative(context, searchModel.id,shipment_status_id: 11,note: MandobCubit.get(context).rejectText.text);
+                                    Navigator.pop(context);
+                                    MandobCubit.get(context).rejectText.clear();
+                                  }, widthButton: .3, borderRadius: 8, colorButton: Colors.red),
+                                ],
+                              ));
+                        }
+                    );
+                  }, widthButton: .3, borderRadius: 8, colorButton: Colors.red),
+                Container(
+                  decoration: BoxDecoration(
+                    color: ShipmentColor,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  height: MediaQuery.of(context).size.height * .04,
+                  width: MediaQuery.of(context).size.width * .36,
+                  child: Center(
+                    child: Text(
+                      "${searchModel.shipmentstatu!.name}",
+                      style: TextStyle(color: Colors.white, fontSize: 10),
+                    ),
                   ),
                 ),
-              ),
+              ],)
+
             ],
           ),
         ),
@@ -734,7 +736,7 @@ shipmentOneItem(context, SearchDate searchModel) {
 shipmentFilterItem(context, ShipmentStatus model,index) {
   var ShipmentStateId = model.shipmentStatusId;
   Color ShipmentColor;
-
+  MandobCubit.get(context).isSearch=false;
   if (int.parse(ShipmentStateId.toString()) == 3) {
     ShipmentColor = Colors.green;
   }
@@ -813,20 +815,83 @@ shipmentFilterItem(context, ShipmentStatus model,index) {
 
                 ],
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: ShipmentColor,
-                  borderRadius: BorderRadius.circular(5),
+              Column(children: [
+                BlocBuilder<MandobCubit, MandobStates>(
+                  builder: (context, state) {
+
+                    if(model.shipmentstatu!.id==3)
+                    {
+                      if(SharedCashHelper.getValue(key: "CurrentLocation")==null)
+                      {
+                        return defaultButtonWithIcon(context,hightButton: .09, text: "أبدا الرحله", image:  "assets/icons/noun-talk-4679128.svg", onPressed: ()async{
+                          print("!!!AAA>${model.id}");
+                          await MandobCubit.get(context).getCurrentLocation(index: model,id: model.id);
+                          log("!!!${MandobCubit.get(context).CurrentLocation.toString()}");
+                        }, widthButton: .3, borderRadius: 10, colorText: Colors.white, colorImage: Colors.white, colorButtom: Colors.green,bottomMargin:15,hightIcon:.05,widthIcon:.05);
+                      }
+                      else
+                      {
+                        return SizedBox();
+                      }
+                    }
+                    else{
+                      return SizedBox();
+                    }
+
+                  },
                 ),
-                height: MediaQuery.of(context).size.height * .04,
-                width: MediaQuery.of(context).size.width * .36,
-                child: Center(
-                  child: Text(
-                    "${model.shipmentstatu!.name}",
-                    style: TextStyle(color: Colors.white, fontSize: 10),
+                if(model.shipmentStatusId==10)
+                  defaultButton(context, text: "Accept ", onPressed: (){
+                    MandobCubit.get(context).updateShipmentRepresentative(context,model.id,shipment_status_id: 1);
+                  }, widthButton: .3, borderRadius: 8, colorButton: Colors.green),
+                if(model.shipmentStatusId==10)
+                  defaultButton(context, text: "Reject", onPressed: (){
+                    showDialog(
+                        context: context,
+                        builder:(BuildContext context){
+                          return CustomTextFormDialog(
+                              heightDialog: 2.5.h,
+                              containerofdata: Column(
+                                children: [
+                                  SizedBox(height: 2.h,),
+                                  CustomTextFormField(
+                                    validator: (v){
+                                      if (v!.isEmpty) {
+                                        return "أدخل سبب الرفض";
+                                      }
+                                    },
+                                    hintText: "سبب الرفض",
+                                    maxLines: 1,
+                                    marginTop: 1.h,
+                                    controller:MandobCubit.get(context).rejectText,
+
+                                  ),
+                                  SizedBox(height: 4.h,),
+                                  defaultButton(context, text: "تأكيد", onPressed: (){
+                                    MandobCubit.get(context).updateShipmentRepresentative(context, model.id,shipment_status_id: 11,note: MandobCubit.get(context).rejectText.text);
+                                    Navigator.pop(context);
+                                    MandobCubit.get(context).rejectText.clear();
+                                  }, widthButton: .3, borderRadius: 8, colorButton: Colors.red),
+                                ],
+                              ));
+                        }
+                    );
+                  }, widthButton: .3, borderRadius: 8, colorButton: Colors.red),
+                Container(
+                  decoration: BoxDecoration(
+                    color: ShipmentColor,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  height: MediaQuery.of(context).size.height * .04,
+                  width: MediaQuery.of(context).size.width * .36,
+                  child: Center(
+                    child: Text(
+                      "${model.shipmentstatu!.name}",
+                      style: TextStyle(color: Colors.white, fontSize: 10),
+                    ),
                   ),
                 ),
-              ),
+              ],)
             ],
           ),
         ),
