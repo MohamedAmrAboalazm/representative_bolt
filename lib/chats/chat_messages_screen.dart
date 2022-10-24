@@ -73,12 +73,16 @@ class ChatMessagesScreen extends StatelessWidget {
                          color: purple,
                          child: MaterialButton(onPressed: (){
                            if(textController.text.trim().isNotEmpty) {
-                             MandobCubit.get(context)
+                         /*    MandobCubit.get(context)
                                  .sendMessage(
                                  text: textController.text.trim(),
                                  receiverId: 1000,
-                                 datetime: DateTime.now().toString());
-                                 textController.text = "";
+                                 datetime: DateTime.now().toString());*/
+
+                                 MandobCubit.get(context).sendMessageRealTimeDataBase(text: textController.text.trim(),
+                                     receiverId: 1000,
+                                     datetime: DateTime.now().toString());
+                                      textController.text = "";
 
                            }
                          },
@@ -139,7 +143,7 @@ class ChatMessagesScreen extends StatelessWidget {
             vertical: 5,
             horizontal: 5
         ),
-        child: Text("message.text.toString()")
+        child: Text(message.text.toString())
     ),
   );
 }

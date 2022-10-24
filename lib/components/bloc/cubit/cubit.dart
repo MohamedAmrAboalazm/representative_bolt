@@ -6,6 +6,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -524,6 +525,9 @@ class MandobCubit extends Cubit<MandobStates> {
   NoteModel ?noteModel;
   var rejectText=TextEditingController();
   var cancelationText=TextEditingController();
+
+
+
   updateShipmentRepresentative(context,id,{note, date, return_price, shipment_status_id, count_product, return_count_product, store_id}) async {
     var token = await SharedCashHelper.getValue(key: "token");
 
@@ -875,6 +879,22 @@ class MandobCubit extends Cubit<MandobStates> {
         .catchError((erorr) {
       emit(ErorrSendMessageState());
     });
+  }
+
+
+  DatabaseReference ref = FirebaseDatabase.instance.ref();
+
+  void sendMessageRealTimeDataBase({required String text,required int? receiverId,required String datetime,}) async{
+    await ref.child("Users").child("${SharedCashHelper.getValue(key: "UserId").toString()}").child("chat").
+        child(receiverId.toString()).child("messages${1}").
+     set({
+      "dateTime":datetime,
+      "receiveruId": receiverId.toString(),
+      "senderuId": "${SharedCashHelper.getValue(key: "UserId").toString()}",
+      "text":"$text",
+    });
+   // ref!.child("Chat").child("age").once().then((value) => print("readonly${value.toString()}"));
+    emit(SocialGetMessagesSucessState());
   }
 
   List<MessageModel> messages = [];

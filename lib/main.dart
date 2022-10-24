@@ -18,7 +18,7 @@ import 'constants/constatns.dart';
 import 'login/bloc/cubit_class.dart';
 import 'login/loginScreen.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
    await Firebase.initializeApp();
   await SharedCashHelper.init();
