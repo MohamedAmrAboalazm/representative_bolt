@@ -63,6 +63,7 @@ dependencies:
   google_maps_flutter: ^2.2.0
   flutter_switch: ^0.3.2
   cached_network_image: ^3.2.2
+  firebase_database: ^9.1.7
 dev_dependencies:
 flutter_icons:
   android: true

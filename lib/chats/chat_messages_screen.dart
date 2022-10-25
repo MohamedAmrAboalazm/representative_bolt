@@ -16,7 +16,7 @@ class ChatMessagesScreen extends StatelessWidget {
     var textController=TextEditingController();
     return Builder(
       builder: (context) {
-        MandobCubit.get(context).getMessages(receiverId: 1000.toString());
+        MandobCubit.get(context).getMessagesRealTimeDataBase(receiverId: 1000.toString());
         return BlocBuilder<MandobCubit,MandobStates>(
          builder: (context, state) {
            var cubit=MandobCubit.get(context);
@@ -26,7 +26,7 @@ class ChatMessagesScreen extends StatelessWidget {
              children: [
                Expanded(
                  child: ListView.builder(
-                     reverse: true,
+                     reverse: false,
                      itemBuilder: (context, index)
                      {
                        if(SharedCashHelper.getValue(key: "UserId")==cubit.messages[index].senderuId)
@@ -85,6 +85,7 @@ class ChatMessagesScreen extends StatelessWidget {
                                       textController.text = "";
 
                            }
+                           //MandobCubit.get(context).getMessagesRealTimeDataBase(receiverId: 1000.toString());
                          },
                            minWidth: 1,
                            child: Icon(Icons.send,color: Colors.white,size: 16,),

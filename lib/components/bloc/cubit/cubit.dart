@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 
@@ -885,15 +886,25 @@ class MandobCubit extends Cubit<MandobStates> {
   DatabaseReference ref = FirebaseDatabase.instance.ref();
 
   void sendMessageRealTimeDataBase({required String text,required int? receiverId,required String datetime,}) async{
-    await ref.child("Users").child("${SharedCashHelper.getValue(key: "UserId").toString()}").child("chat").
-        child(receiverId.toString()).child("messages${1}").
-     set({
+    MessageModel model = MessageModel(text: text,
+        receiveruId: receiverId,
+        senderuId: SharedCashHelper.getValue(key: "UserId"),
+        dateTime: datetime);
+    await ref.child("Users").child("${SharedCashHelper.getValue(key: "UserId").toString()}").child("chatWith").
+        child("${receiverId.toString()}/messages").push().set({
       "dateTime":datetime,
       "receiveruId": receiverId.toString(),
       "senderuId": "${SharedCashHelper.getValue(key: "UserId").toString()}",
-      "text":"$text",
+      "text":'${text}'});
+
+    await ref.child("Users").child(receiverId.toString()).child("chatWith").
+    child("${SharedCashHelper.getValue(key: "UserId").toString()}/messages").push().
+    set({
+      "dateTime":datetime,
+      "receiveruId": receiverId.toString(),
+      "senderuId": "${SharedCashHelper.getValue(key: "UserId").toString()}",
+      "text":'${text}'
     });
-   // ref!.child("Chat").child("age").once().then((value) => print("readonly${value.toString()}"));
     emit(SocialGetMessagesSucessState());
   }
 
@@ -916,6 +927,44 @@ class MandobCubit extends Cubit<MandobStates> {
       emit(SocialGetMessagesSucessState());
     });
   }
+
+  void getMessagesRealTimeDataBase({required String? receiverId}) async{
+
+    //final ref = FirebaseDatabase.instance.ref();
+    /*final snapshot = await databaseReference.child('Users/2/chatWith/1000/messages').get();
+     if (snapshot.exists) {
+      print(snapshot.value);
+        snapshot.children.forEach((element) {
+         // var body=json.decode("${element.value}");
+          String jsonsDataString = element.value.toString();
+         print("AAAAA${jsonsDataString}");
+         messages.add(MessageModel.fromJson(jsonDecode(jsonsDataString)));
+        });
+    } else {
+      print('No data available.');
+    }*/
+    messages=[];
+    final databaseReference = FirebaseDatabase.instance.ref().child("Users/2/chatWith/1000/messages");
+    databaseReference.get().then((DataSnapshot dataSnapshot) {
+      var data=json.decode(json.encode(dataSnapshot.value!)) as Map<String, dynamic>?;
+
+      if(data != null) {
+        var text ;
+        for(var key in data!.keys)
+        {
+           text = data![key]["text"];
+           print("Text>>>>QQQ>>>${data![key]!}");
+           print("Text>>>>>>>${text}");
+           messages.add(MessageModel(text:data![key]["text"],dateTime:data![key]["dateTime"],receiveruId: int.parse(data![key]["receiveruId"]),senderuId: int.parse(data![key]["senderuId"])  ));
+        }
+      }
+
+
+    });
+
+      emit(SocialGetMessagesSucessState());
+    }
+
 
   void sendVerificationCode(phone)
   {
