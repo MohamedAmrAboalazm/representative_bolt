@@ -564,7 +564,11 @@ class WidgetofChatLog extends StatelessWidget {
                 Expanded(child: defaultText(text: "$nameChat",fontSize: 16),),
                 Padding(
                   padding: const EdgeInsets.only(top:20),
-                  child: defaultButton(context,onPressed: (){
+                  child: defaultButton(context,onPressed: ()async{
+                    print("222222");
+
+                    await new Future. delayed(const Duration(seconds: 5));
+                    print("11111111111111111111111");
                     navigateTo(context, ChatMessagesScreen());
                   },colorButton: yellow, text: "سجل المحادثات", widthButton: .36, borderRadius: 15),
                 ),

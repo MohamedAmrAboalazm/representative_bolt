@@ -884,12 +884,7 @@ class MandobCubit extends Cubit<MandobStates> {
 
 
   DatabaseReference ref = FirebaseDatabase.instance.ref();
-
   void sendMessageRealTimeDataBase({required String text,required int? receiverId,required String datetime,}) async{
-    MessageModel model = MessageModel(text: text,
-        receiveruId: receiverId,
-        senderuId: SharedCashHelper.getValue(key: "UserId"),
-        dateTime: datetime);
     await ref.child("Users").child("${SharedCashHelper.getValue(key: "UserId").toString()}").child("chatWith").
         child("${receiverId.toString()}/messages").push().set({
       "dateTime":datetime,
@@ -927,10 +922,9 @@ class MandobCubit extends Cubit<MandobStates> {
       emit(SocialGetMessagesSucessState());
     });
   }
-
-  void getMessagesRealTimeDataBase({required String? receiverId}) async{
-
-    //final ref = FirebaseDatabase.instance.ref();
+  var data;
+  void getMessagesRealTimeDataBase({ String? receiverId}) async{
+    print('khaled');
     /*final snapshot = await databaseReference.child('Users/2/chatWith/1000/messages').get();
      if (snapshot.exists) {
       print(snapshot.value);
@@ -943,25 +937,36 @@ class MandobCubit extends Cubit<MandobStates> {
     } else {
       print('No data available.');
     }*/
-    messages=[];
+
     final databaseReference = FirebaseDatabase.instance.ref().child("Users/2/chatWith/1000/messages");
-    databaseReference.get().then((DataSnapshot dataSnapshot) {
-      var data=json.decode(json.encode(dataSnapshot.value!)) as Map<String, dynamic>?;
+    databaseReference.onChildAdded.listen((event) {
+      data = json.decode(json.encode(event.snapshot.value)) as Map<String, dynamic>?;
+      if(messages.isEmpty ||  messages.last.dateTime != data!['dateTime'] ) {
 
-      if(data != null) {
-        var text ;
-        for(var key in data!.keys)
-        {
-           text = data![key]["text"];
-           print("Text>>>>QQQ>>>${data![key]!}");
-           print("Text>>>>>>>${text}");
-           messages.add(MessageModel(text:data![key]["text"],dateTime:data![key]["dateTime"],receiveruId: int.parse(data![key]["receiveruId"]),senderuId: int.parse(data![key]["senderuId"])  ));
-        }
+        print("Text>>>>text>>>${data!["text"]}");
+        messages.add(MessageModel(text: data!["text"],
+            dateTime: data!["dateTime"],
+            receiveruId: int.parse(data!["receiveruId"]),
+            senderuId: int.parse(data!["senderuId"])));
+        print("QQQQQQQQQQQQQQQQQQ${messages.length}");
       }
-
-
     });
+    //print("Text>>>>!!!!!!!!!>>>${data!["text"]}");
 
+    // get().then((DataSnapshot dataSnapshot) {
+    //   var data=json.decode(json.encode(dataSnapshot.value!)) as Map<String, dynamic>?;
+    //   if(data != null) {
+    //     var text ;
+    //     for(var key in data!.keys)
+    //     {
+    //       text = data![key]["text"];
+    //       print("Text>>>>QQQ>>>${data![key]!}");
+    //       print("Text>>>>>>>${text}");
+    //       messages.add(MessageModel(text:data![key]["text"],dateTime:data![key]["dateTime"],
+    //           receiveruId: int.parse(data![key]["receiveruId"]),senderuId: int.parse(data![key]["senderuId"])));
+    //     }
+    //   }
+    // });
       emit(SocialGetMessagesSucessState());
     }
 

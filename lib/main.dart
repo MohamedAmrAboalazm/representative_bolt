@@ -67,7 +67,8 @@ class MyApp extends StatelessWidget {
                 ..getTodayDeliveries()
                 ..getNotifactions()
                 ..getStories()
-                ..getSMSMessage(),
+                ..getSMSMessage()
+                ..getMessagesRealTimeDataBase(),
             ),
             // BlocProvider(
             //  // create: (context) => LoginCubitClass()..login("")
