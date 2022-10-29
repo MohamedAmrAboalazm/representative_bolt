@@ -847,7 +847,7 @@ class MandobCubit extends Cubit<MandobStates> {
   ///chats func<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><><<<<<>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   RepresentativeModel? representativeData;
 
-  void sendMessage({required String text,required int? receiverId,required String datetime,}) {
+  void sendMessage({required String text,required String? receiverId,required String datetime,}) {
     MessageModel model = MessageModel(text: text,
         receiveruId: receiverId,
         senderuId: SharedCashHelper.getValue(key: "UserId"),
@@ -884,22 +884,28 @@ class MandobCubit extends Cubit<MandobStates> {
 
 
   DatabaseReference ref = FirebaseDatabase.instance.ref();
-  void sendMessageRealTimeDataBase({required String text,required int? receiverId,required String datetime,}) async{
+  void sendMessageRealTimeDataBase({required String text,required String? receiverId,required String datetime,}) async{
+    MessageModel model = MessageModel(text: text,
+        receiveruId: receiverId,
+        senderuId: SharedCashHelper.getValue(key: "UserId").toString(),
+        dateTime: datetime);
     await ref.child("Users").child("${SharedCashHelper.getValue(key: "UserId").toString()}").child("chatWith").
-        child("${receiverId.toString()}/messages").push().set({
+        child("${receiverId.toString()}/messages").push().set(model.toMap());
+ /*   {
       "dateTime":datetime,
-      "receiveruId": receiverId.toString(),
-      "senderuId": "${SharedCashHelper.getValue(key: "UserId").toString()}",
-      "text":'${text}'});
+    "receiveruId": receiverId.toString(),
+    "senderuId": "${SharedCashHelper.getValue(key: "UserId").toString()}",
+    "text":'${text}'}*/
 
     await ref.child("Users").child(receiverId.toString()).child("chatWith").
     child("${SharedCashHelper.getValue(key: "UserId").toString()}/messages").push().
-    set({
+    set(model.toMap());
+    /*{
       "dateTime":datetime,
       "receiveruId": receiverId.toString(),
       "senderuId": "${SharedCashHelper.getValue(key: "UserId").toString()}",
       "text":'${text}'
-    });
+    }*/
     emit(SocialGetMessagesSucessState());
   }
 
@@ -923,8 +929,8 @@ class MandobCubit extends Cubit<MandobStates> {
     });
   }
   var data;
+  ScrollController controller = new ScrollController();
   void getMessagesRealTimeDataBase({ String? receiverId}) async{
-    print('khaled');
     /*final snapshot = await databaseReference.child('Users/2/chatWith/1000/messages').get();
      if (snapshot.exists) {
       print(snapshot.value);
@@ -937,19 +943,24 @@ class MandobCubit extends Cubit<MandobStates> {
     } else {
       print('No data available.');
     }*/
-
     final databaseReference = FirebaseDatabase.instance.ref().child("Users/2/chatWith/1000/messages");
-    databaseReference.onChildAdded.listen((event) {
+    databaseReference.onValue.listen((event) {
+      messages=[];
       data = json.decode(json.encode(event.snapshot.value)) as Map<String, dynamic>?;
-      if(messages.isEmpty ||  messages.last.dateTime != data!['dateTime'] ) {
-
+      for(var key in data!.keys)
+        {
+          messages.add(MessageModel(text:data!["$key"]["text"],dateTime:data!["$key"]["dateTime"],
+        receiveruId: data!["$key"]["receiveruId"].toString(),senderuId: data!["$key"]["senderuId"].toString()));
+            messages.sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
+        }
+      /*if(messages.isEmpty ||  messages.last.dateTime != data!['dateTime'] ) {
         print("Text>>>>text>>>${data!["text"]}");
         messages.add(MessageModel(text: data!["text"],
             dateTime: data!["dateTime"],
             receiveruId: int.parse(data!["receiveruId"]),
             senderuId: int.parse(data!["senderuId"])));
         print("QQQQQQQQQQQQQQQQQQ${messages.length}");
-      }
+      }*/
     });
     //print("Text>>>>!!!!!!!!!>>>${data!["text"]}");
 
@@ -967,9 +978,8 @@ class MandobCubit extends Cubit<MandobStates> {
     //     }
     //   }
     // });
-      emit(SocialGetMessagesSucessState());
-    }
-
+    emit(SocialGetMessagesSucessState());
+  }
 
   void sendVerificationCode(phone)
   {

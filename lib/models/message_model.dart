@@ -3,8 +3,8 @@ class MessageModel
 
   String? text;
   String? dateTime;
-  int? senderuId;
-  int? receiveruId;
+  String? senderuId;
+  String? receiveruId;
 
 
  MessageModel({this.receiveruId, this.senderuId, this.text,this.dateTime });

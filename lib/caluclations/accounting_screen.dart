@@ -121,7 +121,7 @@ class AccountingScreen extends StatelessWidget {
                 ],
               ),
             ),
-            condition:  MandobCubit.get(context).shipmentModel != null,
+            condition:  cubit.representativeAccount != null,
             fallback: (context) => Center(child: CircularProgressIndicator()),
           ),
         );

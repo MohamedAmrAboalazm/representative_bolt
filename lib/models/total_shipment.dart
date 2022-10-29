@@ -1,7 +1,7 @@
 class TotalShipmentModel {
   bool? status;
-  String? errNum;
-  String? msg;
+ var errNum;
+ var msg;
   Data? data;
 
   TotalShipmentModel({this.status, this.errNum, this.msg, this.data});
@@ -26,9 +26,9 @@ class TotalShipmentModel {
 }
 
 class Data {
-  int? countShipment;
-  int? totalCollectionBalance;
-  int? totalCommission;
+  var countShipment;
+  var totalCollectionBalance;
+  var totalCommission;
 
   Data({this.countShipment, this.totalCollectionBalance, this.totalCommission});
 
