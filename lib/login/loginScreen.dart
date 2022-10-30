@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:representative_bolt/components/bloc/cubit/cubit.dart';
 import 'package:representative_bolt/components/items.dart';
 import 'package:representative_bolt/login/bloc/cubit_class.dart';
+import 'package:sizer/sizer.dart';
 
 import '../components/bloc/cubit/states.dart';
 import '../constants/themes.dart';
@@ -53,12 +54,11 @@ class LoginScreen extends StatelessWidget {
                             //   backgroundColor: Colors.white,
                             //   backgroundImage:AssetImage( 'assets/images/bolt logo.png',),
                             // ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.only(start: 60),
+                            Center(
                               child: Image.asset(
                                 'assets/images/bolt logo.png',
-                                width: 300,
-                                height: 300,
+                                width: 50.w,
+                                height: 40.h,
                               ),
                             ),
                             const SizedBox(

@@ -406,9 +406,6 @@ class CardItem extends StatelessWidget {
     );
 
 }
-
-
-
 AppBar generateAppBarForCompanyMainScreens({
   required String title,
   required String svgPath,

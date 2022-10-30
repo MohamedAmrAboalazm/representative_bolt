@@ -21,7 +21,7 @@ ThemeData lightTheme = ThemeData(
   ),
 );
 Color yellowColor = const Color(0xffFED201);
-Color purpleColor = const Color(0xff7663EA);
+Color purpleColor = const Color(0xff6E256B);
 Color greyColor = const Color(0xffF2F2F3);
 Color darkGreyColor = const Color(0xffCCCCCC);
 Color textGreyColor = const Color(0xff808080);
