@@ -187,11 +187,13 @@ class MandobCubit extends Cubit<MandobStates> {
         .then((value) {
       print('B555555getshipmentRepresentative55555555: ${value.data}');
       shipmentModel = ShipmentModel.fromJson(value.data);
+
+
       emit(SuccessshipmentStateState());
     }).catchError((e) {
       print('Error Here>>>>>: ${e.response!.data}');
-      if (e.response.data["status"] == "Token is Expired" ||
-          e.response!.data["errors"]["status"] == "not active") {
+      if (e.response.data["status"] == "Token is Expired" || e.response!.data["errors"]["status"] == "not active") {
+        print('Go to login because>>>>>: ${e.response!.data}');
         navigateAndFinsh(context, LoginScreen());
         SharedCashHelper.removeValue(key: "token");
         SharedCashHelper.removeValue(key: "imagePath");
@@ -529,7 +531,7 @@ class MandobCubit extends Cubit<MandobStates> {
 
 
 
-  updateShipmentRepresentative(context,id,{note, date, return_price, shipment_status_id, count_product, return_count_product, store_id}) async {
+  updateShipmentRepresentative(context,id,{note,client_id, date, return_price, shipment_status_id, count_product, return_count_product, store_id}) async {
     var token = await SharedCashHelper.getValue(key: "token");
 
     try {
@@ -539,6 +541,7 @@ class MandobCubit extends Cubit<MandobStates> {
         token: "",
         url: "api/mobile/updateshipmentRepresentative/$id",
         data: {
+          "client_id":client_id,
           "shipment_status_id": shipment_status_id,
           "store_id": store_id,
           "status_return": CurrentIndexRadioShipmentReturn,
@@ -571,6 +574,8 @@ class MandobCubit extends Cubit<MandobStates> {
       }
       if (kDebugMode) {
         print(e.response!.data.toString());
+        if(e.response!.data["errors"].toString()=="Not Found client id")
+        showToast(message:"رقم تأكيد الطلب غير صحيح", state: ToastStates.ERORR);
       }
 
       emit(ErrorshipmentStateAddNotes());

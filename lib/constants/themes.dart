@@ -4,6 +4,9 @@ const String fontFamily = 'hanimation';
 
 ThemeData lightTheme = ThemeData(
   tabBarTheme: TabBarTheme(),
+  colorScheme: ColorScheme.light(
+    primary: purpleColor,
+  ),
   appBarTheme: const AppBarTheme(
     titleTextStyle: TextStyle(
       fontFamily: fontFamily,

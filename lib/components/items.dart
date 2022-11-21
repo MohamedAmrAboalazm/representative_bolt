@@ -331,6 +331,7 @@ class DetailsOfShippingItem extends StatelessWidget {
   }
 }
 
+
 class CardItem extends StatelessWidget {
   final Widget buildYourContainer;
   final double hightCard;
@@ -340,11 +341,11 @@ class CardItem extends StatelessWidget {
   final double marginEnd;
   CardItem(
       {required this.buildYourContainer,
-      required this.hightCard,
-      required this.marginTop,
-      required this.marginEnd,
-      required this.marginBottom,
-      required this.marginStart});
+        required this.hightCard,
+        required this.marginTop,
+        required this.marginEnd,
+        required this.marginBottom,
+        required this.marginStart});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -372,7 +373,6 @@ class CardItem extends StatelessWidget {
     );
   }
 }
-
  AppBar customAppBar(context,{required String imageTitle,required String imageAction,required String text,bool isExistActionIcon=true})
  {
    double width=MediaQuery.of(context).size.width;
@@ -721,45 +721,65 @@ class CustomListOfDropDown extends StatelessWidget {
   }
 }
 
-class CustomTextFormField extends StatelessWidget {
-  final String hintText;
-  final int maxLines;
-  final double marginTop;
-  final double marginStart;
-  final double marginEnd;
-  final double marginBottom;
-  String? Function(String?)?  validator;
-  var controller=TextEditingController();
+Widget CustomTextFormField(
+    {
+      required TextEditingController controller,
+      required TextInputType keyboardtype,
+      Widget? suffixicon,
+      Function()? onTap,
+      bool obscuretext = false,
+      bool isClickable = true,
+      required String  hintText,
+      String? Function(String?)?  validator,
+      Function(String)?  submitt,
+      int maxLines=1,
+      double marginRight=0,
+      double marginLeft=0,
+      double marginTop=0,
+      double marginbottom=0,
+      double contentPaddingStart=1.5,
+      double contentPaddingEnd=1.5,
+      double contentPaddingTop=1.5,
+      double contentPaddingDown=1.5,
 
-  CustomTextFormField({required this.controller,required this.validator,required this.hintText, required this.maxLines,this.marginBottom=0,this.marginStart=20,this.marginEnd=20,this.marginTop=0});
+      TextAlign textAlign=TextAlign.start,
 
-  @override
-  Widget build(BuildContext context) {
-    return   Container(
-      margin: EdgeInsetsDirectional.only(end: marginEnd,start: marginStart,bottom: marginBottom,top: marginTop),
-      child: TextFormField(
-        controller: controller,
-        maxLines:maxLines,
-        decoration: InputDecoration(
-          hintText: "$hintText",
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color:Colors.grey[400]!),
-              borderRadius: BorderRadius.all(Radius.circular(10))
-          ),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color:Colors.grey[400]!),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color:Colors.grey[400]!),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          border: OutlineInputBorder(
-              borderSide: BorderSide(color:Colors.grey[400]!),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-        ),
-        validator: validator,
+    }) {
+  return Padding(
+    padding:  EdgeInsets.only(top: marginTop,right:marginRight ,left:marginLeft,bottom: marginbottom),
+    child: TextFormField(
+      onFieldSubmitted: submitt,
+      enabled: isClickable,
+      onTap: onTap,
+      maxLines: maxLines,
+      controller: controller,
+      keyboardType: keyboardtype,
+      validator: validator,
+      textAlign: textAlign,
+      obscureText: obscuretext,
+      cursorColor: purpleColor,
+      decoration: InputDecoration(
+        isDense: true, // important line
+        contentPadding: EdgeInsetsDirectional.fromSTEB(contentPaddingStart.h,contentPaddingTop.h, contentPaddingEnd.h,contentPaddingDown.h,),
+        hintText: hintText,
+        labelText: hintText,
+        hintStyle: TextStyle(color: purpleColor,fontFamily: fontFamily),
+        enabledBorder:  OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(.8.h)),
+            borderSide: BorderSide(color: purpleColor,width  : .4.w)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(.8.h)),
+            borderSide: BorderSide(color: purpleColor,width: .4.w)),
+        errorBorder:OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(.8.h)),
+            borderSide: BorderSide(color: Colors.red,width: .4.w)),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(.8.h)),
+            borderSide: BorderSide(color: purpleColor,width: .4.w)),
+        suffixIcon: suffixicon != null ? suffixicon : null,
       ),
-    );
-  }
+    ),
+  );
 }
 
 class CheckBoxOfDialog extends StatelessWidget {

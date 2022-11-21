@@ -27,6 +27,7 @@ class ChangeStatusOfShipment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var notesController=TextEditingController();
+    var OrderNumberController=TextEditingController();
     var priceController=TextEditingController();
     var countProduct=TextEditingController();
     var returnCountProduct=TextEditingController();
@@ -71,15 +72,12 @@ class ChangeStatusOfShipment extends StatelessWidget {
                    itemBuilder:(context, index) => CustomListOfDropDown(textList:"${cubit.shipmentStatusModel!.shipmentStatuRepresentative![index].name}",indexRadio: index,isShipmentStates: true),
                    itemCount: cubit.shipmentStatusModel!.shipmentStatuRepresentative!.length,
                  ),
-               /*  if(cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1].name== "Picked")
-                   Padding(
-                     padding:  EdgeInsetsDirectional.only(top:1.h,end:8.1.h,start: 2.h,bottom: 1.h),
-                     child: CustomDropDownButton(hint: 'أختر المخزن',itemList:  cubit.StoriesList,textValidation:  'أختر المخزن',
-                         onChanged: (value) {
-                           cubit.idOfStore=value.id;
-                           log("AAA?>${cubit.idOfStore}");
-                         }),
-                   ),*/
+                 if(cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1].name== "Delivered")
+                   CustomTextFormField(controller:OrderNumberController,marginRight: 2.h,marginLeft: 2.h,marginTop:1.h,marginbottom:.3.h,hintText: "رقم تأكيد الطلب",validator: (value){
+                     if (value!.isEmpty) {
+                       return "رقم تأكيد الطلب";
+                     }
+                   }, maxLines: 1,keyboardtype: TextInputType.number),
                  if(cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1].name== "Reject")
                    Column(
                      children: [
@@ -91,27 +89,6 @@ class ChangeStatusOfShipment extends StatelessWidget {
                               log("AAA?>${cubit.idOfStore}");
                              }),
                        ),
-                      /* Padding(
-                         padding:  EdgeInsetsDirectional.only(end: 2.h,start: 3.h),
-                         child: Row(
-                           children: [
-                             Text("${cubit.returnText}",style: TextStyle(fontSize: 10.sp)),
-                             SizedBox(width: 5.h,),
-                             FlutterSwitch(
-                               height: 3.h,
-                               width: 8.h,
-                               padding: 4.0,
-                               toggleSize: 15.0,
-                               borderRadius: 20,
-                               activeColor: purpleColor,
-                               value:cubit.isReturn,
-                               onToggle: (value) {
-                                 cubit.changeBreakableState(value);
-                               },
-                             ),
-                           ],
-                         ),
-                       ),*/
                          Padding(
                            padding:  EdgeInsetsDirectional.only(top:.5.h,start: 2.h,bottom: .5.h),
                            child: Row(children: [
@@ -147,11 +124,11 @@ class ChangeStatusOfShipment extends StatelessWidget {
                              ),
                            ],),
                          ),
-                       CustomTextFormField(controller:notesController,hintText: "ملاحظاتك",validator: (value){
+                       CustomTextFormField(marginRight: 2.h,marginLeft: 2.h,marginTop:1.h,marginbottom:.3.h,controller:notesController,hintText: "ملاحظاتك",validator: (value){
                          if (value!.isEmpty) {
                            return "ملاحظاتك";
                          }
-                       }, maxLines: 4,marginBottom: 20,marginTop: 10),
+                       }, maxLines: 4,keyboardtype: TextInputType.text),
                      ],
                    ),
                  if(cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1].name== "Rescheduled")
@@ -244,11 +221,11 @@ class ChangeStatusOfShipment extends StatelessWidget {
                               ],
                             ),
                           ),
-                       CustomTextFormField(controller:notesController,hintText: "ملاحظاتك",validator: (value){
+                       CustomTextFormField(marginRight: 2.h,marginLeft: 2.h,marginTop:1.h,marginbottom:.3.h,controller:notesController,hintText: "ملاحظاتك",validator: (value){
                          if (value!.isEmpty) {
                            return "ملاحظاتك";
                          }
-                       }, maxLines: 4,marginBottom: 20,marginTop: 10),
+                       }, maxLines: 4,keyboardtype: TextInputType.text),
                      ],
                    ),
                  if(cubit.shipmentStatusModel!.shipmentStatuRepresentative![int.parse(cubit.CurrentIndexRadioShipmentStates)-1].name== "Confirm Received By Client")
@@ -287,7 +264,7 @@ class ChangeStatusOfShipment extends StatelessWidget {
                                  onChanged: (s)
                                  {
                                    cubit.changeIndexRadioShipmentReturn(s);
-                                 },
+                                 } ,
                                  groupValue:cubit.CurrentIndexRadioShipmentReturn,
                                ),
                                Text(
@@ -297,11 +274,11 @@ class ChangeStatusOfShipment extends StatelessWidget {
                            ),
                          ],),
                        ),
-                       CustomTextFormField(controller:notesController,hintText: "ملاحظاتك",validator: (value){
+                       CustomTextFormField(marginRight: 2.h,marginLeft: 2.h,marginTop:1.h,marginbottom:.3.h,controller:notesController,hintText: "ملاحظاتك",validator: (value){
                          if (value!.isEmpty) {
                            return "ملاحظاتك";
                          }
-                       }, maxLines: 4,marginBottom: 20,marginTop: 10),
+                       }, maxLines: 4,keyboardtype: TextInputType.text),
 
                      ],
                    ),
@@ -316,26 +293,31 @@ class ChangeStatusOfShipment extends StatelessWidget {
                                log("AAA?>${cubit.idOfStore}");
                              }),
                        ),
-                       CustomTextFormField(controller:priceController,hintText: "سعر المنتجات",validator: (value){
+                       CustomTextFormField(marginRight: 2.h,marginLeft: 2.h,marginTop:1.h,marginbottom:.3.h,controller:OrderNumberController,hintText: "رقم تأكيد الطلب",validator: (value){
+                         if (value!.isEmpty) {
+                           return "رقم تأكيد الطلب";
+                         }
+                       }, maxLines: 1,keyboardtype: TextInputType.number),
+                       CustomTextFormField(marginRight: 2.h,marginLeft: 2.h,marginTop:1.h,marginbottom:.3.h,controller:priceController,hintText: "سعر المنتجات",validator: (value){
                          if (value!.isEmpty) {
                            return "سعر المنتجات";
                          }
-                       }, maxLines: 1,marginBottom: 0,marginTop: 0),
-                       CustomTextFormField(controller:countProduct,hintText: "عدد المنتجات المسلمة",validator: (value){
+                       }, maxLines: 1,keyboardtype: TextInputType.number),
+                       CustomTextFormField(marginRight: 2.h,marginLeft: 2.h,marginTop:1.h,marginbottom:.3.h,controller:countProduct,hintText: "عدد المنتجات المسلمة",validator: (value){
                          if (value!.isEmpty) {
                            return "عدد المنتجات المسلمة";
                          }
-                       }, maxLines: 1,marginBottom: 0,marginTop: 10),
-                       CustomTextFormField(controller:returnCountProduct,hintText: "عدد المنتجات المستلمة",validator: (value){
+                       }, maxLines: 1,keyboardtype: TextInputType.number),
+                       CustomTextFormField(marginRight: 2.h,marginLeft: 2.h,marginTop:1.h,marginbottom:.3.h,controller:returnCountProduct,hintText: "عدد المنتجات المستلمة",validator: (value){
                          if (value!.isEmpty) {
                            return "عدد المنتجات المستلمة";
                          }
-                       }, maxLines: 1,marginBottom: 0,marginTop: 10),
-                       CustomTextFormField(controller:notesController,hintText: "ملاحظاتك",validator: (value){
+                       }, maxLines: 1,keyboardtype: TextInputType.number),
+                       CustomTextFormField(marginRight: 2.h,marginLeft: 2.h,marginTop:1.h,marginbottom:.3.h,controller:notesController,hintText: "ملاحظاتك",validator: (value){
                          if (value!.isEmpty) {
                            return "ملاحظاتك";
                          }
-                       }, maxLines: 4,marginBottom: 20,marginTop: 10),
+                       }, maxLines: 4,keyboardtype: TextInputType.number),
                      ],
                    ),
                  SizedBox(height: 1.h,),
@@ -351,6 +333,7 @@ class ChangeStatusOfShipment extends StatelessWidget {
                          store_id: cubit.idOfStore,
                          date: cubit.stringDate,
                          note:  notesController.text,
+                         client_id: OrderNumberController.text,
                          return_price:priceController.text,
                          count_product: countProduct.text,
                          return_count_product: returnCountProduct.text,

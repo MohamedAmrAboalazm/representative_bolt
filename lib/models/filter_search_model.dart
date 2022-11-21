@@ -39,7 +39,7 @@ class ShipmentStatus {
   int? productPrice;
   int? orderNumber;
   var count;
-  int? shippingPrice;
+  var shippingPrice;
   var discountValue;
   int? returnPrice;
   int? weight;

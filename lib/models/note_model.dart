@@ -1,7 +1,7 @@
 class NoteModel {
   bool? status;
-  String? errNum;
-  String? msg;
+ var errNum;
+ var msg;
   Shipment? shipment;
 
   NoteModel({this.status, this.errNum, this.msg, this.shipment});
@@ -28,32 +28,32 @@ class NoteModel {
 }
 
 class Shipment {
-  int? id;
-  String? nameShipment;
-  String? description;
-  int? customerCode;
-  int? productPrice;
-  int? orderNumber;
-  int? count;
-  int? shippingPrice;
+  var id;
+ var nameShipment;
+ var description;
+  var customerCode;
+  var productPrice;
+  var orderNumber;
+  var count;
+  var shippingPrice;
   var  returnPrice;
-  int? weight;
-  String? size;
-  String? notes;
-  String? deliveryDate;
-  int? clientId;
-  int? areaId;
-  int? serviceTypeId;
-  int? storeId;
-  int? shipmentStatusId;
-  int? representativeId;
-  int? senderId;
-  int? additionalServiceId;
-  int? reasonId;
-  int? end;
-  String? createdAt;
-  String? updatedAt;
-  String? totalShipment;
+  var weight;
+ var size;
+ var notes;
+ var deliveryDate;
+  var clientId;
+  var areaId;
+  var serviceTypeId;
+  var storeId;
+  var shipmentStatusId;
+  var representativeId;
+  var senderId;
+  var additionalServiceId;
+  var reasonId;
+  var end;
+ var createdAt;
+ var updatedAt;
+ var totalShipment;
 
   Shipment(
       {this.id,

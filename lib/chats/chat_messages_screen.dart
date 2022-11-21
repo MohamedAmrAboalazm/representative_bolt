@@ -27,7 +27,9 @@ class ChatMessagesScreen extends StatelessWidget {
            var cubit=MandobCubit.get(context);
            return Scaffold(
            appBar:generateAppBarForCompanyMainScreens(title: "دردشة", svgPath: "noun-talk-4679128", context: context, mainScreen: true),
-            body: Column(
+            body:Center(child: Text("SOOOOOOOOOON",style: TextStyle(fontSize: 18.sp),))
+
+             /*Column(
               children: [
                 Expanded(
                   child: ListView.builder(
@@ -83,11 +85,11 @@ class ChatMessagesScreen extends StatelessWidget {
                           color: purple,
                           child: MaterialButton(onPressed: (){
                             if(textController.text.trim().isNotEmpty) {
-                              /*    MandobCubit.get(context)
+                              *//*    MandobCubit.get(context)
                                    .sendMessage(
                                    text: textController.text.trim(),
                                    receiverId: 1000,
-                                   datetime: DateTime.now().toString());*/
+                                   datetime: DateTime.now().toString());*//*
 
                               MandobCubit.get(context).sendMessageRealTimeDataBase(text: textController.text.trim(),
                                   receiverId: 1000.toString(),
@@ -108,7 +110,7 @@ class ChatMessagesScreen extends StatelessWidget {
                 ),
 
               ],
-            ),
+            ),*/
             );});
       });
 

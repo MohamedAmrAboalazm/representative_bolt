@@ -129,8 +129,7 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                               child: SingleChildScrollView(
                                child: BuildShippingItem(
                                 text: "أجمالي قيمة الشحنات",
-                                price:
-                                    "${ cubit.totalShipmentModel!.data!.totalCollectionBalance.toString()} جنيه",
+                                price: "${ cubit.totalShipmentModel!.data!.totalCollectionBalance.toString()} جنيه",
                                 image: "assets/icons/noun-money-4677837.svg",
                                 ColorItem: greenLight),
                           )),
@@ -140,10 +139,8 @@ class _MandobFirstScreenState extends State<MandobFirstScreen> {
                           Expanded(
                               child: BuildShippingItem(
                                   text: "قيمة عمولات الشحنات",
-                                  price:
-                                      "${ cubit.totalShipmentModel!.data!.totalCommission.toString()} جنيه",
-                                  image:
-                                      "assets/icons/noun-commission-1575877.svg",
+                                  price:"${ cubit.totalShipmentModel!.data!.totalCommission.toString()} جنيه",
+                                  image: "assets/icons/noun-commission-1575877.svg",
                                   ColorItem: blueLight)),
                         ],
                       ),
@@ -514,6 +511,7 @@ shipmentItem(context, ShipmentRepresentative model, index) {
                                   children: [
                                     SizedBox(height: 2.h,),
                                     CustomTextFormField(
+                                      marginRight: 2.h,marginLeft: 2.h,marginTop:1.h,marginbottom:.3.h,
                                       validator: (v){
                                         if (v!.isEmpty) {
                                           return "أدخل سبب الرفض";
@@ -521,7 +519,7 @@ shipmentItem(context, ShipmentRepresentative model, index) {
                                       },
                                       hintText: "سبب الرفض",
                                       maxLines: 1,
-                                      marginTop: 1.h,
+                                      keyboardtype: TextInputType.text,
                                       controller: cubit.rejectText,
 
                                     ),
@@ -683,6 +681,7 @@ shipmentOneItem(context, SearchDate searchModel) {
                                 children: [
                                   SizedBox(height: 2.h,),
                                   CustomTextFormField(
+                                    marginRight: 2.h,marginLeft: 2.h,marginTop:1.h,marginbottom:.3.h,
                                     validator: (v){
                                       if (v!.isEmpty) {
                                         return "أدخل سبب الرفض";
@@ -690,7 +689,7 @@ shipmentOneItem(context, SearchDate searchModel) {
                                     },
                                     hintText: "سبب الرفض",
                                     maxLines: 1,
-                                    marginTop: 1.h,
+                                      keyboardtype: TextInputType.text,
                                     controller:MandobCubit.get(context).rejectText,
 
                                   ),
@@ -854,6 +853,7 @@ shipmentFilterItem(context, ShipmentStatus model,index) {
                                 children: [
                                   SizedBox(height: 2.h,),
                                   CustomTextFormField(
+                                    marginRight: 2.h,marginLeft: 2.h,marginTop:1.h,marginbottom:.3.h,
                                     validator: (v){
                                       if (v!.isEmpty) {
                                         return "أدخل سبب الرفض";
@@ -861,7 +861,7 @@ shipmentFilterItem(context, ShipmentStatus model,index) {
                                     },
                                     hintText: "سبب الرفض",
                                     maxLines: 1,
-                                    marginTop: 1.h,
+                                      keyboardtype: TextInputType.text,
                                     controller:MandobCubit.get(context).rejectText,
 
                                   ),

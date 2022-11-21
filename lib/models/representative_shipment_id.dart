@@ -1,7 +1,7 @@
 class RepresenativeShipmentDetails {
   bool? status;
-  String? errNum;
-  String? msg;
+ var errNum;
+ var msg;
   List<Detali>? detali;
 
   RepresenativeShipmentDetails(
@@ -32,13 +32,13 @@ class RepresenativeShipmentDetails {
 }
 
 class Detali {
-  int? id;
-  int? userId;
-  int? shipmentId;
-  int? shipmentStatusId;
-  int? storeId;
-  String? createdAt;
-  String? updatedAt;
+  var id;
+  var userId;
+  var shipmentId;
+  var shipmentStatusId;
+  var storeId;
+ var createdAt;
+ var updatedAt;
   Shipmentstatu? shipmentstatu;
   User? user;
   Store? store;
@@ -93,10 +93,10 @@ class Detali {
 }
 
 class Shipmentstatu {
-  int? id;
-  String? name;
-  String? createdAt;
-  String? updatedAt;
+  var id;
+ var name;
+ var createdAt;
+ var updatedAt;
 
   Shipmentstatu(
       {this.id,
@@ -122,16 +122,16 @@ class Shipmentstatu {
 }
 
 class Rescheduled {
-  int? id;
-  String? date;
-  int? count;
-  String? note;
-  int? totalPrice;
-  int? shipmentStatusId;
-  int? shipmentId;
-  int? userId;
-  String? createdAt;
-  String? updatedAt;
+  var id;
+ var date;
+  var count;
+ var note;
+  var totalPrice;
+  var shipmentStatusId;
+  var shipmentId;
+  var userId;
+ var createdAt;
+ var updatedAt;
 
   Rescheduled(
       {this.id,
@@ -175,17 +175,17 @@ class Rescheduled {
 }
 
 class User {
-  int? id;
-  String? email;
-  String? userName;
-  Null? emailVerifiedAt;
-  String? phoneNumber;
-  int? isActive;
-  String? userType;
-  String? token;
-  Null? firebaseId;
-  String? createdAt;
-  String? updatedAt;
+  var id;
+ var email;
+ var userName;
+  var emailVerifiedAt;
+ var phoneNumber;
+  var isActive;
+ var userType;
+ var token;
+  var firebaseId;
+ var createdAt;
+ var updatedAt;
   UserData? userData;
 
   User(
@@ -240,24 +240,24 @@ class User {
 }
 
 class UserData {
-  int? id;
-  String? name;
-  String? address;
-  Null? cv;
-  Null? photo;
-  Null? faceIDCardPic;
-  Null? backIDCardPic;
-  int? salary;
-  int? wallet;
-  int? commission;
-  int? userId;
-  int? cityId;
-  String? createdAt;
-  String? updatedAt;
-  String? imagePath;
-  String? licensePhotoPath;
-  String? fishPhotoPath;
-  String? cvPath;
+  var id;
+ var name;
+ var address;
+  var cv;
+  var photo;
+  var faceIDCardPic;
+  var backIDCardPic;
+  var salary;
+  var wallet;
+  var commission;
+  var userId;
+  var cityId;
+ var createdAt;
+ var updatedAt;
+ var imagePath;
+ var licensePhotoPath;
+ var fishPhotoPath;
+ var cvPath;
 
   UserData(
       {this.id,
@@ -325,14 +325,14 @@ class UserData {
 }
 
 class Store {
-  int? id;
-  String? name;
-  Null? phone;
-  Null? address;
-  int? brancheId;
-  Null? employeeId;
-  String? createdAt;
-  String? updatedAt;
+  var id;
+ var name;
+  var phone;
+  var address;
+  var brancheId;
+  var employeeId;
+ var createdAt;
+ var updatedAt;
 
   Store(
       {this.id,

@@ -64,7 +64,6 @@ class ShipmentRepresentative {
   var totalShipment;
   var companyShipmentPrice;
   var representativeShipmentPrice;
-  Area? area;
   Client? client;
   List<Representative>? representative;
   ServiceType? serviceType;
@@ -105,7 +104,6 @@ class ShipmentRepresentative {
         this.totalShipment,
         this.companyShipmentPrice,
         this.representativeShipmentPrice,
-        this.area,
         this.client,
         this.representative,
         this.serviceType,
@@ -146,7 +144,6 @@ class ShipmentRepresentative {
     totalShipment = json['total_shipment'];
     companyShipmentPrice = json['company_shipment_price'];
     representativeShipmentPrice = json['representative_shipment_price'];
-    area = json['area'] != null ? new Area.fromJson(json['area']) : null;
     client =
     json['client'] != null ? new Client.fromJson(json['client']) : null;
     if (json['representative'] != null) {
@@ -199,9 +196,6 @@ class ShipmentRepresentative {
     data['total_shipment'] = this.totalShipment;
     data['company_shipment_price'] = this.companyShipmentPrice;
     data['representative_shipment_price'] = this.representativeShipmentPrice;
-    if (this.area != null) {
-      data['area'] = this.area!.toJson();
-    }
     if (this.client != null) {
       data['client'] = this.client!.toJson();
     }
@@ -222,34 +216,6 @@ class ShipmentRepresentative {
     if (this.user != null) {
       data['user'] = this.user!.toJson();
     }
-    return data;
-  }
-}
-
-class Area {
-  var id;
-  var name;
-  var provinceId;
- var createdAt;
- var updatedAt;
-
-  Area({this.id, this.name, this.provinceId, this.createdAt, this.updatedAt});
-
-  Area.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    provinceId = json['province_id'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['province_id'] = this.provinceId;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
     return data;
   }
 }

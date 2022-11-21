@@ -23,7 +23,7 @@ class LoginCubitClass extends Cubit<LoginStates> {
 
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
+  var formLogin = GlobalKey<FormState>();
   void resetAll() {
     phoneController = TextEditingController();
     passwordController = TextEditingController();

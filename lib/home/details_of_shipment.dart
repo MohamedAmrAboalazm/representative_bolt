@@ -191,6 +191,7 @@ class DetailsOfShipment extends StatelessWidget {
                                             children: [
                                               SizedBox(height: 2.h,),
                                               CustomTextFormField(
+                                                marginRight: 2.h,marginLeft: 2.h,marginTop:1.h,marginbottom:.3.h,
                                                 validator: (v){
                                                   if (v!.isEmpty) {
                                                     return "أدخل سبب الالغاء";
@@ -198,7 +199,7 @@ class DetailsOfShipment extends StatelessWidget {
                                                 },
                                                 hintText: "سبب الالغاء",
                                                 maxLines: 1,
-                                                marginTop: 1.h,
+                                                keyboardtype: TextInputType.text,
                                                 controller: cubit.rejectText,
 
                                               ),

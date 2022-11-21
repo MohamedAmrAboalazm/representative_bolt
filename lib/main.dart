@@ -1,14 +1,17 @@
 import 'dart:developer';
 
+import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:representative_bolt/colors.dart';
 import 'package:representative_bolt/components/dio_helper/dio.dart';
 import 'package:representative_bolt/components/sharedpref/shared_preference.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:representative_bolt/constants/themes.dart';
 import 'package:representative_bolt/main_nav_screen/mandob_layout.dart';
 import 'package:representative_bolt/services/fcm_services.dart';
 import 'package:sizer/sizer.dart';
@@ -33,7 +36,11 @@ Future<void> main() async {
   BlocOverrides.runZoned(
     () => runApp(
       EasyLocalization(
-        child: const MyApp(),
+        child: DevicePreview(
+          enabled: !kReleaseMode,
+          builder: (context) => MyApp(),
+
+        ),
         path: "assets/translations",
         supportedLocales: const [
           Locale("en"),
@@ -73,13 +80,16 @@ class MyApp extends StatelessWidget {
             // BlocProvider(
             //  // create: (context) => LoginCubitClass()..login("")
             // ),
-
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
+            builder: DevicePreview.appBuilder,
             theme: ThemeData(
+              colorScheme: ColorScheme.light(
+                primary: purpleColor,
+              ),
               radioTheme: RadioThemeData(
-                fillColor: MaterialStateColor.resolveWith((states) => purple),
+                fillColor: MaterialStateColor.resolveWith((states) => purpleColor),
               ),
               fontFamily: "hanimation",
               bottomNavigationBarTheme: const BottomNavigationBarThemeData(

@@ -891,45 +891,6 @@ class ToggleNoIconCustomDesignSwapLanguageActive extends StatelessWidget {
   }
 }
 
-class CustomTextFormField extends StatelessWidget {
-  final TextEditingController controller;
-  final Widget postWidget;
-  final TextInputType keyboardType;
-  final String hintText;
-
-  const CustomTextFormField({
-    required this.controller,
-    required this.postWidget,
-    required this.keyboardType,
-    this.hintText = "",
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: TextFormField(
-          textAlignVertical: TextAlignVertical.bottom,
-          showCursor: false,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18.0,
-            height: 0.4,
-          ),
-          cursorColor: Colors.black,
-          cursorHeight: 30.0,
-          controller: controller,
-          decoration: InputDecoration(
-            hintStyle: lightTheme.textTheme.bodyText1
-                ?.copyWith(fontSize: 15, color: textGreyColor),
-            hintText: hintText,
-            //suffixIcon: postWidget,
-            suffixIcon: postWidget,
-          ),
-          keyboardType: keyboardType,
-        ));
-  }
-}
 
 class CustomContainerForDetails extends StatelessWidget {
   final String text1;
